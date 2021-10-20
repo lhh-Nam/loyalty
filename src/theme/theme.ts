@@ -1,5 +1,13 @@
 import { createTheme, Theme } from '@material-ui/core/styles'
-import { error, grey, primary, secondary, success, warning } from './themeColors'
+import {
+  error,
+  grey,
+  loyalty,
+  primary,
+  secondary,
+  success,
+  warning,
+} from './themeColors'
 
 const fontSize = 14
 
@@ -34,8 +42,7 @@ const customTheme = createTheme({
 const bazarTheme = createTheme({
   palette: {
     primary: {
-      ...primary,
-      light: primary[100],
+      main: loyalty.primary,
     },
     secondary,
     error,
@@ -98,14 +105,12 @@ const bazarTheme = createTheme({
     },
     MuiPagination: {
       defaultProps: {
-        variant: 'outlined',
         color: 'primary',
       },
     },
     MuiTextField: {
       defaultProps: {
         size: 'small',
-        variant: 'outlined',
       },
     },
     MuiMenuItem: {

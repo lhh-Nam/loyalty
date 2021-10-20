@@ -9,7 +9,7 @@ const Section1: FC = () => {
     <Fragment>
       <Navbar />
       <Box bgcolor="#0098CE" mb={7.5}>
-        <Container sx={{ py: '2rem' }}>
+        <Container>
           <Carousel
             totalSlides={2}
             visibleSlides={1}
@@ -17,7 +17,6 @@ const Section1: FC = () => {
             autoPlay={false}
             showDots={true}
             showArrow={false}
-            spacing="0px"
           >
             <CarouselCard1 />
             <CarouselCard1 />

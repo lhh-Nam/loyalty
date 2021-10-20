@@ -22,6 +22,7 @@
     "isolatedModules": true,
     "alwaysStrict": true,
     "noFallthroughCasesInSwitch": true,
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
 
     // "noImplicitAny": true,
     // "noImplicitThis": true,
@@ -35,9 +36,10 @@
       "@context/*": ["contexts/*"],
       "@hook/*": ["hooks/*"],
       "@utils/*": ["utils/*"],
-      "@reducer/*": ["reducers/*"]
+      "@reducer/*": ["reducers/*"],
+      "@styles/*": ["styles/*"]
     }
   },
   "exclude": ["node_modules"],
-  "include": ["**/*.ts", "**/*.tsx", "next.config.js"]
+  "include": ["**/*.ts", "**/*.tsx", "next.config.js", "global.d.ts"]
 }

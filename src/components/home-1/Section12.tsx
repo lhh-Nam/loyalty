@@ -11,9 +11,6 @@ const Section12: FC = () => {
       <Grid item sm={6} xs={12} key={idx}>
         <BazarCard
           sx={{
-            //display: 'flex',
-            //flexDirection: 'row',
-            //alignItems: 'center',
             p: '1.5rem',
             height: '100%',
             borderRadius: '16px',
@@ -44,8 +41,8 @@ const Section12: FC = () => {
                   <Span color="grey.600">{product.sub}</Span>
                 </Grid>
 
-                <Grid container alignItems="center">
-                  <Span color="#0098CE" mr={2} fontSize="16px" fontWeight="600">
+                <Grid container alignItems="center" mt={1}>
+                  <Span color="#0098CE" mr={2} fontSize="14px" fontWeight="600">
                     Xem chi tiết
                   </Span>
                   <ChevronRight fontSize="small" htmlColor="#0098CE" />
@@ -83,33 +80,33 @@ const Section12: FC = () => {
 
 const lstProduct = [
   {
-    imgUrl: '/assets/images/products/london-britches.png',
+    imgUrl: '/assets/loyalty/home/batdongsan.png',
     title: 'Bất động sản',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/images/products/jim and jiko.png',
+    imgUrl: '/assets/loyalty/home/tieudung.png',
     title: 'Tiêu dùng',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/images/products/london-britches.png',
-    title: 'Bất động sản',
+    imgUrl: '/assets/loyalty/home/oto.png',
+    title: 'Ô tô',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/images/products/jim and jiko.png',
-    title: 'Tiêu dùng',
+    imgUrl: '/assets/loyalty/home/thetindung.png',
+    title: 'Thẻ tín dụng',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/images/products/london-britches.png',
-    title: 'Bất động sản',
+    imgUrl: '/assets/loyalty/home/xemay.png',
+    title: 'Xe máy',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/images/products/jim and jiko.png',
-    title: 'Tiêu dùng',
+    imgUrl: '/assets/loyalty/home/tinchap.png',
+    title: 'Tin chấp',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
 ]

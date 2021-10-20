@@ -70,7 +70,6 @@ const StyledCarouselProvider = styled(CarouselProvider)<StyledProps>(
     '&:hover $arrowButton': {
       display: 'flex',
     },
-    padding: '2rem 0',
   })
 )
 
@@ -84,10 +83,8 @@ const StyledDotGroup = styled(DotGroup)<{ dot_margin_top?: string | number }>(
     display: 'flex',
     justifyContent: 'center',
     marginTop: dot_margin_top || '0px',
-
     position: 'absolute',
-
-    bottom: 20,
+    bottom: 70,
   })
 )
 

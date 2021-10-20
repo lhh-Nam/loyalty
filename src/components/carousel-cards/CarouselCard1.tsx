@@ -1,7 +1,6 @@
 import BazarImage from '@component/BazarImage'
 import { Paragraph } from '@component/Typography'
 import { Box, Button, Grid, styled } from '@material-ui/core'
-import SendIcon from '@material-ui/icons/Send'
 import React, { FC } from 'react'
 
 // component props interface
@@ -24,10 +23,11 @@ const StyledBox = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     '.grid-item': {
       minHeight: 424,
+      paddingTop: '2rem',
       display: 'flex',
-      alignItems: 'baseline',
+      // alignItems: 'baseline',
       flexDirection: 'column',
-      justifyContent: 'center',
+      // justifyContent: 'center',
     },
   },
   [theme.breakpoints.down('sm')]: {
@@ -56,8 +56,8 @@ const StyledBox = styled(Box)(({ theme }) => ({
 const CarouselCard1: FC<CarouselCard1Props> = () => {
   return (
     <StyledBox>
-      <Grid container spacing={3} alignItems="center" justifyContent="center">
-        <Grid item className="grid-item" sm={7} xs={12} color="white">
+      <Grid container alignItems="center" justifyContent="center">
+        <Grid item className="grid-item" sm={6} xs={12} color="white">
           <h1 className="title">
             Mua Ô tô <br /> Vay ngay hôm nay
           </h1>
@@ -80,7 +80,16 @@ const CarouselCard1: FC<CarouselCard1Props> = () => {
                 marginRight: '22px',
                 marginY: '5px',
               }}
-              endIcon={<SendIcon htmlColor="#A7D4E9" />}
+              endIcon={
+                <BazarImage
+                  src="/assets/loyalty/icons/send.svg"
+                  sx={{
+                    display: 'block',
+                    maxHeight: '1.5rem',
+                    maxWidth: '1.5rem',
+                  }}
+                />
+              }
             >
               Đăng kí vay
             </Button>
@@ -103,14 +112,14 @@ const CarouselCard1: FC<CarouselCard1Props> = () => {
             </Button>
           </Grid>
         </Grid>
-        <Grid item sm={5} xs={12}>
+        <Grid item sm={6} xs={12}>
           <BazarImage
-            src="/assets/images/products/nike-black.png"
+            src="/assets/loyalty/slide-banner-model.png"
             alt="apple-watch-1"
             sx={{
               display: 'block',
               mx: 'auto',
-              maxHeight: 400,
+              maxHeight: '100%',
               maxWidth: '100%',
             }}
           />

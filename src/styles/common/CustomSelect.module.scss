@@ -1,0 +1,17 @@
+.container {
+  width: 100%;
+  .title {
+    font-weight: 600;
+    padding-bottom: .25rem;
+    color: #7D879C;
+  }
+
+  .placeholder{
+      color:#AEB4BE;
+  }
+
+  .select{
+    background: rgba($color: #E3E9EF, $alpha: .2);
+  }
+
+}

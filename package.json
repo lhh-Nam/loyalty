@@ -40,6 +40,7 @@
     "react-dropzone": "^11.3.2",
     "react-scroll": "^1.8.2",
     "react-simple-image-viewer": "0.0.8",
+    "sass": "^1.43.2",
     "yup": "^0.32.9"
   },
   "devDependencies": {

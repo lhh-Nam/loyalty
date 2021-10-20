@@ -68,5 +68,5 @@ export const warning = {
 }
 
 export const loyalty = {
-  main: '#0098CE',
+  primary: '#0098CE',
 }
