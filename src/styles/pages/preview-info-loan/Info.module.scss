@@ -1,0 +1,25 @@
+.matter {
+    color: #005F92;
+    font-size: 16px;
+    font-weight: bold;
+}
+.row-content {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+.text-label {
+    color: #005F92;
+    font-size: 16px;
+    width: fit-content;
+    margin-bottom: 10px;
+}
+.text-content {
+    padding-left: 10px;
+    padding-bottom: 2px;
+    color: #005F92;
+    font-size: 16px;
+    font-weight: bold;
+    border-style: none none dotted none;
+    flex: 1;
+}

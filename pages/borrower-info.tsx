@@ -1,70 +1,94 @@
-import BazarCard from '@component/BazarCard'
-import Contact from '@component/common/Contact'
-import TextFieldCustom from '@component/common/TextFieldCustom'
-import Delete from '@component/icons/Delete'
-import Save from '@component/icons/Save'
-import Send from '@component/icons/Send'
-import Star from '@component/icons/Star'
-import AppLayout from '@component/layout/AppLayout'
-import { H2, Span } from '@component/Typography'
-import { Box, Button, Container, Divider, Grid, Typography } from '@material-ui/core'
-import React, { FC, useState } from 'react'
+import BazarCard from "@component/BazarCard";
+import Contact from "@component/common/Contact";
+import TextFieldCustom from "@component/common/TextFieldCustom";
+import Delete from "@component/icons/Delete";
+import Save from "@component/icons/Save";
+import Send from "@component/icons/Send";
+import Star from "@component/icons/Star";
+import AppLayout from "@component/layout/AppLayout";
+import { H2, Span } from "@component/Typography";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Grid,
+  Typography,
+} from "@material-ui/core";
+import { useRouter } from "next/router";
+import React, { FC, useEffect, useState } from "react";
 
 const BorrowerInfo: FC = () => {
+  const router = useRouter();
+
   const [state, setState] = useState({
-    hoTen: '',
-    cmnd: '',
+    hoTen: "",
+    cmnd: "",
     ngaySinh: new Date(),
-    sdt: '',
-    diaChiThC: '',
-    thanhPhoThc: '',
-    phuongThc: '',
-    QuanThc: '',
-    diaChiTC: '',
-    thanhPhoTc: '',
-    phuongTc: '',
-    QuanTc: '',
-  })
+    sdt: "",
+    diaChiThC: "",
+    thanhPhoThc: "",
+    phuongThc: "",
+    quanThc: "",
+    diaChiTC: "",
+    thanhPhoTc: "",
+    phuongTc: "",
+    quanTc: "",
+  });
+
+  useEffect(() => {
+    const infoLocalStorage = localStorage.getItem("info");
+    const info = JSON.parse(infoLocalStorage || "");
+    info && setState(info);
+  }, []);
 
   const handleValueChange = (e: any) => {
-    setState((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
-  }
+    setState((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   return (
     <AppLayout>
-      <Container sx={{ mb: '70px', mt: '100px' }}>
+      <Container sx={{ mb: "70px", mt: "100px" }}>
         <Grid container justifyContent="center">
           <Grid item md={6} textAlign="center">
             <H2>Bảng thông tin người vay</H2>
             <Span display="block" my={3}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna aliqua. sedut et labore et
-              dolore magna aliqua.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. sedut
+              et labore et dolore magna aliqua.
             </Span>
           </Grid>
         </Grid>
 
         <BazarCard
           sx={{
-            p: '1.5rem',
-            height: '100%',
-            width: '100%',
-            borderRadius: '16px',
-            mt: '38px',
+            p: "1.5rem",
+            height: "100%",
+            width: "100%",
+            borderRadius: "16px",
+            mt: "38px",
           }}
         >
           <Box display="flex" justifyContent="space-between">
-            <Typography sx={{ fontSize: 16, color: '#0098CE' }}>
+            <Typography sx={{ fontSize: 16, color: "#0098CE" }}>
               Thông tin người vay
             </Typography>
-            <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
               <Star />
-              <Typography sx={{ fontSize: 16, color: '#86868B' }}>
+              <Typography sx={{ fontSize: 16, color: "#86868B" }}>
                 Bắt buộc
               </Typography>
             </Box>
           </Box>
 
-          <Divider sx={{ my: '40px' }} />
+          <Divider sx={{ my: "40px" }} />
 
           <Grid container spacing={5}>
             <Grid item md={6}>
@@ -108,18 +132,24 @@ const BorrowerInfo: FC = () => {
               />
             </Grid>
           </Grid>
-          <Box sx={{ mt: '30px' }} />
+          <Box sx={{ mt: "30px" }} />
           <Box display="flex" justifyContent="space-between">
-            <Typography sx={{ fontSize: 16, color: '#0098CE' }}>Địa chỉ</Typography>
-            <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Typography sx={{ fontSize: 16, color: "#0098CE" }}>
+              Địa chỉ
+            </Typography>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
               <Star />
-              <Typography sx={{ fontSize: 16, color: '#86868B' }}>
+              <Typography sx={{ fontSize: 16, color: "#86868B" }}>
                 Bắt buộc
               </Typography>
             </Box>
           </Box>
 
-          <Divider sx={{ my: '30px' }} />
+          <Divider sx={{ my: "30px" }} />
 
           <Grid container spacing={5}>
             <Grid item container spacing={5} md={6}>
@@ -128,8 +158,8 @@ const BorrowerInfo: FC = () => {
                   required
                   label="Địa chỉ thường chú"
                   variant="outlined"
-                  name="sdt"
-                  value={state.sdt}
+                  name="diaChiThC"
+                  value={state.diaChiThC}
                   onChange={handleValueChange}
                 />
               </Grid>
@@ -138,8 +168,8 @@ const BorrowerInfo: FC = () => {
                   required
                   label="Thành phố"
                   variant="outlined"
-                  name="sdt"
-                  value={state.sdt}
+                  name="thanhPhoThc"
+                  value={state.thanhPhoThc}
                   onChange={handleValueChange}
                 />
               </Grid>
@@ -148,8 +178,8 @@ const BorrowerInfo: FC = () => {
                   required
                   label="Phường/ Xã"
                   variant="outlined"
-                  name="sdt"
-                  value={state.sdt}
+                  name="phuongThc"
+                  value={state.phuongThc}
                   onChange={handleValueChange}
                 />
               </Grid>
@@ -158,8 +188,8 @@ const BorrowerInfo: FC = () => {
                   required
                   label="Quận/ Huyện"
                   variant="outlined"
-                  name="sdt"
-                  value={state.sdt}
+                  name="quanThc"
+                  value={state.quanThc}
                   onChange={handleValueChange}
                 />
               </Grid>
@@ -167,35 +197,63 @@ const BorrowerInfo: FC = () => {
 
             <Grid item container spacing={5} md={6}>
               <Grid item md={12}>
-                <TextFieldCustom label="Địa chỉ tạm chú" variant="outlined" />
+                <TextFieldCustom
+                  label="Địa chỉ tạm chú"
+                  variant="outlined"
+                  name="diaChiTC"
+                  value={state.diaChiTC}
+                  onChange={handleValueChange}
+                />
               </Grid>
               <Grid item md={12}>
-                <TextFieldCustom label="Thành phố" variant="outlined" />
+                <TextFieldCustom
+                  label="Thành phố"
+                  variant="outlined"
+                  name="thanhPhoTc"
+                  value={state.thanhPhoTc}
+                  onChange={handleValueChange}
+                />
               </Grid>
               <Grid item md={6}>
-                <TextFieldCustom label="Phường/ Xã" variant="outlined" />
+                <TextFieldCustom
+                  label="Phường/ Xã"
+                  variant="outlined"
+                  name="phuongTc"
+                  value={state.phuongTc}
+                  onChange={handleValueChange}
+                />
               </Grid>
               <Grid item md={6}>
-                <TextFieldCustom label="Quận/ Huyện" variant="outlined" />
+                <TextFieldCustom
+                  label="Quận/ Huyện"
+                  variant="outlined"
+                  name="quanTc"
+                  value={state.quanTc}
+                  onChange={handleValueChange}
+                />
               </Grid>
             </Grid>
           </Grid>
 
-          <Divider sx={{ my: '30px' }} />
+          <Divider sx={{ my: "30px" }} />
 
           <Grid container spacing={5}>
             <Grid container item md={6}>
               <Grid item>
                 <Button
                   sx={{
-                    color: '#0098CE',
-                    fontSize: '16px',
-                    borderRadius: '8px',
-                    backgroundColor: 'white',
-                    border: '1px solid #0098CE',
+                    color: "#0098CE",
+                    fontSize: "16px",
+                    borderRadius: "8px",
+                    backgroundColor: "white",
+                    border: "1px solid #0098CE",
                   }}
                   variant="outlined"
                   endIcon={<Save />}
+                  onClick={() => {
+                    localStorage.setItem("info", JSON.stringify(state));
+                    alert("Đã lưu lại kết quả");
+                  }}
                 >
                   Lưu kết quả
                 </Button>
@@ -206,13 +264,30 @@ const BorrowerInfo: FC = () => {
                 <Button
                   variant="outlined"
                   sx={{
-                    color: '#0098CE',
-                    fontSize: '16px',
-                    borderRadius: '8px',
-                    backgroundColor: 'white',
-                    border: '1px solid #0098CE',
+                    color: "#0098CE",
+                    fontSize: "16px",
+                    borderRadius: "8px",
+                    backgroundColor: "white",
+                    border: "1px solid #0098CE",
                   }}
                   endIcon={<Delete />}
+                  onClick={() => {
+                    localStorage.removeItem("info");
+                    setState({
+                      hoTen: "",
+                      cmnd: "",
+                      ngaySinh: new Date(),
+                      sdt: "",
+                      diaChiThC: "",
+                      thanhPhoThc: "",
+                      phuongThc: "",
+                      quanThc: "",
+                      diaChiTC: "",
+                      thanhPhoTc: "",
+                      phuongTc: "",
+                      quanTc: "",
+                    });
+                  }}
                 >
                   Xoá thông tin
                 </Button>
@@ -221,12 +296,16 @@ const BorrowerInfo: FC = () => {
                 <Button
                   variant="contained"
                   sx={{
-                    borderRadius: '8px',
-                    color: 'white',
-                    fontSize: '16px',
-                    background: '#0098CE',
+                    borderRadius: "8px",
+                    color: "white",
+                    fontSize: "16px",
+                    background: "#0098CE",
                   }}
                   endIcon={<Send />}
+                  onClick={() => {
+                    localStorage.setItem("info", JSON.stringify(state));
+                    router.push("/preview");
+                  }}
                 >
                   Đăng kí vay
                 </Button>
@@ -237,7 +316,7 @@ const BorrowerInfo: FC = () => {
       </Container>
       <Contact />
     </AppLayout>
-  )
-}
+  );
+};
 
-export default BorrowerInfo
+export default BorrowerInfo;
