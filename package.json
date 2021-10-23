@@ -27,6 +27,7 @@
     "@material-ui/lab": "^5.0.0-alpha.38",
     "@material-ui/styles": "^5.0.0-alpha.35",
     "@material-ui/system": "^5.0.0-alpha.38",
+    "@mui/styles": "^5.0.1",
     "chart.js": "^3.3.2",
     "clsx": "^1.1.1",
     "date-fns": "^2.22.1",

@@ -1,5 +1,5 @@
 import { FormControl, MenuItem, Select, Typography } from '@material-ui/core'
-import Style from '@styles/common/CustomSelect.module.scss'
+import Style from '@styles/components/CustomSelect.module.scss'
 import { FC, useState } from 'react'
 
 interface IOption {

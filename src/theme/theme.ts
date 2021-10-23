@@ -158,6 +158,13 @@ const bazarTheme = createTheme({
         },
       },
     },
+    MuiTypography: {
+      styleOverrides: {
+        body1: {
+          color: grey[600],
+        },
+      },
+    },
   },
 })
 

@@ -1,0 +1,70 @@
+import LazyImage from '@component/LazyImage'
+import { H4, Span } from '@component/Typography'
+import { Container, Grid } from '@material-ui/core'
+import Style from '@styles/pages/product/Detail.module.scss'
+import { FC } from 'react'
+
+const MainProduct: FC = () => {
+  return (
+    <Container>
+      <Grid container bgcolor="white" mt={7.5} mb={3} p={3} borderRadius={2}>
+        <Grid container spacing={3} className={Style.mainProductWrap}>
+          <Grid item xs={12} md={6}>
+            <div className={Style.imgGroup}>
+              <LazyImage
+                src="/assets/loyalty/car-loan/car-1.png"
+                width={350}
+                height={150}
+                layout="responsive"
+                objectFit="cover"
+                borderRadius="8px"
+                // alt={title}
+              />
+
+              <div className={Style.text}>
+                <span>Vay ô tô</span>
+                <span>Eximbank</span>
+              </div>
+            </div>
+          </Grid>
+          <Grid item xs={12} md={6} fontSize="0.938rem">
+            <Grid
+              container
+              flexDirection="column"
+              height="100%"
+              justifyContent="space-between"
+            >
+              <Grid container className={Style.endow}>
+                <Span>
+                  Lãi suất&nbsp;
+                  <Span color="#0098CE">6.25</Span>%
+                </Span>
+
+                <Span className={Style.line}>|</Span>
+
+                <Span>
+                  Ưu đãi
+                  <Span color="#0098CE">&nbsp;12&nbsp;</Span>
+                  tháng
+                </Span>
+              </Grid>
+
+              <Grid className={Style.info}>
+                <H4 mb={1}>BMW X1</H4>
+                <Span color="grey.600">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea
+                  nisl diam nisl pretium nec Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit. Platea nisl diam nisl pretium nec
+                </Span>
+              </Grid>
+
+              <H4 className={Style.price}>1.859.000.000 VNĐ</H4>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Container>
+  )
+}
+
+export default MainProduct
