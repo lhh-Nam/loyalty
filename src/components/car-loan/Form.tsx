@@ -133,7 +133,12 @@ const Form: FC = () => {
 
   const renderButtonGroup = () => {
     return (
-      <Grid container justifyContent="space-between" className={Style.btnGroup}>
+      <Grid
+        container
+        justifyContent="space-between"
+        alignItems="center"
+        className={Style.btnGroup}
+      >
         <Grid item>
           <Button
             disableElevation
@@ -154,7 +159,7 @@ const Form: FC = () => {
           </Button>
         </Grid>
         <Grid item>
-          <Grid container mt={1}>
+          <Grid container>
             <Button
               disableElevation
               variant="outlined"

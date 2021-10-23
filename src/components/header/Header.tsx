@@ -90,7 +90,11 @@ const Header: FC<HeaderProps> = ({ isFixed, className }) => {
         >
           <Link href="/">
             <a>
-              <Image height={40} src="/assets/images/logo-loyalty.svg" alt="logo" />
+              <Image
+                height={40}
+                src="/assets/loyalty/logo-eximbank.svg"
+                alt="logo"
+              />
             </a>
           </Link>
 

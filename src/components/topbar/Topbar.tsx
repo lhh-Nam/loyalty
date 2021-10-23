@@ -101,7 +101,7 @@ const Topbar = () => {
               <Image
                 display="block"
                 height="28px"
-                src="/assets/images/logo.svg"
+                src="/assets/loyalty/logo-eximbank.svg"
                 alt="logo"
               />
             </Link>

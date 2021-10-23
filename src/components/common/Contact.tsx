@@ -13,9 +13,9 @@ const Contact: FC = () => {
       padding="30px 20px"
     >
       <Container>
-        <Grid container spacing={5} color="#015F92" fontWeight="600">
+        <Grid container spacing={5} color="#015F92">
           <Grid item lg={3} xs={6}>
-            <Grid container>
+            <Grid container justifyContent="center">
               <BazarImage
                 src="/assets/loyalty/icons/call-calling.svg"
                 sx={{
@@ -30,7 +30,7 @@ const Contact: FC = () => {
             </Grid>
           </Grid>
           <Grid item lg={3} xs={6}>
-            <Grid container>
+            <Grid container justifyContent="center">
               <BazarImage
                 src="/assets/loyalty/icons/card.svg"
                 sx={{
@@ -45,7 +45,7 @@ const Contact: FC = () => {
             </Grid>
           </Grid>
           <Grid item lg={3} xs={6}>
-            <Grid container>
+            <Grid container justifyContent="center">
               <BazarImage
                 src="/assets/loyalty/icons/message-search.svg"
                 sx={{
@@ -60,7 +60,7 @@ const Contact: FC = () => {
             </Grid>
           </Grid>
           <Grid item lg={3} xs={6}>
-            <Grid container>
+            <Grid container justifyContent="center">
               <BazarImage
                 src="/assets/loyalty/icons/message-question.svg"
                 sx={{

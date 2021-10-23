@@ -41,7 +41,7 @@ export const H1: React.FC<BoxProps & Props> = ({
       mb={0}
       mt={0}
       fontSize="30px"
-      fontWeight="700"
+      fontWeight="500"
       lineHeight="1.5"
       {...props}
     >
@@ -68,7 +68,7 @@ export const H2: React.FC<BoxProps & Props> = ({
       mb={0}
       mt={0}
       fontSize="25px"
-      fontWeight="700"
+      fontWeight="500"
       lineHeight="1.5"
       {...props}
     >
@@ -95,7 +95,7 @@ export const H3: React.FC<BoxProps & Props> = ({
       mb={0}
       mt={0}
       fontSize="20px"
-      fontWeight="700"
+      fontWeight="500"
       lineHeight="1.5"
       {...props}
     >
@@ -122,7 +122,7 @@ export const H4: React.FC<BoxProps & Props> = ({
       mb={0}
       mt={0}
       fontSize="17px"
-      fontWeight="600"
+      fontWeight="500"
       lineHeight="1.5"
       {...props}
     >
@@ -149,7 +149,7 @@ export const H5: React.FC<BoxProps & Props> = ({
       mb={0}
       mt={0}
       fontSize="16px"
-      fontWeight="600"
+      fontWeight="500"
       lineHeight="1.5"
       {...props}
     >
@@ -176,7 +176,7 @@ export const H6: React.FC<BoxProps & Props> = ({
       mb={0}
       mt={0}
       fontSize="14px"
-      fontWeight="600"
+      fontWeight="500"
       lineHeight="1.5"
       {...props}
     >
