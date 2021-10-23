@@ -21,25 +21,15 @@
                 padding:0.1rem .6rem;
                 border-radius: 4px;
 
-                font-weight: 600;
-
                 color: $app--white;
                 background: rgba($color: $app--black, $alpha: .3);
             }
         }
     }
 
-    .endow{
-        font-weight: 600;
-    }
-
     .info{
         flex: 1;
         padding: 1rem 0;
-
-        span{
-            font-weight: 600;
-        }
     }
 
     .price{
@@ -81,7 +71,6 @@
 .radioWrap{
     .label{
         color: $app--primary--01;
-        font-weight: 600;
         margin-bottom: .5rem;
     }
 }
@@ -114,17 +103,11 @@
     color: $text-gray;
 
     h3{
-        font-weight: 600;
-
         &:last-of-type{
             color: $app--primary--01;
             display: block;
             padding: .3rem 0;
         }
-    }
-
-    span{
-        font-weight: 600;
     }
 }
 
@@ -143,8 +126,6 @@
         transform: translate(-50%,-50%);
 
         h3{
-            font-weight: 600;
-
             &:last-of-type{
             color: $text-gray;
             }
@@ -175,8 +156,6 @@
         }
         
         span{
-            font-weight: 600;
-
             &:first-of-type{
                 color: $text-gray;
             }

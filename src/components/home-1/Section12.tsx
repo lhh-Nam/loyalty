@@ -2,6 +2,7 @@ import BazarCard from '@component/BazarCard'
 import LazyImage from '@component/LazyImage'
 import { Container, Grid } from '@material-ui/core'
 import ChevronRight from '@material-ui/icons/ChevronRight'
+import Link from 'next/link'
 import React, { FC } from 'react'
 import { H2, H4, Span } from '../Typography'
 
@@ -41,12 +42,19 @@ const Section12: FC = () => {
                   <Span color="grey.600">{product.sub}</Span>
                 </Grid>
 
-                <Grid container alignItems="center" mt={1}>
-                  <Span color="#0098CE" mr={2} fontSize="14px" fontWeight="600">
-                    Xem chi tiết
-                  </Span>
-                  <ChevronRight fontSize="small" htmlColor="#0098CE" />
-                </Grid>
+                <Link href="/product/1">
+                  <Grid
+                    container
+                    alignItems="center"
+                    mt={1}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <Span color="#0098CE" mr={2}>
+                      Xem chi tiết
+                    </Span>
+                    <ChevronRight fontSize="small" htmlColor="#0098CE" />
+                  </Grid>
+                </Link>
               </Grid>
             </Grid>
           </Grid>
@@ -60,7 +68,7 @@ const Section12: FC = () => {
       <Grid container justifyContent="center">
         <Grid item md={6} textAlign="center">
           <H2>Sản phẩm của chúng tôi</H2>
-          <Span display="block" my={3}>
+          <Span display="block" color="grey.600" my={3}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
             tempor incididunt ut labore et dolore magna aliqua. sedut et labore et
             dolore magna aliqua.
@@ -106,7 +114,7 @@ const lstProduct = [
   },
   {
     imgUrl: '/assets/loyalty/home/tinchap.png',
-    title: 'Tin chấp',
+    title: 'Tín chấp',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
 ]

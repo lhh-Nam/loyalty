@@ -159,13 +159,13 @@ const Statistical: FC = () => {
       <Box className={Style.progressWrap}>
         <Box width="100%">
           <Grid container justifyContent="space-between" alignItems="center">
-            <Span color="grey.600" fontWeight="600">
-              {label}
-            </Span>
+            <Span color="grey.600">{label}</Span>
 
             <Grid container className={Style.unit}>
               <Span>{valueNumber}</Span>
-              <Span color="grey.600">{unit}</Span>
+              <Span color="grey.600" fontWeight="400">
+                {unit}
+              </Span>
             </Grid>
           </Grid>
           <LinearProgress

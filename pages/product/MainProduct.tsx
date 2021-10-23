@@ -1,5 +1,5 @@
 import LazyImage from '@component/LazyImage'
-import { H4, Span } from '@component/Typography'
+import { H3, Span } from '@component/Typography'
 import { Container, Grid } from '@material-ui/core'
 import Style from '@styles/pages/product/Detail.module.scss'
 import { FC } from 'react'
@@ -50,7 +50,7 @@ const MainProduct: FC = () => {
               </Grid>
 
               <Grid className={Style.info}>
-                <H4 mb={1}>BMW X1</H4>
+                <H3 mb={1}>BMW X1</H3>
                 <Span color="grey.600">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea
                   nisl diam nisl pretium nec Lorem ipsum dolor sit amet, consectetur
@@ -58,7 +58,7 @@ const MainProduct: FC = () => {
                 </Span>
               </Grid>
 
-              <H4 className={Style.price}>1.859.000.000 VNĐ</H4>
+              <H3 className={Style.price}>1.859.000.000 VNĐ</H3>
             </Grid>
           </Grid>
         </Grid>

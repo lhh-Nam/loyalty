@@ -6,6 +6,7 @@ import { Container, FormControl, Grid, MenuItem, Select } from '@material-ui/cor
 import ChevronRight from '@material-ui/icons/ChevronRight'
 import { Pagination } from '@material-ui/lab'
 import Style from '@styles/pages/car-loan/Product.module.scss'
+import Link from 'next/link'
 import React, { FC, useState } from 'react'
 import { H4, Span } from '../Typography'
 
@@ -45,7 +46,7 @@ const Product: FC = () => {
         >
           <Grid container flexDirection="column">
             <Grid item xs={12}>
-              <Grid container fontWeight="bold" pb={1.5}>
+              <Grid container pb={1.5}>
                 <Span>
                   Lãi suất&nbsp;
                   <Span color="#0098CE">6.25</Span>%
@@ -95,17 +96,19 @@ const Product: FC = () => {
                   </H4>
                 </Grid>
 
-                <Grid
-                  container
-                  pt={1.5}
-                  alignItems="center"
-                  className={Style.btnGroup}
-                >
-                  <Span color="#0098CE" mr={2} fontSize="14px" fontWeight="600">
-                    Xem chi tiết gói vay
-                  </Span>
-                  <ChevronRight fontSize="small" htmlColor="#0098CE" />
-                </Grid>
+                <Link href="/product/1">
+                  <Grid
+                    container
+                    pt={1.5}
+                    alignItems="center"
+                    className={Style.btnGroup}
+                  >
+                    <Span color="#0098CE" mr={2}>
+                      Xem chi tiết gói vay
+                    </Span>
+                    <ChevronRight fontSize="small" htmlColor="#0098CE" />
+                  </Grid>
+                </Link>
               </Grid>
             </Grid>
           </Grid>
@@ -121,7 +124,6 @@ const Product: FC = () => {
           container
           justifyContent="space-between"
           alignItems="center"
-          fontWeight="bold"
           fontSize="18px"
           pb={1.5}
         >

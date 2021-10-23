@@ -13,7 +13,7 @@ const Contact: FC = () => {
       padding="30px 20px"
     >
       <Container>
-        <Grid container spacing={5} color="#015F92" fontWeight="600">
+        <Grid container spacing={5} color="#015F92">
           <Grid item lg={3} xs={6}>
             <Grid container justifyContent="center">
               <BazarImage

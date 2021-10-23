@@ -9,7 +9,7 @@ import Router from 'next/router'
 import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import React, { Fragment, useEffect } from 'react'
-
+import 'styles/common/fonts.scss'
 export const cache = createCache({ key: 'css', prepend: true })
 
 //Binding events.

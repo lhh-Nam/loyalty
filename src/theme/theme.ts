@@ -11,20 +11,20 @@ import {
 
 const fontSize = 14
 
-const fontFamily = [
-  'Open Sans',
-  'Roboto',
-  '-apple-system',
-  'BlinkMacSystemFont',
-  'Segoe UI',
-  'Oxygen',
-  'Ubuntu',
-  'Cantarell',
-  'Fira Sans',
-  'Droid Sans',
-  'Helvetica Neue',
-  'sans-serif',
-].join(',')
+// const fontFamily = [
+//   'Open Sans',
+//   'Roboto',
+//   '-apple-system',
+//   'BlinkMacSystemFont',
+//   'Segoe UI',
+//   'Oxygen',
+//   'Ubuntu',
+//   'Cantarell',
+//   'Fira Sans',
+//   'Droid Sans',
+//   'Helvetica Neue',
+//   'sans-serif',
+// ].join(',')
 
 const customTheme = createTheme({
   breakpoints: {
@@ -61,7 +61,7 @@ const bazarTheme = createTheme({
   },
   typography: {
     fontSize,
-    fontFamily,
+    //fontFamily,
     htmlFontSize: 16,
     body1: { fontSize },
     body2: { fontSize },
@@ -82,7 +82,7 @@ const bazarTheme = createTheme({
           color: 'inherit',
         },
         button: {
-          fontFamily,
+          //fontFamily,
           fontSize,
         },
         '.MuiRating-sizeSmall': {
