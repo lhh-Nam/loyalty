@@ -1,4 +1,5 @@
 import BazarCard from "@component/BazarCard";
+import BazarImage from "@component/BazarImage";
 import Contact from "@component/common/Contact";
 import Accept from "@component/icons/Accept";
 import Edit from "@component/icons/Edit";
@@ -123,6 +124,15 @@ const PrebiewInfo: FC = () => {
               <p className={style["text-content"]}>{""}</p>
             </Box>
           </Box>
+          <BazarImage
+            src="/assets/loyalty/home/eximbank.png"
+            sx={{
+              minWidth: "700px",
+              display: "block",
+              height: "100%",
+              width: "100%",
+            }}
+          />
           <Box sx={{ mt: "30px" }} />
           <Grid container spacing={5} justifyContent="flex-end">
             <Grid item>
