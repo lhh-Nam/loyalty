@@ -4,31 +4,9 @@ import { H2, H4, Span } from '@component/Typography'
 import { Container, Grid } from '@material-ui/core'
 import ChevronRight from '@material-ui/icons/ChevronRight'
 import Style from '@styles/pages/car-loan/Product.module.scss'
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 
 const OtherProduct: FC = () => {
-  const [pageNumber, setPageNumber] = useState(1)
-  const [pageSize] = useState(6)
-  const [sort, setSort] = useState('Sắp xếp kết quả')
-  const handleChange = (event: any) => {
-    setSort(event.target.value)
-  }
-
-  const countPage = Math.ceil(lstProduct.length / pageSize)
-  // const from = (pageNumber - 1) * pageSize + 1
-  // const to = Math.min(from + pageSize - 1, lstProduct.length)
-
-  const handleChangePage = (event: any, newPage: any) => {
-    setPageNumber(newPage)
-  }
-
-  const getContent = () => {
-    return lstProduct.slice(
-      (pageNumber - 1) * pageSize,
-      (pageNumber - 1) * pageSize + pageSize
-    )
-  }
-
   const renderProduct = (product: any, idx: number) => {
     return (
       <Grid item xs={12} sm={6} md={4} key={idx}>
@@ -112,7 +90,7 @@ const OtherProduct: FC = () => {
   }
 
   return (
-    <Container sx={{ mt: '100px', mb: '70px' }}>
+    <Container sx={{ my: '70px' }}>
       <Grid container justifyContent="center" mb={5}>
         <Grid item md={6} textAlign="center">
           <H2>Sản phẩm của chúng tôi</H2>
@@ -121,7 +99,7 @@ const OtherProduct: FC = () => {
       <Grid container justifyContent="center" mt={2}>
         <Grid item xs={12}>
           <Grid container spacing={5}>
-            {getContent().map((product, idx) => renderProduct(product, idx))}
+            {lstProduct.map((product, idx) => renderProduct(product, idx))}
           </Grid>
         </Grid>
       </Grid>

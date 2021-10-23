@@ -1,7 +1,8 @@
 import CustomSelect from '@component/common/CustomSelect'
-import { Span } from '@component/Typography'
+import { H3, Span } from '@component/Typography'
 import {
   Box,
+  Button,
   Container,
   FormControl,
   FormControlLabel,
@@ -14,6 +15,7 @@ import { makeStyles } from '@mui/styles'
 import Style from '@styles/pages/product/Detail.module.scss'
 import clsx from 'clsx'
 import { FC, useState } from 'react'
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 
 const lstRadioValue = ['Giá trị khoản vay', 'Giá trị ô tô']
 const lstRadioEndow = ['Tuỳ chỉnh', 'Theo ngân hàng']
@@ -25,6 +27,29 @@ const lstBank = [
     value: 'Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam',
   },
   { name: 'Vietnambank', value: 'Vietnambank' },
+]
+
+const lstNote = [
+  {
+    color: '#b5dced',
+    title: 'Cần trả trước',
+    amount: '0 triệu',
+  },
+  {
+    color: '#72b9db',
+    title: 'Gốc cần trả',
+    amount: '1.85 tỷ',
+  },
+  {
+    color: '#0098CE',
+    title: 'Lãi cần trả',
+    amount: '2.5 tỷ',
+  },
+]
+
+const data = [
+  { name: 'A', value: 150, color: '#0098CE' },
+  { name: 'B', value: 70, color: '#72b9db' },
 ]
 
 const useStyles = makeStyles({
@@ -68,14 +93,17 @@ const useStyles = makeStyles({
 })
 
 const Statistical: FC = () => {
-  const [value, setValue] = useState('female')
+  const [radio, setRadio] = useState({
+    value: 'Giá trị khoản vay',
+    endow: 'Theo ngân hàng',
+    interest: 'Dư nợ giảm dần',
+  })
   const [select, setSelect] = useState(
     'Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam'
   )
 
-  const handleChange = (event: any) => {
-    setValue(event.target.value)
-  }
+  const handleChange = (event: any, key: string) =>
+    setRadio({ ...radio, [key]: event.target.value })
 
   function StyledRadio(props: any) {
     const classes = useStyles()
@@ -92,7 +120,12 @@ const Statistical: FC = () => {
     )
   }
 
-  const renderGroupRadio = (lstRadio: any, label?: string) => {
+  const renderGroupRadio = (
+    lstRadio: any,
+    label: string,
+    value: any,
+    key: string
+  ) => {
     return (
       <Grid container flexDirection="column" className={Style.radioWrap}>
         {label && <span className={Style.label}>{label}</span>}
@@ -102,7 +135,7 @@ const Statistical: FC = () => {
             aria-label="gender"
             name="gender1"
             value={value}
-            onChange={handleChange}
+            onChange={(e) => handleChange(e, key)}
           >
             {lstRadio.map((radio: any, idx: number) => {
               return (
@@ -153,7 +186,7 @@ const Statistical: FC = () => {
     return (
       <>
         <Grid className={Style.statisticalItem}>
-          {renderGroupRadio(lstRadioValue)}
+          {renderGroupRadio(lstRadioValue, '', radio.value, 'value')}
         </Grid>
 
         <Grid className={Style.statisticalItem}>
@@ -175,7 +208,7 @@ const Statistical: FC = () => {
         </Grid>
 
         <Grid className={Style.haveLabel}>
-          {renderGroupRadio(lstRadioEndow, 'Lãi suất ưu đãi')}
+          {renderGroupRadio(lstRadioEndow, 'Lãi suất ưu đãi', radio.endow, 'endow')}
         </Grid>
 
         <Grid className={Style.statisticalItem}>
@@ -216,7 +249,87 @@ const Statistical: FC = () => {
         </Grid>
 
         <Grid className={Style.haveLabel}>
-          {renderGroupRadio(lstRadioInterest, 'Phương thức tính lãi')}
+          {renderGroupRadio(
+            lstRadioInterest,
+            'Phương thức tính lãi',
+            radio.interest,
+            'interest'
+          )}
+        </Grid>
+      </>
+    )
+  }
+
+  const renderRight = () => {
+    return (
+      <>
+        <Grid className={Style.firstMonthWrap}>
+          <H3>Thanh toán tháng đầu</H3>
+          <H3>17.835.447 VNĐ</H3>
+          <Grid container>
+            <Span>Tỉ lệ vay 70%</Span>
+
+            <Span className={Style.line}>|</Span>
+
+            <Span>25 năm</Span>
+
+            <Span className={Style.line}>|</Span>
+
+            <Span>11%/năm</Span>
+          </Grid>
+        </Grid>
+
+        <Grid container className={Style.chartWrap}>
+          <Grid item xs={6} className={Style.chartImage}>
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart>
+                <Pie
+                  dataKey="value"
+                  cx="50%"
+                  cy="50%"
+                  data={data}
+                  innerRadius={65}
+                  outerRadius={75}
+                  startAngle={90}
+                  endAngle={450}
+                >
+                  {data?.map((entry, index) => (
+                    <Cell key={index} fill={entry.color} />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+            <Grid className={Style.chartText}>
+              <H3>4.35&nbsp;</H3>
+              <H3>tỷ</H3>
+            </Grid>
+          </Grid>
+          <Grid item xs={6} height="100%">
+            <Grid container className={Style.noteWrap}>
+              {lstNote.map((note, idx) => {
+                return (
+                  <Grid className={Style.noteItem} key={idx}>
+                    <div
+                      style={{ background: `${note.color}` }}
+                      className={Style.color}
+                    ></div>
+                    <Span>{note.title}</Span>
+                    <Span>{note.amount}</Span>
+                  </Grid>
+                )
+              })}
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid container>
+          <Button color="primary" variant="outlined" fullWidth>
+            Xem thanh toán từng tháng
+          </Button>
+
+          <Button color="primary" variant="contained" fullWidth>
+            Đăng kí gói vay
+          </Button>
         </Grid>
       </>
     )
@@ -229,7 +342,9 @@ const Statistical: FC = () => {
           <Grid item xs={12} md={6}>
             {renderLeft()}
           </Grid>
-          <Grid item xs={12} md={6}></Grid>
+          <Grid item xs={12} md={6}>
+            {renderRight()}
+          </Grid>
         </Grid>
       </Grid>
     </Container>
