@@ -1,6 +1,6 @@
-import CustomSelect from "@component/common/CustomSelect";
-import TextFieldCustom from "@component/common/TextFieldCustom";
-import { H3, Span } from "@component/Typography";
+import CustomSelect from '@component/common/CustomSelect'
+import TextFieldCustom from '@component/common/TextFieldCustom'
+import { H3, Span } from '@component/Typography'
 import {
   Box,
   Button,
@@ -11,138 +11,136 @@ import {
   Radio,
   RadioGroup,
   Slider,
-} from "@material-ui/core";
-import { makeStyles } from "@mui/styles";
-import Style from "@styles/pages/product/Detail.module.scss";
-import clsx from "clsx";
-import { debounce } from "lodash";
-import { useRouter } from "next/router";
-import { FC, useCallback, useState } from "react";
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+} from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import Style from '@styles/pages/product/Detail.module.scss'
+import clsx from 'clsx'
+import { debounce } from 'lodash'
+import { useRouter } from 'next/router'
+import { FC, useCallback, useState } from 'react'
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 
-const lstRadioValue = ["Giá trị khoản vay", "Giá trị ô tô"];
-const lstRadioEndow = ["Tuỳ chỉnh", "Theo ngân hàng"];
-const lstRadioInterest = ["Dư nợ giảm dần", "trả đều hàng tháng"];
+const lstRadioValue = ['Giá trị khoản vay', 'Giá trị ô tô']
+const lstRadioEndow = ['Tuỳ chỉnh', 'Theo ngân hàng']
+const lstRadioInterest = ['Dư nợ giảm dần', 'trả đều hàng tháng']
 
 const lstBank = [
   {
-    name: "Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam",
-    value: "Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam",
+    name: 'Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam',
+    value: 'Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam',
   },
-  { name: "Vietnambank", value: "Vietnambank" },
-];
+  { name: 'Vietnambank', value: 'Vietnambank' },
+]
 
 const lstNote = [
   {
-    color: "#b5dced",
-    title: "Cần trả trước",
-    amount: "0 triệu",
+    color: '#b5dced',
+    title: 'Cần trả trước',
+    amount: '0 triệu',
   },
   {
-    color: "#72b9db",
-    title: "Gốc cần trả",
-    amount: "1.85 tỷ",
+    color: '#72b9db',
+    title: 'Gốc cần trả',
+    amount: '1.85 tỷ',
   },
   {
-    color: "#0098CE",
-    title: "Lãi cần trả",
-    amount: "2.5 tỷ",
+    color: '#0098CE',
+    title: 'Lãi cần trả',
+    amount: '2.5 tỷ',
   },
-];
+]
 
 const data = [
-  { name: "A", value: 150, color: "#0098CE" },
-  { name: "B", value: 70, color: "#72b9db" },
-];
+  { name: 'A', value: 150, color: '#0098CE' },
+  { name: 'B', value: 70, color: '#72b9db' },
+]
 
 const useStyles = makeStyles({
   root: {
-    "&:hover": {
-      backgroundColor: "transparent",
+    '&:hover': {
+      backgroundColor: 'transparent',
     },
   },
   icon: {
-    borderRadius: "50%",
+    borderRadius: '50%',
     width: 16,
     height: 16,
-    boxShadow:
-      "inset 0 0 0 1px rgba(16,22,26,.2), inset 0 -1px 0 rgba(16,22,26,.1)",
-    backgroundColor: "#f5f8fa",
-    backgroundImage:
-      "linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))",
-    "$root.Mui-focusVisible &": {
-      outline: "1px auto rgba(19,124,189,.6)",
+    boxShadow: 'inset 0 0 0 1px rgba(16,22,26,.2), inset 0 -1px 0 rgba(16,22,26,.1)',
+    backgroundColor: '#f5f8fa',
+    backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))',
+    '$root.Mui-focusVisible &': {
+      outline: '1px auto rgba(19,124,189,.6)',
       outlineOffset: 2,
     },
-    "input:hover ~ &": {
-      backgroundColor: "#ebf1f5",
+    'input:hover ~ &': {
+      backgroundColor: '#ebf1f5',
     },
-    "input:disabled ~ &": {
-      boxShadow: "none",
-      background: "rgba(206,217,224,.5)",
+    'input:disabled ~ &': {
+      boxShadow: 'none',
+      background: 'rgba(206,217,224,.5)',
     },
   },
   checkedIcon: {
-    backgroundColor: "#fff",
-    boxShadow: "inset 0 0 0 1px #0098CE, inset 0 -1px 0 rgba(16,22,26,.1)",
-    backgroundImage:
-      "linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))",
-    "&:before": {
-      display: "block",
+    backgroundColor: '#fff',
+    boxShadow: 'inset 0 0 0 1px #0098CE, inset 0 -1px 0 rgba(16,22,26,.1)',
+    backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
+    '&:before': {
+      display: 'block',
       width: 16,
       height: 16,
-      backgroundImage: "radial-gradient(#0098CE,#0098CE 28%,transparent 32%)",
+      backgroundImage: 'radial-gradient(#0098CE,#0098CE 28%,transparent 32%)',
       content: '""',
-      borderColor: "red",
+      borderColor: 'red',
     },
   },
-});
+})
 
 const Statistical: FC = () => {
-  const router = useRouter();
+  const router = useRouter()
   const [radio, setRadio] = useState({
-    value: "Giá trị khoản vay",
-    endow: "Theo ngân hàng",
-    interest: "Dư nợ giảm dần",
-  });
-  const [select, setSelect] = useState(
-    "Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam"
-  );
+    value: 'Giá trị khoản vay',
+    endow: 'Theo ngân hàng',
+    interest: 'Dư nợ giảm dần',
+  })
 
-  const [rangeValue, setRangeValue] = useState(0);
-  const [limit] = useState({
-    min: 0,
-    max: 100,
-  });
+  const [select, setSelect] = useState(
+    'Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam'
+  )
+
+  const [slider, setSlider] = useState({
+    loanValue: 110,
+    duration: 2,
+    interest: 1,
+    time: 3,
+    later: 4,
+  })
 
   const handleChange = (event: any, key: string) =>
-    setRadio({ ...radio, [key]: event.target.value });
+    setRadio({ ...radio, [key]: event.target.value })
 
-  const request = debounce((value) => {
-    setRangeValue(parseInt(value || 0));
-  }, 200);
+  const request = debounce((value, name) => {
+    setSlider({ ...slider, [name]: value })
+  }, 200)
 
-  const debouceRequest = useCallback((value) => request(value), []);
+  const debouceRequest = useCallback((value, name) => request(value, name), [])
 
-  const handleValueChange = (e: any) => {
-    debouceRequest(e.target.value);
-  };
+  const handleValueChange = (e: any, name: any) => {
+    debouceRequest(e.target.value, name)
+  }
 
   function StyledRadio(props: any) {
-    const classes = useStyles();
+    const classes = useStyles()
 
     return (
       <Radio
         className={classes.root}
         disableRipple
         color="default"
-        checkedIcon={
-          <span className={clsx(classes.icon, classes.checkedIcon)} />
-        }
+        checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
         icon={<span className={classes.icon} />}
         {...props}
       />
-    );
+    )
   }
 
   const renderGroupRadio = (
@@ -170,13 +168,13 @@ const Statistical: FC = () => {
                   control={<StyledRadio />}
                   label={radio}
                 />
-              );
+              )
             })}
           </RadioGroup>
         </FormControl>
       </Grid>
-    );
-  };
+    )
+  }
 
   // const LinearProgressLable = (props: any) => {
   //   const { label, valueProgress, valueNumber, unit } = props;
@@ -208,7 +206,7 @@ const Statistical: FC = () => {
   // };
 
   const CustomSlide = (props: any) => {
-    const { label, unit, key } = props;
+    const { label, unit, min, max, value, name } = props
     return (
       <Box className={Style.progressWrap}>
         <Box width="100%">
@@ -217,10 +215,9 @@ const Statistical: FC = () => {
 
             <Grid container className={Style.unit}>
               <TextFieldCustom
-                key={key}
                 variant="outlined"
-                value={rangeValue || 0}
-                onChange={handleValueChange}
+                value={value || 0}
+                onChange={(e) => handleValueChange(e, name)}
                 endAdor={
                   <Span color="grey.600" pl={1}>
                     {unit}
@@ -230,13 +227,13 @@ const Statistical: FC = () => {
             </Grid>
           </Grid>
           <Slider
-            key={`slider-${rangeValue}`}
-            defaultValue={rangeValue}
-            min={limit.min}
-            max={limit.max}
+            key={`slider-${value}`}
+            defaultValue={value}
+            min={min}
+            max={max}
             // value={rangeValue || 0}
             valueLabelDisplay="auto"
-            onChange={handleValueChange}
+            onChange={(e) => handleValueChange(e, name)}
             classes={{
               root: Style.root,
               track: Style.track,
@@ -248,31 +245,40 @@ const Statistical: FC = () => {
           />
         </Box>
       </Box>
-    );
-  };
+    )
+  }
 
   const renderLeft = () => {
     return (
       <>
         <Grid className={Style.statisticalItem}>
-          {renderGroupRadio(lstRadioValue, "", radio.value, "value")}
+          {renderGroupRadio(lstRadioValue, '', radio.value, 'value')}
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <CustomSlide key={2} label="Giá trị khoảng vay" unit="tỷ" />
+          <CustomSlide
+            min={0}
+            max={2000}
+            value={slider.loanValue}
+            name="loanValue"
+            label="Giá trị khoảng vay"
+            unit="tỷ"
+          />
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          {/* <CustomSlide key={1} label="Thời hạn vay" unit="tháng" /> */}
+          <CustomSlide
+            min={1}
+            max={12}
+            value={slider.duration}
+            name="duration"
+            label="Thời hạn vay"
+            unit="tháng"
+          />
         </Grid>
 
         <Grid className={Style.haveLabel}>
-          {renderGroupRadio(
-            lstRadioEndow,
-            "Lãi suất ưu đãi",
-            radio.endow,
-            "endow"
-          )}
+          {renderGroupRadio(lstRadioEndow, 'Lãi suất ưu đãi', radio.endow, 'endow')}
         </Grid>
 
         <Grid className={Style.statisticalItem}>
@@ -280,34 +286,55 @@ const Statistical: FC = () => {
             value={select}
             options={lstBank}
             onChange={(value) => {
-              setSelect(value);
+              setSelect(value)
             }}
           />
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          {/* <CustomSlide label="Lãi suất ưu đãi" unit="%" /> */}
+          <CustomSlide
+            min={0}
+            max={100}
+            value={slider.interest}
+            name="interest"
+            label="Lãi suất ưu đãi"
+            unit="%"
+          />
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          {/* <CustomSlide label="Thời gian ưu đãi" unit="năm" /> */}
+          <CustomSlide
+            min={1}
+            max={10}
+            value={slider.time}
+            name="time"
+            label="Thời gian ưu đãi"
+            unit="năm"
+          />
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          {/* <CustomSlide label="Lãi suất sau ưu đãi" unit="%" /> */}
+          <CustomSlide
+            min={0}
+            max={100}
+            value={slider.later}
+            name="later"
+            label="Lãi suất sau ưu đãi"
+            unit="%"
+          />
         </Grid>
 
         <Grid className={Style.haveLabel}>
           {renderGroupRadio(
             lstRadioInterest,
-            "Phương thức tính lãi",
+            'Phương thức tính lãi',
             radio.interest,
-            "interest"
+            'interest'
           )}
         </Grid>
       </>
-    );
-  };
+    )
+  }
 
   const renderRight = () => {
     return (
@@ -365,7 +392,7 @@ const Statistical: FC = () => {
                     <Span>{note.title}</Span>
                     <Span>{note.amount}</Span>
                   </Grid>
-                );
+                )
               })}
             </Grid>
           </Grid>
@@ -381,15 +408,15 @@ const Statistical: FC = () => {
             variant="contained"
             fullWidth
             onClick={() => {
-              router.push("/borrower-info");
+              router.push('/borrower-info')
             }}
           >
             Đăng kí gói vay
           </Button>
         </Grid>
       </>
-    );
-  };
+    )
+  }
 
   return (
     <Container>
@@ -404,7 +431,7 @@ const Statistical: FC = () => {
         </Grid>
       </Grid>
     </Container>
-  );
-};
+  )
+}
 
-export default Statistical;
+export default Statistical
