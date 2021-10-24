@@ -1,12 +1,13 @@
-import BazarCard from "@component/BazarCard";
-import Contact from "@component/common/Contact";
-import TextFieldCustom from "@component/common/TextFieldCustom";
-import Delete from "@component/icons/Delete";
-import Save from "@component/icons/Save";
-import Send from "@component/icons/Send";
-import Star from "@component/icons/Star";
-import AppLayout from "@component/layout/AppLayout";
-import { H2, Span } from "@component/Typography";
+import BazarCard from '@component/BazarCard'
+import BreadcrumbsCustom from '@component/common/Breadcum'
+import Contact from '@component/common/Contact'
+import TextFieldCustom from '@component/common/TextFieldCustom'
+import Delete from '@component/icons/Delete'
+import Save from '@component/icons/Save'
+import Send from '@component/icons/Send'
+import Star from '@component/icons/Star'
+import AppLayout from '@component/layout/AppLayout'
+import { H2, Span } from '@component/Typography'
 import {
   Box,
   Button,
@@ -15,81 +16,85 @@ import {
   Grid,
   MenuItem,
   Typography,
-} from "@material-ui/core";
-import { useRouter } from "next/router";
-import React, { FC, useEffect, useState } from "react";
+} from '@material-ui/core'
+import { useRouter } from 'next/router'
+import React, { FC, useEffect, useState } from 'react'
 
 const BorrowerInfo: FC = () => {
-  const router = useRouter();
+  const router = useRouter()
 
   const [state, setState] = useState({
-    hoTen: "",
-    cmnd: "",
-    ngaySinh: new Date(),
-    sdt: "",
-    diaChiThC: "",
-    thanhPhoThc: "",
-    phuongThc: "",
-    quanThc: "",
-    diaChiTC: "",
-    thanhPhoTc: "",
-    phuongTc: "",
-    quanTc: "",
-  });
+    hoTen: '',
+    cmnd: '',
+    ngaySinh: '',
+    sdt: '',
+    diaChiThC: '',
+    thanhPhoThc: '',
+    phuongThc: '',
+    quanThc: '',
+    diaChiTC: '',
+    thanhPhoTc: '',
+    phuongTc: '',
+    quanTc: '',
+  })
 
   useEffect(() => {
-    const infoLocalStorage = localStorage.getItem("info");
-    const info = infoLocalStorage && JSON.parse(infoLocalStorage);
-    info && setState(info);
-  }, []);
+    const infoLocalStorage = localStorage.getItem('info')
+    const info = infoLocalStorage && JSON.parse(infoLocalStorage)
+    info && setState(info)
+  }, [])
 
   const handleValueChange = (e: any) => {
     setState((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
-    }));
-  };
+    }))
+  }
+
+  const breadcrumbs = [
+    { label: 'Trang chủ', link: '/', isActive: false },
+    { label: 'Thông tin vay', isActive: true },
+  ]
 
   return (
     <AppLayout>
-      <Container sx={{ mb: "70px", mt: "100px" }}>
+      <Box sx={{ backgroundColor: 'white', padding: '16px 13%' }}>
+        <BreadcrumbsCustom breadcrumbs={breadcrumbs} />
+      </Box>
+      <Container sx={{ mb: '70px', mt: '100px' }}>
         <Grid container justifyContent="center">
           <Grid item md={6} textAlign="center">
-            <H2>Bảng thông tin người vay</H2>
+            <H2>Thông tin người vay</H2>
             <Span display="block" my={3}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. sedut
-              et labore et dolore magna aliqua.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. sedut et labore et
+              dolore magna aliqua.
             </Span>
           </Grid>
         </Grid>
 
         <BazarCard
           sx={{
-            p: "1.5rem",
-            height: "100%",
-            width: "100%",
-            borderRadius: "16px",
-            mt: "38px",
+            p: '1.5rem',
+            height: '100%',
+            width: '100%',
+            borderRadius: '16px',
+            mt: '38px',
           }}
         >
           <Box display="flex" justifyContent="space-between">
-            <Typography sx={{ fontSize: 16, color: "#0098CE" }}>
+            <Typography sx={{ fontSize: 16, color: '#0098CE' }}>
               Thông tin người vay
             </Typography>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-            >
+            <Box display="flex" justifyContent="space-between" alignItems="center">
               <Star />
-              <Typography sx={{ fontSize: 16, color: "#86868B" }}>
+              <Typography sx={{ fontSize: 16, color: '#86868B' }}>
                 Bắt buộc
               </Typography>
             </Box>
           </Box>
 
-          <Divider sx={{ my: "40px" }} />
+          <Divider sx={{ my: '40px' }} />
 
           <Grid container spacing={5}>
             <Grid item md={6}>
@@ -116,13 +121,14 @@ const BorrowerInfo: FC = () => {
             </Grid>
             <Grid item md={6}>
               <TextFieldCustom
+                required
                 label="Ngày sinh"
-                type="date"
                 name="ngaySinh"
-                value={state.ngaySinh || ""}
+                value={state.ngaySinh}
+                defaultValue="2017-05-24"
+                type="date"
                 onChange={handleValueChange}
                 variant="outlined"
-                placeholder="01/01/1999"
               />
             </Grid>
             <Grid item md={6}>
@@ -137,24 +143,18 @@ const BorrowerInfo: FC = () => {
               />
             </Grid>
           </Grid>
-          <Box sx={{ mt: "30px" }} />
+          <Box sx={{ mt: '30px' }} />
           <Box display="flex" justifyContent="space-between">
-            <Typography sx={{ fontSize: 16, color: "#0098CE" }}>
-              Địa chỉ
-            </Typography>
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-            >
+            <Typography sx={{ fontSize: 16, color: '#0098CE' }}>Địa chỉ</Typography>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
               <Star />
-              <Typography sx={{ fontSize: 16, color: "#86868B" }}>
+              <Typography sx={{ fontSize: 16, color: '#86868B' }}>
                 Bắt buộc
               </Typography>
             </Box>
           </Box>
 
-          <Divider sx={{ my: "30px" }} />
+          <Divider sx={{ my: '30px' }} />
 
           <Grid container spacing={5}>
             <Grid item container spacing={5} md={6}>
@@ -175,11 +175,14 @@ const BorrowerInfo: FC = () => {
                   label="Thành phố"
                   variant="outlined"
                   name="thanhPhoThc"
-                  value={state.thanhPhoThc}
+                  value={state.thanhPhoThc || ''}
                   onChange={handleValueChange}
                   select
                   placeholder="Chọn Thành phố"
                 >
+                  <MenuItem value="" disabled>
+                    Chọn Thành phố
+                  </MenuItem>
                   <MenuItem value="Hồ Chí Minh">Hồ Chí Minh</MenuItem>
                 </TextFieldCustom>
               </Grid>
@@ -189,11 +192,14 @@ const BorrowerInfo: FC = () => {
                   label="Phường/ Xã"
                   variant="outlined"
                   name="phuongThc"
-                  value={state.phuongThc}
+                  value={state.phuongThc || ''}
                   onChange={handleValueChange}
                   select
                   placeholder="Chọn Phường/ Xã"
                 >
+                  <MenuItem value="" disabled>
+                    Chọn Phường/ Xã
+                  </MenuItem>
                   <MenuItem value="Phường 1">Phường 1</MenuItem>
                   <MenuItem value="Phường 2">Phường 2</MenuItem>
                   <MenuItem value="Phường 3">Phường 3</MenuItem>
@@ -212,11 +218,14 @@ const BorrowerInfo: FC = () => {
                   label="Quận/ Huyện"
                   variant="outlined"
                   name="quanThc"
-                  value={state.quanThc}
+                  value={state.quanThc || ''}
                   onChange={handleValueChange}
                   select
                   placeholder="Chọn Quận/ Huyện"
                 >
+                  <MenuItem value="" disabled>
+                    Chọn Quận/ Huyện
+                  </MenuItem>
                   <MenuItem value="Quận 1">Quận 1</MenuItem>
                   <MenuItem value="Quận 2">Quận 2</MenuItem>
                   <MenuItem value="Quận 3">Quận 3</MenuItem>
@@ -246,11 +255,15 @@ const BorrowerInfo: FC = () => {
                 <TextFieldCustom
                   label="Thành phố"
                   variant="outlined"
+                  select
                   name="thanhPhoTc"
-                  value={state.thanhPhoTc}
+                  value={state.thanhPhoTc || ''}
                   onChange={handleValueChange}
                   placeholder="Chọn Thành phố"
                 >
+                  <MenuItem value="" disabled>
+                    Chọn Thành phố
+                  </MenuItem>
                   <MenuItem value="Hồ Chí Minh">Hồ Chí Minh</MenuItem>
                 </TextFieldCustom>
               </Grid>
@@ -259,10 +272,14 @@ const BorrowerInfo: FC = () => {
                   label="Phường/ Xã"
                   variant="outlined"
                   name="phuongTc"
-                  value={state.phuongTc}
+                  select
+                  value={state.phuongTc || ''}
                   onChange={handleValueChange}
                   placeholder="Chọn Phường/ Xã"
                 >
+                  <MenuItem value="" disabled>
+                    Chọn Phường/ Xã
+                  </MenuItem>
                   <MenuItem value="Phường 1">Phường 1</MenuItem>
                   <MenuItem value="Phường 2">Phường 2</MenuItem>
                   <MenuItem value="Phường 3">Phường 3</MenuItem>
@@ -280,10 +297,14 @@ const BorrowerInfo: FC = () => {
                   label="Quận/ Huyện"
                   variant="outlined"
                   name="quanTc"
+                  select
                   value={state.quanTc}
                   onChange={handleValueChange}
                   placeholder="Chọn Quận/ Huyện"
                 >
+                  <MenuItem value="" disabled>
+                    Chọn Quận/ Huyện
+                  </MenuItem>
                   <MenuItem value="Quận 1">Quận 1</MenuItem>
                   <MenuItem value="Quận 2">Quận 2</MenuItem>
                   <MenuItem value="Quận 3">Quận 3</MenuItem>
@@ -299,7 +320,7 @@ const BorrowerInfo: FC = () => {
             </Grid>
           </Grid>
 
-          <Divider sx={{ my: "30px" }} />
+          <Divider sx={{ my: '30px' }} />
 
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
@@ -308,8 +329,8 @@ const BorrowerInfo: FC = () => {
                 variant="outlined"
                 endIcon={<Save />}
                 onClick={() => {
-                  localStorage.setItem("info", JSON.stringify(state));
-                  alert("Đã lưu lại kết quả");
+                  localStorage.setItem('info', JSON.stringify(state))
+                  alert('Đã lưu lại kết quả')
                 }}
               >
                 Lưu kết quả
@@ -322,21 +343,21 @@ const BorrowerInfo: FC = () => {
                   color="primary"
                   endIcon={<Delete />}
                   onClick={() => {
-                    localStorage.removeItem("info");
+                    localStorage.removeItem('info')
                     setState({
-                      hoTen: "",
-                      cmnd: "",
-                      ngaySinh: new Date(),
-                      sdt: "",
-                      diaChiThC: "",
-                      thanhPhoThc: "",
-                      phuongThc: "",
-                      quanThc: "",
-                      diaChiTC: "",
-                      thanhPhoTc: "",
-                      phuongTc: "",
-                      quanTc: "",
-                    });
+                      hoTen: '',
+                      cmnd: '',
+                      ngaySinh: '',
+                      sdt: '',
+                      diaChiThC: '',
+                      thanhPhoThc: '',
+                      phuongThc: '',
+                      quanThc: '',
+                      diaChiTC: '',
+                      thanhPhoTc: '',
+                      phuongTc: '',
+                      quanTc: '',
+                    })
                   }}
                 >
                   Xoá thông tin
@@ -346,11 +367,11 @@ const BorrowerInfo: FC = () => {
                   variant="contained"
                   endIcon={<Send />}
                   sx={{
-                    marginLeft: "20px",
+                    marginLeft: '20px',
                   }}
                   onClick={() => {
-                    localStorage.setItem("info", JSON.stringify(state));
-                    router.push("/preview");
+                    localStorage.setItem('info', JSON.stringify(state))
+                    router.push('/preview')
                   }}
                 >
                   Đăng kí vay
@@ -362,7 +383,7 @@ const BorrowerInfo: FC = () => {
       </Container>
       <Contact />
     </AppLayout>
-  );
-};
+  )
+}
 
-export default BorrowerInfo;
+export default BorrowerInfo
