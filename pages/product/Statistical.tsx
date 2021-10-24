@@ -119,7 +119,7 @@ const Statistical: FC = () => {
     setRadio({ ...radio, [key]: event.target.value })
 
   const request = debounce((value, name) => {
-    setSlider({ ...slider, [name]: value })
+    setSlider((prevState) => ({ ...prevState, [name]: value }))
   }, 200)
 
   const debouceRequest = useCallback((value, name) => request(value, name), [])
