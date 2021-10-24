@@ -1,98 +1,98 @@
-import Image from '@component/BazarImage'
-import BazarMenu from '@component/BazarMenu'
-import FlexBox from '@component/FlexBox'
-import NavLink from '@component/nav-link/NavLink'
-import { Span } from '@component/Typography'
-import { Container, MenuItem } from '@material-ui/core'
-import TouchRipple from '@material-ui/core/ButtonBase'
-import { styled } from '@material-ui/core/styles'
-import CallOutlined from '@material-ui/icons/CallOutlined'
-import ExpandMore from '@material-ui/icons/ExpandMore'
-import MailOutline from '@material-ui/icons/MailOutline'
-import { layoutConstant } from '@utils/constants'
-import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import Image from "@component/BazarImage";
+import BazarMenu from "@component/BazarMenu";
+import FlexBox from "@component/FlexBox";
+import NavLink from "@component/nav-link/NavLink";
+import { Span } from "@component/Typography";
+import { Container, MenuItem } from "@material-ui/core";
+import TouchRipple from "@material-ui/core/ButtonBase";
+import { styled } from "@material-ui/core/styles";
+import CallOutlined from "@material-ui/icons/CallOutlined";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import MailOutline from "@material-ui/icons/MailOutline";
+import { layoutConstant } from "@utils/constants";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
 
-const TopbarWrapper = styled('div')(({ theme }) => ({
+const TopbarWrapper = styled("div")(({ theme }) => ({
   background: theme.palette.secondary.main,
   color: theme.palette.secondary.contrastText,
   height: layoutConstant.topbarHeight,
   fontSize: 12,
-  '& .topbarLeft': {
-    '& .logo': {
-      display: 'none',
+  "& .topbarLeft": {
+    "& .logo": {
+      display: "none",
     },
-    '& .title': {
-      marginLeft: '10px',
+    "& .title": {
+      marginLeft: "10px",
     },
-    '@media only screen and (max-width: 900px)': {
-      '& .logo': {
-        display: 'block',
+    "@media only screen and (max-width: 900px)": {
+      "& .logo": {
+        display: "block",
       },
-      '& > *:not(.logo)': {
-        display: 'none',
+      "& > *:not(.logo)": {
+        display: "none",
       },
     },
   },
-  '& .topbarRight': {
-    '& .link': {
+  "& .topbarRight": {
+    "& .link": {
       paddingRight: 30,
       color: theme.palette.secondary.contrastText,
     },
-    '@media only screen and (max-width: 900px)': {
-      '& .link': {
-        display: 'none',
+    "@media only screen and (max-width: 900px)": {
+      "& .link": {
+        display: "none",
       },
     },
   },
-  '& .smallRoundedImage': {
+  "& .smallRoundedImage": {
     height: 15,
     width: 25,
     borderRadius: 2,
   },
-  '& .handler': {
+  "& .handler": {
     height: layoutConstant.topbarHeight,
   },
-  '& .menuTitle': {
+  "& .menuTitle": {
     fontSize: 12,
-    marginLeft: '0.5rem',
+    marginLeft: "0.5rem",
     fontWeight: 600,
   },
-  '& .menuItem': {
+  "& .menuItem": {
     minWidth: 100,
   },
-  '& .marginRight': {
-    marginRight: '1.25rem',
+  "& .marginRight": {
+    marginRight: "1.25rem",
   },
-}))
+}));
 
 const Topbar = () => {
-  const [currency, setCurrency] = useState(currencyList[0])
-  const [language, setLanguage] = useState(languageList[0])
+  const [currency, setCurrency] = useState(currencyList[0]);
+  const [language, setLanguage] = useState(languageList[0]);
 
   const handleCurrencyClick = (curr: any) => () => {
-    setCurrency(curr)
-  }
+    setCurrency(curr);
+  };
 
   const handleLanguageClick = (lang: any) => () => {
-    console.log(lang)
+    console.log(lang);
 
-    setLanguage(lang)
-  }
+    setLanguage(lang);
+  };
 
   useEffect(() => {
     // get language from browser
     // console.log(navigator.language);
-  }, [])
+  }, []);
 
   return (
     <TopbarWrapper>
       <Container
         sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: '100%',
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          height: "100%",
         }}
       >
         <FlexBox className="topbarLeft" alignItems="center">
@@ -109,11 +109,11 @@ const Topbar = () => {
 
           <FlexBox alignItems="center">
             <CallOutlined fontSize="small" />
-            <Span className="title">+88012 3456 7894</Span>
+            <Span className="title">0909347980</Span>
           </FlexBox>
           <FlexBox alignItems="center" ml={2.5}>
             <MailOutline fontSize="small" />
-            <Span className="title">support@ui-lib.com</Span>
+            <Span className="title">support@f5seconds.vn</Span>
           </FlexBox>
         </FlexBox>
 
@@ -166,41 +166,41 @@ const Topbar = () => {
         </FlexBox>
       </Container>
     </TopbarWrapper>
-  )
-}
+  );
+};
 
 const languageList = [
   {
-    title: 'EN',
-    imgUrl: '/assets/images/flags/usa.png',
+    title: "EN",
+    imgUrl: "/assets/images/flags/usa.png",
   },
   {
-    title: 'BN',
-    imgUrl: '/assets/images/flags/bd.png',
+    title: "BN",
+    imgUrl: "/assets/images/flags/bd.png",
   },
   {
-    title: 'HN',
-    imgUrl: '/assets/images/flags/in.png',
+    title: "HN",
+    imgUrl: "/assets/images/flags/in.png",
   },
-]
+];
 
 const currencyList = [
   {
-    title: 'USD',
-    imgUrl: '/assets/images/flags/usa.png',
+    title: "USD",
+    imgUrl: "/assets/images/flags/usa.png",
   },
   {
-    title: 'EUR',
-    imgUrl: '/assets/images/flags/uk.png',
+    title: "EUR",
+    imgUrl: "/assets/images/flags/uk.png",
   },
   {
-    title: 'BDT',
-    imgUrl: '/assets/images/flags/bd.png',
+    title: "BDT",
+    imgUrl: "/assets/images/flags/bd.png",
   },
   {
-    title: 'INR',
-    imgUrl: '/assets/images/flags/in.png',
+    title: "INR",
+    imgUrl: "/assets/images/flags/in.png",
   },
-]
+];
 
-export default Topbar
+export default Topbar;

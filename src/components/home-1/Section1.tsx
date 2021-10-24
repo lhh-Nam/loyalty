@@ -1,13 +1,11 @@
-import CarouselCard1 from '@component/carousel-cards/CarouselCard1'
-import Carousel from '@component/carousel/Carousel'
-import Navbar from '@component/navbar/Navbar'
-import { Box, Container } from '@material-ui/core'
-import React, { FC, Fragment } from 'react'
+import CarouselCard1 from "@component/carousel-cards/CarouselCard1";
+import Carousel from "@component/carousel/Carousel";
+import { Box, Container } from "@material-ui/core";
+import React, { FC, Fragment } from "react";
 
 const Section1: FC = () => {
   return (
     <Fragment>
-      <Navbar />
       <Box bgcolor="#0098CE" mb={7.5}>
         <Container>
           <Carousel
@@ -24,7 +22,7 @@ const Section1: FC = () => {
         </Container>
       </Box>
     </Fragment>
-  )
-}
+  );
+};
 
-export default Section1
+export default Section1;
