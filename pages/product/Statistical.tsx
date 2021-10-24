@@ -1,4 +1,5 @@
 import CustomSelect from "@component/common/CustomSelect";
+import TextFieldCustom from "@component/common/TextFieldCustom";
 import { H3, Span } from "@component/Typography";
 import {
   Box,
@@ -10,6 +11,7 @@ import {
   LinearProgress,
   Radio,
   RadioGroup,
+  Slider,
 } from "@material-ui/core";
 import { makeStyles } from "@mui/styles";
 import Style from "@styles/pages/product/Detail.module.scss";
@@ -107,8 +109,19 @@ const Statistical: FC = () => {
     "Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam"
   );
 
+  const [rangeValue, setRangeValue] = useState(0);
+  const [limit] = useState({
+    min: 0,
+    max: 100,
+  });
+
   const handleChange = (event: any, key: string) =>
     setRadio({ ...radio, [key]: event.target.value });
+
+  const handleValueChange = (e: any) => {
+    const value = e.target.value;
+    setRangeValue(parseInt(value || 0));
+  };
 
   function StyledRadio(props: any) {
     const classes = useStyles();
@@ -189,6 +202,48 @@ const Statistical: FC = () => {
     );
   };
 
+  const CustomSlide = (props: any) => {
+    const { label, valueProgress, valueNumber, unit } = props;
+    return (
+      <Box className={Style.progressWrap}>
+        <Box width="100%">
+          <Grid container justifyContent="space-between" alignItems="center">
+            <Span color="grey.600">{label}</Span>
+
+            <Grid container className={Style.unit}>
+              <TextFieldCustom
+                variant="outlined"
+                value={rangeValue}
+                onChange={handleValueChange}
+                endAdor={
+                  <Span color="grey.600" pl={1}>
+                    {unit}
+                  </Span>
+                }
+              />
+            </Grid>
+          </Grid>
+          <Slider
+            key={`slider-${rangeValue}`}
+            defaultValue={rangeValue}
+            min={limit.min}
+            max={limit.max}
+            valueLabelDisplay="auto"
+            onChange={handleValueChange}
+            classes={{
+              root: Style.root,
+              track: Style.track,
+              rail: Style.rail,
+              thumb: Style.thumb,
+              valueLabel: Style.valueLabel,
+            }}
+            //valueLabelFormat={valueLabelFormat}
+          />
+        </Box>
+      </Box>
+    );
+  };
+
   const renderLeft = () => {
     return (
       <>
@@ -197,21 +252,11 @@ const Statistical: FC = () => {
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <LinearProgressLable
-            label="Giá trị khoảng vay"
-            valueProgress={8}
-            valueNumber="1.859"
-            unit="tỷ"
-          />
+          <CustomSlide label="Giá trị khoảng vay" unit="tỷ" />
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <LinearProgressLable
-            label="Thời hạn vay"
-            valueProgress={83}
-            valueNumber="300"
-            unit="tháng"
-          />
+          <CustomSlide label="Thời hạn vay" unit="tháng" />
         </Grid>
 
         <Grid className={Style.haveLabel}>
@@ -234,30 +279,15 @@ const Statistical: FC = () => {
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <LinearProgressLable
-            label="Lãi suất ưu đãi"
-            valueProgress={20}
-            valueNumber="7.5"
-            unit="%"
-          />
+          <CustomSlide label="Lãi suất ưu đãi" unit="%" />
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <LinearProgressLable
-            label="Thời gian ưu đãi"
-            valueProgress={22}
-            valueNumber="1"
-            unit="năm"
-          />
+          <CustomSlide label="Thời gian ưu đãi" unit="năm" />
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <LinearProgressLable
-            label="Lãi suất sau ưu đãi"
-            valueProgress={25}
-            valueNumber="11"
-            unit="%"
-          />
+          <CustomSlide label="Lãi suất sau ưu đãi" unit="%" />
         </Grid>
 
         <Grid className={Style.haveLabel}>

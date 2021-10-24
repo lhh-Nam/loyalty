@@ -11,7 +11,7 @@ const OpenGraphTags: React.FC = () => {
       <meta property="og:type" content="website" />
       <meta property="og:title" content="Vay online" />
       <meta property="og:description" content="Vay online" />
-      <meta property="og:image" content="/assets/loyalty/preview.png" />
+      <meta property="og:image" content="/assets/loyalty/preview.jpg" />
     </React.Fragment>
   );
 };

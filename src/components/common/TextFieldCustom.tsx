@@ -14,7 +14,7 @@ const TextFieldStyled = styled((props: TextFieldProps) => (
   <TextField {...props} />
 ))(() => ({
   "& .MuiOutlinedInput-root": {
-    borderRadius: "10px",
+    //borderRadius: "10px",
     backgroundColor: "#FAFAFA",
   },
 }));
@@ -22,11 +22,13 @@ const TextFieldStyled = styled((props: TextFieldProps) => (
 interface TextFieldCustomProps extends OutlinedTextFieldProps {
   label?: string;
   required?: boolean;
+  endAdor?: JSX.Element;
 }
 
 const TextFieldCustom: FC<TextFieldCustomProps> = ({
   label,
   required = false,
+  endAdor,
   ...rest
 }) => {
   return (
@@ -40,7 +42,13 @@ const TextFieldCustom: FC<TextFieldCustomProps> = ({
         </Box>
       )}
 
-      <TextFieldStyled fullWidth {...rest} />
+      <TextFieldStyled
+        fullWidth
+        {...rest}
+        InputProps={{
+          endAdornment: <div>{endAdor}</div>,
+        }}
+      />
     </div>
   );
 };

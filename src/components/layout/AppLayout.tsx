@@ -1,6 +1,5 @@
 import Footer from "@component/footer/Footer";
 import Header from "@component/header/Header";
-import MobileNavigationBar from "@component/mobile-navigation/MobileNavigationBar";
 import Sticky from "@component/sticky/Sticky";
 import Topbar from "@component/topbar/Topbar";
 import Head from "next/head";
@@ -43,7 +42,6 @@ const AppLayout: FC<AppLayoutProps> = ({
         children
       )}
 
-      <MobileNavigationBar />
       <Footer />
     </Fragment>
   );
