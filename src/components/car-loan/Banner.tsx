@@ -1,4 +1,5 @@
 import BazarImage from '@component/BazarImage'
+import BreadcrumbsCustom from '@component/common/Breadcum'
 import { Paragraph } from '@component/Typography'
 import { Box, Container, Grid, styled } from '@material-ui/core'
 import React, { FC } from 'react'
@@ -39,6 +40,10 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }))
 
 const Banner: FC = () => {
+  const breadcrumbs = [
+    { label: 'Trang chủ', link: '/', isActive: false },
+    { label: 'Ô tô', isActive: true },
+  ]
   return (
     <StyledBox>
       <Box bgcolor="#0098CE" mb={7.5}>
@@ -69,6 +74,9 @@ const Banner: FC = () => {
             </Grid>
           </Grid>
         </Container>
+        <Box sx={{ backgroundColor: 'white', padding: '16px 13%' }}>
+          <BreadcrumbsCustom breadcrumbs={breadcrumbs} />
+        </Box>
       </Box>
     </StyledBox>
   )

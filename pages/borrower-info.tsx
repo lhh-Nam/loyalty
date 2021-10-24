@@ -1,4 +1,5 @@
 import BazarCard from '@component/BazarCard'
+import BreadcrumbsCustom from '@component/common/Breadcum'
 import Contact from '@component/common/Contact'
 import TextFieldCustom from '@component/common/TextFieldCustom'
 import Delete from '@component/icons/Delete'
@@ -50,12 +51,20 @@ const BorrowerInfo: FC = () => {
     }))
   }
 
+  const breadcrumbs = [
+    { label: 'Trang chủ', link: '/', isActive: false },
+    { label: 'Thông tin vay', isActive: true },
+  ]
+
   return (
     <AppLayout>
+      <Box sx={{ backgroundColor: 'white', padding: '16px 13%' }}>
+        <BreadcrumbsCustom breadcrumbs={breadcrumbs} />
+      </Box>
       <Container sx={{ mb: '70px', mt: '100px' }}>
         <Grid container justifyContent="center">
           <Grid item md={6} textAlign="center">
-            <H2>Bảng thông tin người vay</H2>
+            <H2>Thông tin người vay</H2>
             <Span display="block" my={3}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
               tempor incididunt ut labore et dolore magna aliqua. sedut et labore et
