@@ -10,10 +10,7 @@ const OpenGraphTags: React.FC = () => {
       {/* thumbnail And title for social media */}
       <meta property="og:type" content="website" />
       <meta property="og:title" content="Vay online" />
-      <meta
-        property="og:description"
-        content="React Next.js ecommerce template. Build SEO friendly Super store, Grocery delivery app and Multivendor store"
-      />
+      <meta property="og:description" content="Vay online" />
       <meta property="og:image" content="/assets/loyalty/preview.png" />
     </React.Fragment>
   );
