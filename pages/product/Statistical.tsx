@@ -8,7 +8,6 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
-  LinearProgress,
   Radio,
   RadioGroup,
   Slider,
@@ -16,8 +15,9 @@ import {
 import { makeStyles } from "@mui/styles";
 import Style from "@styles/pages/product/Detail.module.scss";
 import clsx from "clsx";
+import { debounce } from "lodash";
 import { useRouter } from "next/router";
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
 const lstRadioValue = ["Giá trị khoản vay", "Giá trị ô tô"];
@@ -118,9 +118,14 @@ const Statistical: FC = () => {
   const handleChange = (event: any, key: string) =>
     setRadio({ ...radio, [key]: event.target.value });
 
-  const handleValueChange = (e: any) => {
-    const value = e.target.value;
+  const request = debounce((value) => {
     setRangeValue(parseInt(value || 0));
+  }, 200);
+
+  const debouceRequest = useCallback((value) => request(value), []);
+
+  const handleValueChange = (e: any) => {
+    debouceRequest(e.target.value);
   };
 
   function StyledRadio(props: any) {
@@ -173,37 +178,37 @@ const Statistical: FC = () => {
     );
   };
 
-  const LinearProgressLable = (props: any) => {
-    const { label, valueProgress, valueNumber, unit } = props;
-    return (
-      <Box className={Style.progressWrap}>
-        <Box width="100%">
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Span color="grey.600">{label}</Span>
+  // const LinearProgressLable = (props: any) => {
+  //   const { label, valueProgress, valueNumber, unit } = props;
+  //   return (
+  //     <Box className={Style.progressWrap}>
+  //       <Box width="100%">
+  //         <Grid container justifyContent="space-between" alignItems="center">
+  //           <Span color="grey.600">{label}</Span>
 
-            <Grid container className={Style.unit}>
-              <Span>{valueNumber}</Span>
-              <Span color="grey.600" fontWeight="400">
-                {unit}
-              </Span>
-            </Grid>
-          </Grid>
-          <LinearProgress
-            variant="determinate"
-            value={valueProgress}
-            classes={{
-              root: Style.rootProgress,
-              colorPrimary: Style.colorPrimary,
-              barColorPrimary: Style.barColorPrimary,
-            }}
-          />
-        </Box>
-      </Box>
-    );
-  };
+  //           <Grid container className={Style.unit}>
+  //             <Span>{valueNumber}</Span>
+  //             <Span color="grey.600" fontWeight="400">
+  //               {unit}
+  //             </Span>
+  //           </Grid>
+  //         </Grid>
+  //         <LinearProgress
+  //           variant="determinate"
+  //           value={valueProgress}
+  //           classes={{
+  //             root: Style.rootProgress,
+  //             colorPrimary: Style.colorPrimary,
+  //             barColorPrimary: Style.barColorPrimary,
+  //           }}
+  //         />
+  //       </Box>
+  //     </Box>
+  //   );
+  // };
 
   const CustomSlide = (props: any) => {
-    const { label, valueProgress, valueNumber, unit } = props;
+    const { label, unit, key } = props;
     return (
       <Box className={Style.progressWrap}>
         <Box width="100%">
@@ -212,8 +217,9 @@ const Statistical: FC = () => {
 
             <Grid container className={Style.unit}>
               <TextFieldCustom
+                key={key}
                 variant="outlined"
-                value={rangeValue}
+                value={rangeValue || 0}
                 onChange={handleValueChange}
                 endAdor={
                   <Span color="grey.600" pl={1}>
@@ -228,6 +234,7 @@ const Statistical: FC = () => {
             defaultValue={rangeValue}
             min={limit.min}
             max={limit.max}
+            // value={rangeValue || 0}
             valueLabelDisplay="auto"
             onChange={handleValueChange}
             classes={{
@@ -252,11 +259,11 @@ const Statistical: FC = () => {
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <CustomSlide label="Giá trị khoảng vay" unit="tỷ" />
+          <CustomSlide key={2} label="Giá trị khoảng vay" unit="tỷ" />
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <CustomSlide label="Thời hạn vay" unit="tháng" />
+          {/* <CustomSlide key={1} label="Thời hạn vay" unit="tháng" /> */}
         </Grid>
 
         <Grid className={Style.haveLabel}>
@@ -279,15 +286,15 @@ const Statistical: FC = () => {
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <CustomSlide label="Lãi suất ưu đãi" unit="%" />
+          {/* <CustomSlide label="Lãi suất ưu đãi" unit="%" /> */}
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <CustomSlide label="Thời gian ưu đãi" unit="năm" />
+          {/* <CustomSlide label="Thời gian ưu đãi" unit="năm" /> */}
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <CustomSlide label="Lãi suất sau ưu đãi" unit="%" />
+          {/* <CustomSlide label="Lãi suất sau ưu đãi" unit="%" /> */}
         </Grid>
 
         <Grid className={Style.haveLabel}>
