@@ -13,6 +13,7 @@ import {
   Container,
   Divider,
   Grid,
+  MenuItem,
   Typography,
 } from "@material-ui/core";
 import { useRouter } from "next/router";
@@ -99,6 +100,7 @@ const BorrowerInfo: FC = () => {
                 value={state.hoTen}
                 onChange={handleValueChange}
                 variant="outlined"
+                placeholder="Nguyễn Thị Lan"
               />
             </Grid>
             <Grid item md={6}>
@@ -109,6 +111,7 @@ const BorrowerInfo: FC = () => {
                 value={state.cmnd}
                 onChange={handleValueChange}
                 variant="outlined"
+                placeholder="025987654"
               />
             </Grid>
             <Grid item md={6}>
@@ -116,9 +119,10 @@ const BorrowerInfo: FC = () => {
                 label="Ngày sinh"
                 type="date"
                 name="ngaySinh"
-                value={state.ngaySinh}
+                value={state.ngaySinh || ""}
                 onChange={handleValueChange}
                 variant="outlined"
+                placeholder="01/01/1999"
               />
             </Grid>
             <Grid item md={6}>
@@ -129,6 +133,7 @@ const BorrowerInfo: FC = () => {
                 value={state.sdt}
                 onChange={handleValueChange}
                 variant="outlined"
+                placeholder="0936223677"
               />
             </Grid>
           </Grid>
@@ -161,6 +166,7 @@ const BorrowerInfo: FC = () => {
                   name="diaChiThC"
                   value={state.diaChiThC}
                   onChange={handleValueChange}
+                  placeholder="100/3"
                 />
               </Grid>
               <Grid item md={12}>
@@ -171,7 +177,11 @@ const BorrowerInfo: FC = () => {
                   name="thanhPhoThc"
                   value={state.thanhPhoThc}
                   onChange={handleValueChange}
-                />
+                  select
+                  placeholder="Chọn Thành phố"
+                >
+                  <MenuItem value="Hồ Chí Minh">Hồ Chí Minh</MenuItem>
+                </TextFieldCustom>
               </Grid>
               <Grid item md={6}>
                 <TextFieldCustom
@@ -181,7 +191,20 @@ const BorrowerInfo: FC = () => {
                   name="phuongThc"
                   value={state.phuongThc}
                   onChange={handleValueChange}
-                />
+                  select
+                  placeholder="Chọn Phường/ Xã"
+                >
+                  <MenuItem value="Phường 1">Phường 1</MenuItem>
+                  <MenuItem value="Phường 2">Phường 2</MenuItem>
+                  <MenuItem value="Phường 3">Phường 3</MenuItem>
+                  <MenuItem value="Phường 4">Phường 4</MenuItem>
+                  <MenuItem value="Phường 5">Phường 5</MenuItem>
+                  <MenuItem value="Phường 6">Phường 6</MenuItem>
+                  <MenuItem value="Phường 7">Phường 7</MenuItem>
+                  <MenuItem value="Phường 8">Phường 8</MenuItem>
+                  <MenuItem value="Phường 9">Phường 9</MenuItem>
+                  <MenuItem value="Phường 10">Phường 10</MenuItem>
+                </TextFieldCustom>
               </Grid>
               <Grid item md={6}>
                 <TextFieldCustom
@@ -191,7 +214,20 @@ const BorrowerInfo: FC = () => {
                   name="quanThc"
                   value={state.quanThc}
                   onChange={handleValueChange}
-                />
+                  select
+                  placeholder="Chọn Quận/ Huyện"
+                >
+                  <MenuItem value="Quận 1">Quận 1</MenuItem>
+                  <MenuItem value="Quận 2">Quận 2</MenuItem>
+                  <MenuItem value="Quận 3">Quận 3</MenuItem>
+                  <MenuItem value="Quận 4">Quận 4</MenuItem>
+                  <MenuItem value="Quận 5">Quận 5</MenuItem>
+                  <MenuItem value="Quận 6">Quận 6</MenuItem>
+                  <MenuItem value="Quận 7">Quận 7</MenuItem>
+                  <MenuItem value="Quận 8">Quận 8</MenuItem>
+                  <MenuItem value="Quận 9">Quận 9</MenuItem>
+                  <MenuItem value="Quận 10">Quận 10</MenuItem>
+                </TextFieldCustom>
               </Grid>
             </Grid>
 
@@ -203,6 +239,7 @@ const BorrowerInfo: FC = () => {
                   name="diaChiTC"
                   value={state.diaChiTC}
                   onChange={handleValueChange}
+                  placeholder="100/3"
                 />
               </Grid>
               <Grid item md={12}>
@@ -212,7 +249,10 @@ const BorrowerInfo: FC = () => {
                   name="thanhPhoTc"
                   value={state.thanhPhoTc}
                   onChange={handleValueChange}
-                />
+                  placeholder="Chọn Thành phố"
+                >
+                  <MenuItem value="Hồ Chí Minh">Hồ Chí Minh</MenuItem>
+                </TextFieldCustom>
               </Grid>
               <Grid item md={6}>
                 <TextFieldCustom
@@ -221,7 +261,19 @@ const BorrowerInfo: FC = () => {
                   name="phuongTc"
                   value={state.phuongTc}
                   onChange={handleValueChange}
-                />
+                  placeholder="Chọn Phường/ Xã"
+                >
+                  <MenuItem value="Phường 1">Phường 1</MenuItem>
+                  <MenuItem value="Phường 2">Phường 2</MenuItem>
+                  <MenuItem value="Phường 3">Phường 3</MenuItem>
+                  <MenuItem value="Phường 4">Phường 4</MenuItem>
+                  <MenuItem value="Phường 5">Phường 5</MenuItem>
+                  <MenuItem value="Phường 6">Phường 6</MenuItem>
+                  <MenuItem value="Phường 7">Phường 7</MenuItem>
+                  <MenuItem value="Phường 8">Phường 8</MenuItem>
+                  <MenuItem value="Phường 9">Phường 9</MenuItem>
+                  <MenuItem value="Phường 10">Phường 10</MenuItem>
+                </TextFieldCustom>
               </Grid>
               <Grid item md={6}>
                 <TextFieldCustom
@@ -230,7 +282,19 @@ const BorrowerInfo: FC = () => {
                   name="quanTc"
                   value={state.quanTc}
                   onChange={handleValueChange}
-                />
+                  placeholder="Chọn Quận/ Huyện"
+                >
+                  <MenuItem value="Quận 1">Quận 1</MenuItem>
+                  <MenuItem value="Quận 2">Quận 2</MenuItem>
+                  <MenuItem value="Quận 3">Quận 3</MenuItem>
+                  <MenuItem value="Quận 4">Quận 4</MenuItem>
+                  <MenuItem value="Quận 5">Quận 5</MenuItem>
+                  <MenuItem value="Quận 6">Quận 6</MenuItem>
+                  <MenuItem value="Quận 7">Quận 7</MenuItem>
+                  <MenuItem value="Quận 8">Quận 8</MenuItem>
+                  <MenuItem value="Quận 9">Quận 9</MenuItem>
+                  <MenuItem value="Quận 10">Quận 10</MenuItem>
+                </TextFieldCustom>
               </Grid>
             </Grid>
           </Grid>
