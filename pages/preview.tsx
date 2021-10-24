@@ -27,12 +27,13 @@ const PrebiewInfo: FC = () => {
     phuongTc: "",
     quanTc: "",
   });
+
   useEffect(() => {
     const infoLocalStorage = localStorage.getItem("info");
-    const info = JSON.parse(infoLocalStorage || "");
-    console.log(info);
-    setState(info);
+    const info = infoLocalStorage && JSON.parse(infoLocalStorage);
+    info && setState(info);
   }, []);
+
   return (
     <AppLayout>
       <Container sx={{ mb: "70px", mt: "100px" }}>

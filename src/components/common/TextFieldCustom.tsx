@@ -1,7 +1,6 @@
 import Star from "@component/icons/Star";
 import {
   Box,
-  OutlinedInputProps,
   OutlinedTextFieldProps,
   TextField,
   TextFieldProps,
@@ -12,10 +11,7 @@ import Style from "@styles/components/CustomSelect.module.scss";
 import { FC } from "react";
 
 const TextFieldStyled = styled((props: TextFieldProps) => (
-  <TextField
-    InputProps={{ disableuderline: true } as Partial<OutlinedInputProps>}
-    {...props}
-  />
+  <TextField {...props} />
 ))(() => ({
   "& .MuiOutlinedInput-root": {
     borderRadius: "10px",

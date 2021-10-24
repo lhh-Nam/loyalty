@@ -38,8 +38,8 @@ const BorrowerInfo: FC = () => {
 
   useEffect(() => {
     const infoLocalStorage = localStorage.getItem("info");
-    const info = JSON.parse(infoLocalStorage || "");
-    setState(info);
+    const info = infoLocalStorage && JSON.parse(infoLocalStorage);
+    info && setState(info);
   }, []);
 
   const handleValueChange = (e: any) => {
