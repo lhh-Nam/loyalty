@@ -39,7 +39,7 @@ const BorrowerInfo: FC = () => {
   useEffect(() => {
     const infoLocalStorage = localStorage.getItem("info");
     const info = JSON.parse(infoLocalStorage || "");
-    info && setState(info);
+    setState(info);
   }, []);
 
   const handleValueChange = (e: any) => {
@@ -237,39 +237,25 @@ const BorrowerInfo: FC = () => {
 
           <Divider sx={{ my: "30px" }} />
 
-          <Grid container spacing={5}>
-            <Grid container item md={6}>
-              <Grid item>
-                <Button
-                  sx={{
-                    color: "#0098CE",
-                    fontSize: "16px",
-                    borderRadius: "8px",
-                    backgroundColor: "white",
-                    border: "1px solid #0098CE",
-                  }}
-                  variant="outlined"
-                  endIcon={<Save />}
-                  onClick={() => {
-                    localStorage.setItem("info", JSON.stringify(state));
-                    alert("Đã lưu lại kết quả");
-                  }}
-                >
-                  Lưu kết quả
-                </Button>
-              </Grid>
+          <Grid container justifyContent="space-between" alignItems="center">
+            <Grid item>
+              <Button
+                color="primary"
+                variant="outlined"
+                endIcon={<Save />}
+                onClick={() => {
+                  localStorage.setItem("info", JSON.stringify(state));
+                  alert("Đã lưu lại kết quả");
+                }}
+              >
+                Lưu kết quả
+              </Button>
             </Grid>
-            <Grid container item md={6} spacing={5} justifyContent="flex-end">
-              <Grid item>
+            <Grid item>
+              <Grid container mt={1}>
                 <Button
                   variant="outlined"
-                  sx={{
-                    color: "#0098CE",
-                    fontSize: "16px",
-                    borderRadius: "8px",
-                    backgroundColor: "white",
-                    border: "1px solid #0098CE",
-                  }}
+                  color="primary"
                   endIcon={<Delete />}
                   onClick={() => {
                     localStorage.removeItem("info");
@@ -291,17 +277,13 @@ const BorrowerInfo: FC = () => {
                 >
                   Xoá thông tin
                 </Button>
-              </Grid>
-              <Grid item>
                 <Button
+                  color="primary"
                   variant="contained"
-                  sx={{
-                    borderRadius: "8px",
-                    color: "white",
-                    fontSize: "16px",
-                    background: "#0098CE",
-                  }}
                   endIcon={<Send />}
+                  sx={{
+                    marginLeft: "20px",
+                  }}
                   onClick={() => {
                     localStorage.setItem("info", JSON.stringify(state));
                     router.push("/preview");

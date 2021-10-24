@@ -138,13 +138,7 @@ const PrebiewInfo: FC = () => {
             <Grid item>
               <Button
                 variant="outlined"
-                sx={{
-                  color: "#0098CE",
-                  fontSize: "16px",
-                  borderRadius: "8px",
-                  backgroundColor: "white",
-                  border: "1px solid #0098CE",
-                }}
+                color="primary"
                 endIcon={<Edit />}
                 onClick={() => router.push("/borrower-info")}
               >
@@ -152,16 +146,7 @@ const PrebiewInfo: FC = () => {
               </Button>
             </Grid>
             <Grid item>
-              <Button
-                variant="contained"
-                sx={{
-                  borderRadius: "8px",
-                  color: "white",
-                  fontSize: "16px",
-                  background: "#0098CE",
-                }}
-                endIcon={<Accept />}
-              >
+              <Button variant="contained" color="primary" endIcon={<Accept />}>
                 Xác nhận
               </Button>
             </Grid>
