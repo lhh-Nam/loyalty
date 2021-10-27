@@ -1,52 +1,46 @@
-import BazarCard from "@component/BazarCard";
-import Bimmer from "@component/common/Bimmer";
-import Contact from "@component/common/Contact";
-import LazyImage from "@component/LazyImage";
-import {
-  Container,
-  FormControl,
-  Grid,
-  MenuItem,
-  Select,
-} from "@material-ui/core";
-import ChevronRight from "@material-ui/icons/ChevronRight";
-import { Pagination } from "@material-ui/lab";
-import Style from "@styles/pages/car-loan/Product.module.scss";
-import Link from "next/link";
-import React, { FC, useState } from "react";
-import { H4, Span } from "../Typography";
+import BazarCard from '@component/BazarCard'
+import Bimmer from '@component/common/Bimmer'
+import Contact from '@component/common/Contact'
+import LazyImage from '@component/LazyImage'
+import { Container, FormControl, Grid, MenuItem, Select } from '@material-ui/core'
+import ChevronRight from '@material-ui/icons/ChevronRight'
+import { Pagination } from '@material-ui/lab'
+import Style from '@styles/pages/car-loan/Product.module.scss'
+import Link from 'next/link'
+import React, { FC, useState } from 'react'
+import { H4, Span } from '../Typography'
 
 const Product: FC = () => {
-  const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize] = useState(6);
-  const [sort, setSort] = useState("Sắp xếp kết quả");
+  const [pageNumber, setPageNumber] = useState(1)
+  const [pageSize] = useState(6)
+  const [sort, setSort] = useState('Sắp xếp kết quả')
   const handleChange = (event: any) => {
-    setSort(event.target.value);
-  };
+    setSort(event.target.value)
+  }
 
-  const countPage = Math.ceil(lstProduct.length / pageSize);
+  const countPage = Math.ceil(lstProduct.length / pageSize)
   // const from = (pageNumber - 1) * pageSize + 1
   // const to = Math.min(from + pageSize - 1, lstProduct.length)
 
   const handleChangePage = (_: any, newPage: any) => {
-    setPageNumber(newPage);
-  };
+    setPageNumber(newPage)
+  }
 
   const getContent = () => {
     return lstProduct.slice(
       (pageNumber - 1) * pageSize,
       (pageNumber - 1) * pageSize + pageSize
-    );
-  };
+    )
+  }
 
   const renderProduct = (product: any, idx: number) => {
     return (
       <Grid item xs={12} sm={6} md={4} key={idx}>
         <BazarCard
           sx={{
-            p: "1.5rem",
-            height: "100%",
-            borderRadius: "16px",
+            p: '1.5rem',
+            height: '100%',
+            borderRadius: '16px',
           }}
           hoverEffect
         >
@@ -82,7 +76,7 @@ const Product: FC = () => {
 
                 <div className={Style.text}>
                   <span>Vay ô tô</span>
-                  <span>Eximbank</span>
+                  <span>F5Second</span>
                 </div>
               </div>
 
@@ -120,12 +114,12 @@ const Product: FC = () => {
           </Grid>
         </BazarCard>
       </Grid>
-    );
-  };
+    )
+  }
 
   return (
     <>
-      <Container sx={{ mb: "70px" }}>
+      <Container sx={{ mb: '70px' }}>
         <Grid
           container
           justifyContent="space-between"
@@ -141,9 +135,9 @@ const Product: FC = () => {
 
           <FormControl size="small" className={Style.select}>
             <Select value={sort} onChange={handleChange}>
-              <MenuItem value={"Sắp xếp kết quả"}>Sắp xếp kết quả</MenuItem>
-              <MenuItem value={"Sắp xếp kết quả"}>Sắp xếp kết quả</MenuItem>
-              <MenuItem value={"Sắp xếp kết quả"}>Sắp xếp kết quả</MenuItem>
+              <MenuItem value={'Sắp xếp kết quả'}>Sắp xếp kết quả</MenuItem>
+              <MenuItem value={'Sắp xếp kết quả'}>Sắp xếp kết quả</MenuItem>
+              <MenuItem value={'Sắp xếp kết quả'}>Sắp xếp kết quả</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -167,45 +161,45 @@ const Product: FC = () => {
       <Bimmer />
       <Contact />
     </>
-  );
-};
+  )
+}
 
 const lstProduct = [
   {
-    imgUrl: "/assets/loyalty/car-loan/car-1.png",
-    title: "BMW X1",
-    sub: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec",
+    imgUrl: '/assets/loyalty/car-loan/car-1.png',
+    title: 'BMW X1',
+    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: "/assets/loyalty/car-loan/car-2.png",
-    title: "BMW X2",
-    sub: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec",
+    imgUrl: '/assets/loyalty/car-loan/car-2.png',
+    title: 'BMW X2',
+    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: "/assets/loyalty/car-loan/car-3.png",
-    title: "BMW X1",
-    sub: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec",
+    imgUrl: '/assets/loyalty/car-loan/car-3.png',
+    title: 'BMW X1',
+    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: "/assets/loyalty/car-loan/car-4.png",
-    title: "BMW X3",
-    sub: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec",
+    imgUrl: '/assets/loyalty/car-loan/car-4.png',
+    title: 'BMW X3',
+    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: "/assets/loyalty/car-loan/car-5.png",
-    title: "BMW X4",
-    sub: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec",
+    imgUrl: '/assets/loyalty/car-loan/car-5.png',
+    title: 'BMW X4',
+    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: "/assets/loyalty/car-loan/car-6.png",
-    title: "BMW X5",
-    sub: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec",
+    imgUrl: '/assets/loyalty/car-loan/car-6.png',
+    title: 'BMW X5',
+    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: "/assets/loyalty/car-loan/car-1.png",
-    title: "BMW X6",
-    sub: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec",
+    imgUrl: '/assets/loyalty/car-loan/car-1.png',
+    title: 'BMW X6',
+    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
-];
+]
 
-export default Product;
+export default Product

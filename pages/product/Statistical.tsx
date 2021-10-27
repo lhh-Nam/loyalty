@@ -26,8 +26,8 @@ const lstRadioInterest = ['Dư nợ giảm dần', 'trả đều hàng tháng']
 
 const lstBank = [
   {
-    name: 'Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam',
-    value: 'Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam',
+    name: 'F5Second',
+    value: 'F5Second',
   },
   { name: 'Vietnambank', value: 'Vietnambank' },
 ]
@@ -104,7 +104,7 @@ const Statistical: FC = () => {
   })
 
   const [select, setSelect] = useState(
-    'Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam'
+    'F5Second - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam'
   )
 
   const [slider, setSlider] = useState({

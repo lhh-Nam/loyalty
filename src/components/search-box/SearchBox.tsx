@@ -37,7 +37,7 @@ const DropDownHandler = styled(FlexBox)(({ theme }) => ({
 }))
 
 const SearchBox: FC = () => {
-  const [category, setCategory] = useState('All Categories')
+  const [category, setCategory] = useState('Tất cả')
   const [resultList, setResultList] = useState<string[]>([])
   const parentRef = useRef()
 
@@ -133,21 +133,19 @@ const SearchBox: FC = () => {
 }
 
 const categories = [
-  'All Categories',
-  'Car',
-  'Clothes',
-  'Electronics',
-  'Laptop',
-  'Desktop',
-  'Camera',
-  'Toys',
+  'Tất cả',
+  'Bất động sản',
+  'Tiêu dùng',
+  'Ô tô',
+  'Thẻ tín dụng',
+  'Xe máy',
+  'Tín chấp',
 ]
 
 const dummySearchResult = [
-  'Macbook Air 13',
-  'Asus K555LA',
-  'Acer Aspire X453',
-  'iPad Mini 3',
+  'Cho thuê nhà Nguyễn Thị Định, Kinh doanh, ô tô tránh, Dt 42m, 5 tầng, Giá 25 triệu.',
+  'Cho thuê nhà ngõ oto tránh nhau đường Nguyễn Thị Định, 90m2*7 tầng, thang máy',
+  'Cho thuê nhà Nguyễn Thị Định, Quận Cầu Giấy phù hợp KD, VP, hộ GĐ 60m2.',
 ]
 
 export default SearchBox

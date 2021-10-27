@@ -1,25 +1,16 @@
-import BazarButton from '@component/BazarButton'
 import Image from '@component/BazarImage'
-import CategoryMenu from '@component/categories/CategoryMenu'
 import FlexBox from '@component/FlexBox'
-import Category from '@component/icons/Category'
-import ShoppingBagOutlined from '@component/icons/ShoppingBagOutlined'
 import MiniCart from '@component/mini-cart/MiniCart'
 import Login from '@component/sessions/Login'
-import { useAppContext } from '@context/app/AppContext'
 import {
-  Badge,
   Box,
   Container,
   Dialog,
   Drawer,
-  IconButton,
   styled,
   useMediaQuery,
 } from '@material-ui/core'
 import { useTheme } from '@material-ui/core/styles'
-import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
-import PersonOutline from '@material-ui/icons/PersonOutline'
 import { layoutConstant } from '@utils/constants'
 import clsx from 'clsx'
 import Link from 'next/link'
@@ -45,7 +36,7 @@ export const HeaderWrapper = styled(Box)(({ theme }) => ({
   },
 }))
 
-const Header: FC<HeaderProps> = ({ isFixed, className }) => {
+const Header: FC<HeaderProps> = ({ className }) => {
   const [sidenavOpen, setSidenavOpen] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
 
@@ -55,22 +46,22 @@ const Header: FC<HeaderProps> = ({ isFixed, className }) => {
   const toggleSidenav = () => setSidenavOpen(!sidenavOpen)
   const toggleDialog = () => setDialogOpen(!dialogOpen)
 
-  const { state } = useAppContext()
-  const { cartList } = state.cart
+  // const { state } = useAppContext()
+  // const { cartList } = state.cart
 
-  const cartHandle = (
-    <Badge badgeContent={cartList.length} color="primary">
-      <Box
-        component={IconButton}
-        ml={2.5}
-        bgcolor="grey.200"
-        p={1.25}
-        onClick={toggleSidenav}
-      >
-        <ShoppingBagOutlined />
-      </Box>
-    </Badge>
-  )
+  // const cartHandle = (
+  //   <Badge badgeContent={cartList.length} color="primary">
+  //     <Box
+  //       component={IconButton}
+  //       ml={2.5}
+  //       bgcolor="grey.200"
+  //       p={1.25}
+  //       onClick={toggleSidenav}
+  //     >
+  //       <ShoppingBagOutlined />
+  //     </Box>
+  //   </Badge>
+  // )
 
   return (
     <HeaderWrapper className={clsx(className)}>
@@ -90,15 +81,11 @@ const Header: FC<HeaderProps> = ({ isFixed, className }) => {
         >
           <Link href="/">
             <a>
-              <Image
-                height={40}
-                src="/assets/loyalty/logo-eximbank.svg"
-                alt="logo"
-              />
+              <Image height={40} src="/assets/loyalty/logo-f5s.jpg" alt="logo" />
             </a>
           </Link>
 
-          {isFixed && (
+          {/* {isFixed && (
             <CategoryMenu>
               <FlexBox color="grey.600" alignItems="center" ml={2}>
                 <BazarButton color="inherit">
@@ -107,14 +94,14 @@ const Header: FC<HeaderProps> = ({ isFixed, className }) => {
                 </BazarButton>
               </FlexBox>
             </CategoryMenu>
-          )}
+          )} */}
         </FlexBox>
 
         <FlexBox justifyContent="center" flex="1 1 0">
           <SearchBox />
         </FlexBox>
 
-        <FlexBox alignItems="center" sx={{ display: { xs: 'none', md: 'flex' } }}>
+        {/* <FlexBox alignItems="center" sx={{ display: { xs: 'none', md: 'flex' } }}>
           <Box
             component={IconButton}
             ml={2}
@@ -125,7 +112,7 @@ const Header: FC<HeaderProps> = ({ isFixed, className }) => {
             <PersonOutline />
           </Box>
           {cartHandle}
-        </FlexBox>
+        </FlexBox> */}
 
         <Dialog
           open={dialogOpen}
