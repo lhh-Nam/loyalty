@@ -49,8 +49,8 @@ const Form: FC = () => {
 
   const renderFormLeft = () => {
     return (
-      <Grid item sm={6} xs={12}>
-        <div className={Style.textFieldWrapper}>
+      <Grid item sm={4} xs={12}>
+        {/* <div className={Style.textFieldWrapper}>
           <CustomSelect
             label="Nhu cầu vay"
             placeholder="chọn"
@@ -60,7 +60,7 @@ const Form: FC = () => {
               handleForm(value, 'exigency')
             }}
           />
-        </div>
+        </div> */}
 
         <div className={Style.textFieldWrapper}>
           <CustomSelect
@@ -74,7 +74,7 @@ const Form: FC = () => {
           />
         </div>
 
-        <div className={Style.textFieldWrapper}>
+        {/* <div className={Style.textFieldWrapper}>
           <CustomSelect
             label="Ngân hàng"
             placeholder="Chọn ngân hàng"
@@ -84,50 +84,41 @@ const Form: FC = () => {
               handleForm(value, 'bank')
             }}
           />
-        </div>
+        </div> */}
       </Grid>
     )
   }
 
   const renderFormRight = () => {
     return (
-      <Grid item sm={6} xs={12} className={Style.formGroup}>
-        <div className={Style.textFieldWrapper}>
-          <CustomSelect
-            label="Thương hiệu xe"
-            placeholder="chọn"
-            value={form.carBrand}
-            options={lstCarBrand}
-            onChange={(value) => {
-              handleForm(value, 'carBrand')
-            }}
-          />
-        </div>
-
-        <div className={Style.textFieldWrapper}>
-          <CustomSelect
-            label="Nhà phân phối"
-            placeholder="Chọn nhà phân phối"
-            value={form.distributor}
-            options={lstDistributor}
-            onChange={(value) => {
-              handleForm(value, 'distributor')
-            }}
-          />
-        </div>
-
-        <div className={Style.textFieldWrapper}>
-          <CustomSelect
-            label="Hạn mức vay"
-            placeholder="Chọn hạn mức vay"
-            value={form.borrowingLimit}
-            options={lstBorrowingLimit}
-            onChange={(value) => {
-              handleForm(value, 'borrowingLimit')
-            }}
-          />
-        </div>
-      </Grid>
+      <>
+        <Grid item sm={4} xs={12} className={Style.formGroup}>
+          <div className={Style.textFieldWrapper}>
+            <CustomSelect
+              label="Thương hiệu xe"
+              placeholder="chọn"
+              value={form.carBrand}
+              options={lstCarBrand}
+              onChange={(value) => {
+                handleForm(value, 'carBrand')
+              }}
+            />
+          </div>
+        </Grid>
+        <Grid item sm={4} xs={12} className={Style.formGroup}>
+          <div className={Style.textFieldWrapper}>
+            <CustomSelect
+              label="Nhà phân phối"
+              placeholder="Chọn nhà phân phối"
+              value={form.distributor}
+              options={lstDistributor}
+              onChange={(value) => {
+                handleForm(value, 'distributor')
+              }}
+            />
+          </div>
+        </Grid>
+      </>
     )
   }
 

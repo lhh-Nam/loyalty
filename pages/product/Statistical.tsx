@@ -1,5 +1,5 @@
-import CustomSelect from "@component/common/CustomSelect";
-import { H3, Span } from "@component/Typography";
+import CustomSelect from '@component/common/CustomSelect'
+import { H3, Span } from '@component/Typography'
 import {
   Box,
   Button,
@@ -10,121 +10,116 @@ import {
   LinearProgress,
   Radio,
   RadioGroup,
-} from "@material-ui/core";
-import { makeStyles } from "@mui/styles";
-import Style from "@styles/pages/product/Detail.module.scss";
-import clsx from "clsx";
-import { useRouter } from "next/router";
-import { FC, useState } from "react";
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+} from '@material-ui/core'
+import { makeStyles } from '@mui/styles'
+import Style from '@styles/pages/product/Detail.module.scss'
+import clsx from 'clsx'
+import { useRouter } from 'next/router'
+import { FC, useState } from 'react'
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 
-const lstRadioValue = ["Giá trị khoản vay", "Giá trị ô tô"];
-const lstRadioEndow = ["Tuỳ chỉnh", "Theo ngân hàng"];
-const lstRadioInterest = ["Dư nợ giảm dần", "trả đều hàng tháng"];
+const lstRadioValue = ['Giá trị khoản vay', 'Giá trị ô tô']
+const lstRadioEndow = ['Tuỳ chỉnh', 'Theo ngân hàng']
+const lstRadioInterest = ['Dư nợ giảm dần', 'trả đều hàng tháng']
 
 const lstBank = [
   {
-    name: "Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam",
-    value: "Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam",
+    name: 'Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam',
+    value: 'Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam',
   },
-  { name: "Vietnambank", value: "Vietnambank" },
-];
+  { name: 'Vietnambank', value: 'Vietnambank' },
+]
 
 const lstNote = [
   {
-    color: "#b5dced",
-    title: "Cần trả trước",
-    amount: "0 triệu",
+    color: '#b5dced',
+    title: 'Cần trả trước',
+    amount: '0 triệu',
   },
   {
-    color: "#72b9db",
-    title: "Gốc cần trả",
-    amount: "1.85 tỷ",
+    color: '#72b9db',
+    title: 'Gốc cần trả',
+    amount: '1.85 tỷ',
   },
   {
-    color: "#0098CE",
-    title: "Lãi cần trả",
-    amount: "2.5 tỷ",
+    color: '#0098CE',
+    title: 'Lãi cần trả',
+    amount: '2.5 tỷ',
   },
-];
+]
 
 const data = [
-  { name: "A", value: 150, color: "#0098CE" },
-  { name: "B", value: 70, color: "#72b9db" },
-];
+  { name: 'A', value: 150, color: '#0098CE' },
+  { name: 'B', value: 70, color: '#72b9db' },
+]
 
 const useStyles = makeStyles({
   root: {
-    "&:hover": {
-      backgroundColor: "transparent",
+    '&:hover': {
+      backgroundColor: 'transparent',
     },
   },
   icon: {
-    borderRadius: "50%",
+    borderRadius: '50%',
     width: 16,
     height: 16,
-    boxShadow:
-      "inset 0 0 0 1px rgba(16,22,26,.2), inset 0 -1px 0 rgba(16,22,26,.1)",
-    backgroundColor: "#f5f8fa",
-    backgroundImage:
-      "linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))",
-    "$root.Mui-focusVisible &": {
-      outline: "1px auto rgba(19,124,189,.6)",
+    boxShadow: 'inset 0 0 0 1px rgba(16,22,26,.2), inset 0 -1px 0 rgba(16,22,26,.1)',
+    backgroundColor: '#f5f8fa',
+    backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))',
+    '$root.Mui-focusVisible &': {
+      outline: '1px auto rgba(19,124,189,.6)',
       outlineOffset: 2,
     },
-    "input:hover ~ &": {
-      backgroundColor: "#ebf1f5",
+    'input:hover ~ &': {
+      backgroundColor: '#ebf1f5',
     },
-    "input:disabled ~ &": {
-      boxShadow: "none",
-      background: "rgba(206,217,224,.5)",
+    'input:disabled ~ &': {
+      boxShadow: 'none',
+      background: 'rgba(206,217,224,.5)',
     },
   },
   checkedIcon: {
-    backgroundColor: "#fff",
-    boxShadow: "inset 0 0 0 1px #0098CE, inset 0 -1px 0 rgba(16,22,26,.1)",
-    backgroundImage:
-      "linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))",
-    "&:before": {
-      display: "block",
+    backgroundColor: '#fff',
+    boxShadow: 'inset 0 0 0 1px #0098CE, inset 0 -1px 0 rgba(16,22,26,.1)',
+    backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
+    '&:before': {
+      display: 'block',
       width: 16,
       height: 16,
-      backgroundImage: "radial-gradient(#0098CE,#0098CE 28%,transparent 32%)",
+      backgroundImage: 'radial-gradient(#0098CE,#0098CE 28%,transparent 32%)',
       content: '""',
-      borderColor: "red",
+      borderColor: 'red',
     },
   },
-});
+})
 
 const Statistical: FC = () => {
-  const router = useRouter();
+  const router = useRouter()
   const [radio, setRadio] = useState({
-    value: "Giá trị khoản vay",
-    endow: "Theo ngân hàng",
-    interest: "Dư nợ giảm dần",
-  });
+    value: 'Giá trị khoản vay',
+    endow: 'Theo ngân hàng',
+    interest: 'Dư nợ giảm dần',
+  })
   const [select, setSelect] = useState(
-    "Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam"
-  );
+    'Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam'
+  )
 
   const handleChange = (event: any, key: string) =>
-    setRadio({ ...radio, [key]: event.target.value });
+    setRadio({ ...radio, [key]: event.target.value })
 
   function StyledRadio(props: any) {
-    const classes = useStyles();
+    const classes = useStyles()
 
     return (
       <Radio
         className={classes.root}
         disableRipple
         color="default"
-        checkedIcon={
-          <span className={clsx(classes.icon, classes.checkedIcon)} />
-        }
+        checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
         icon={<span className={classes.icon} />}
         {...props}
       />
-    );
+    )
   }
 
   const renderGroupRadio = (
@@ -152,16 +147,16 @@ const Statistical: FC = () => {
                   control={<StyledRadio />}
                   label={radio}
                 />
-              );
+              )
             })}
           </RadioGroup>
         </FormControl>
       </Grid>
-    );
-  };
+    )
+  }
 
   const LinearProgressLable = (props: any) => {
-    const { label, valueProgress, valueNumber, unit } = props;
+    const { label, valueProgress, valueNumber, unit } = props
     return (
       <Box className={Style.progressWrap}>
         <Box width="100%">
@@ -186,14 +181,23 @@ const Statistical: FC = () => {
           />
         </Box>
       </Box>
-    );
-  };
+    )
+  }
 
   const renderLeft = () => {
     return (
       <>
-        <Grid className={Style.statisticalItem}>
+        {/* <Grid className={Style.statisticalItem}>
           {renderGroupRadio(lstRadioValue, "", radio.value, "value")}
+        </Grid> */}
+        <Grid className={Style.statisticalItem}>
+          <CustomSelect
+            value={select}
+            options={lstBank}
+            onChange={(value) => {
+              setSelect(value)
+            }}
+          />
         </Grid>
 
         <Grid className={Style.statisticalItem}>
@@ -214,26 +218,11 @@ const Statistical: FC = () => {
           />
         </Grid>
 
-        <Grid className={Style.haveLabel}>
-          {renderGroupRadio(
-            lstRadioEndow,
-            "Lãi suất ưu đãi",
-            radio.endow,
-            "endow"
-          )}
-        </Grid>
+        {/* <Grid className={Style.haveLabel}>
+          {renderGroupRadio(lstRadioEndow, 'Lãi suất ưu đãi', radio.endow, 'endow')}
+        </Grid> */}
 
-        <Grid className={Style.statisticalItem}>
-          <CustomSelect
-            value={select}
-            options={lstBank}
-            onChange={(value) => {
-              setSelect(value);
-            }}
-          />
-        </Grid>
-
-        <Grid className={Style.statisticalItem}>
+        {/* <Grid className={Style.statisticalItem}>
           <LinearProgressLable
             label="Lãi suất ưu đãi"
             valueProgress={20}
@@ -258,19 +247,19 @@ const Statistical: FC = () => {
             valueNumber="11"
             unit="%"
           />
-        </Grid>
+        </Grid> */}
 
         <Grid className={Style.haveLabel}>
           {renderGroupRadio(
             lstRadioInterest,
-            "Phương thức tính lãi",
+            'Phương thức tính lãi',
             radio.interest,
-            "interest"
+            'interest'
           )}
         </Grid>
       </>
-    );
-  };
+    )
+  }
 
   const renderRight = () => {
     return (
@@ -328,7 +317,7 @@ const Statistical: FC = () => {
                     <Span>{note.title}</Span>
                     <Span>{note.amount}</Span>
                   </Grid>
-                );
+                )
               })}
             </Grid>
           </Grid>
@@ -344,15 +333,15 @@ const Statistical: FC = () => {
             variant="contained"
             fullWidth
             onClick={() => {
-              router.push("/borrower-info");
+              router.push('/borrower-info')
             }}
           >
             Đăng kí gói vay
           </Button>
         </Grid>
       </>
-    );
-  };
+    )
+  }
 
   return (
     <Container>
@@ -367,7 +356,7 @@ const Statistical: FC = () => {
         </Grid>
       </Grid>
     </Container>
-  );
-};
+  )
+}
 
-export default Statistical;
+export default Statistical
