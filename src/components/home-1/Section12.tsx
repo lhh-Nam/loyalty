@@ -103,7 +103,7 @@ const lstProduct = [
     imgUrl: '/assets/loyalty/home/oto.png',
     title: 'Ô tô',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
-    url: '/card-loan',
+    url: '/car-loan',
   },
   {
     imgUrl: '/assets/loyalty/home/thetindung.png',
