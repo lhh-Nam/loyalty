@@ -20,8 +20,6 @@ import { useRouter } from 'next/router'
 import { FC, useCallback, useState } from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 
-const lstRadioValue = ['Giá trị khoản vay', 'Giá trị ô tô']
-const lstRadioEndow = ['Tuỳ chỉnh', 'Theo ngân hàng']
 const lstRadioInterest = ['Dư nợ giảm dần', 'trả đều hàng tháng']
 
 const lstBank = [
@@ -223,7 +221,13 @@ const Statistical: FC = () => {
     return (
       <>
         <Grid className={Style.statisticalItem}>
-          {renderGroupRadio(lstRadioValue, '', radio.value, 'value')}
+          <CustomSelect
+            value={select}
+            options={lstBank}
+            onChange={(value) => {
+              setSelect(value)
+            }}
+          />
         </Grid>
 
         <Grid className={Style.statisticalItem}>
@@ -245,53 +249,6 @@ const Statistical: FC = () => {
             name="duration"
             label="Thời hạn vay"
             unit="tháng"
-          />
-        </Grid>
-
-        <Grid className={Style.haveLabel}>
-          {renderGroupRadio(lstRadioEndow, 'Lãi suất ưu đãi', radio.endow, 'endow')}
-        </Grid>
-
-        <Grid className={Style.statisticalItem}>
-          <CustomSelect
-            value={select}
-            options={lstBank}
-            onChange={(value) => {
-              setSelect(value)
-            }}
-          />
-        </Grid>
-
-        <Grid className={Style.statisticalItem}>
-          <CustomSlide
-            min={0}
-            max={100}
-            value={slider.interest}
-            name="interest"
-            label="Lãi suất ưu đãi"
-            unit="%"
-          />
-        </Grid>
-
-        <Grid className={Style.statisticalItem}>
-          <CustomSlide
-            min={1}
-            max={10}
-            value={slider.time}
-            name="time"
-            label="Thời gian ưu đãi"
-            unit="năm"
-          />
-        </Grid>
-
-        <Grid className={Style.statisticalItem}>
-          <CustomSlide
-            min={0}
-            max={100}
-            value={slider.later}
-            name="later"
-            label="Lãi suất sau ưu đãi"
-            unit="%"
           />
         </Grid>
 

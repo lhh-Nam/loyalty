@@ -6,13 +6,8 @@ import React, { FC, useState } from 'react'
 import { H2 } from '../Typography'
 
 const lstExigency = [
-  { name: 'Vay ô tô', value: 'Vay ô tô' },
-  { name: 'Vay xe máy', value: 'Vay xe máy' },
-]
-
-const lstBank = [
-  { name: 'Vietbank', value: 'Vietbank' },
-  { name: 'Vietnambank', value: 'Vietnambank' },
+  { name: 'Căn hộ', value: 'Căn hộ' },
+  { name: 'Văn phòng', value: 'Văn phòng' },
 ]
 
 const lstBorrowingLimit = [
@@ -20,14 +15,34 @@ const lstBorrowingLimit = [
   { name: '2 tỷ', value: '2 tỷ' },
 ]
 
+const lstLoanProperty = [
+  { name: '2 tỷ', value: '2 tỷ' },
+  { name: '3 tỷ', value: '3 tỷ' },
+]
+
+const lstBank = [
+  { name: 'Eximbank', value: 'Eximbank' },
+  { name: 'Vietbank', value: 'Vietbank' },
+]
+
+const lstTime = [
+  { name: '25 năm', value: '25 năm' },
+  { name: '30 năm', value: '30 năm' },
+]
+
+const lstCollateral = [
+  { name: 'Tài sản vay', value: 'Tài sản vay' },
+  { name: 'Tài sản vay - 2', value: 'Tài sản vay - 2' },
+]
+
 const Form: FC = () => {
   const [form, setForm] = useState({
-    exigency: 'Vay ô tô',
-    carPrice: 'Từ 500 triệu - 1 tỷ',
-    carBrand: 'BMW',
-    bank: '',
-    borrowingLimit: '',
-    distributor: '',
+    exigency: 'Căn hộ',
+    borrowingLimit: '2 tỷ',
+    loanProperty: '2 tỷ',
+    bank: 'Eximbank',
+    collateral: 'Tài sản vay',
+    timeLimit: '25 năm',
   })
 
   const handleForm = (value: any, key: string) => setForm({ ...form, [key]: value })
@@ -49,12 +64,24 @@ const Form: FC = () => {
 
         <div className={Style.textFieldWrapper}>
           <CustomSelect
-            label="Ngân hàng"
-            placeholder="Chọn ngân hàng"
-            value={form.bank}
-            options={lstBank}
+            label="Hạn mức vay"
+            placeholder="Chọn hạn mức vay"
+            value={form.borrowingLimit}
+            options={lstBorrowingLimit}
             onChange={(value) => {
-              handleForm(value, 'bank')
+              handleForm(value, 'borrowingLimit')
+            }}
+          />
+        </div>
+
+        <div className={Style.textFieldWrapper}>
+          <CustomSelect
+            label="Giá trị tài sản vay"
+            placeholder="Chọn giá trị tài sản vay"
+            value={form.loanProperty}
+            options={lstLoanProperty}
+            onChange={(value) => {
+              handleForm(value, 'loanProperty')
             }}
           />
         </div>
@@ -67,12 +94,36 @@ const Form: FC = () => {
       <Grid item sm={6} xs={12} className={Style.formGroup}>
         <div className={Style.textFieldWrapper}>
           <CustomSelect
-            label="Hạn mức vay"
-            placeholder="Chọn hạn mức vay"
-            value={form.borrowingLimit}
-            options={lstBorrowingLimit}
+            label="Ngân hàng"
+            placeholder="Chọn ngân hàng"
+            value={form.bank}
+            options={lstBank}
             onChange={(value) => {
-              handleForm(value, 'borrowingLimit')
+              handleForm(value, 'bank')
+            }}
+          />
+        </div>
+
+        <div className={Style.textFieldWrapper}>
+          <CustomSelect
+            label="Thời hạn vay"
+            placeholder="Chọn thời hạn vay"
+            value={form.timeLimit}
+            options={lstTime}
+            onChange={(value) => {
+              handleForm(value, 'timeLimit')
+            }}
+          />
+        </div>
+
+        <div className={Style.textFieldWrapper}>
+          <CustomSelect
+            label="Tài sản đảm bảo"
+            placeholder="Chọn tài sản đảm bảo"
+            value={form.collateral}
+            options={lstCollateral}
+            onChange={(value) => {
+              handleForm(value, 'collateral')
             }}
           />
         </div>
@@ -156,7 +207,7 @@ const Form: FC = () => {
     <Container sx={{ mb: '30px' }}>
       <Grid container justifyContent="center">
         <Grid item md={6} textAlign="center" mb={2}>
-          <H2>Màn hình vay ô tô</H2>
+          <H2>Vay mua bất động sản</H2>
         </Grid>
       </Grid>
       <Grid
