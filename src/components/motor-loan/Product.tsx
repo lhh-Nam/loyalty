@@ -75,7 +75,7 @@ const Product: FC = () => {
                 />
 
                 <div className={Style.text}>
-                  <span>Vay ô tô</span>
+                  <span>Vay xe máy</span>
                   <span>F5Second</span>
                 </div>
               </div>
@@ -92,7 +92,7 @@ const Product: FC = () => {
                   </H4>
                   <Span color="grey.600">{product.sub}</Span>
                   <H4 mb={1.5} mt={1}>
-                    995.000.000 VNĐ
+                    79.790.000VNĐ
                   </H4>
                 </Grid>
 
@@ -166,38 +166,38 @@ const Product: FC = () => {
 
 const lstProduct = [
   {
-    imgUrl: '/assets/loyalty/car-loan/car-1.png',
-    title: 'BMW X1',
+    imgUrl: '/assets/loyalty/motor-loan/motor.png',
+    title: 'SH125i 2021',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/loyalty/car-loan/car-2.png',
-    title: 'BMW X2',
+    imgUrl: '/assets/loyalty/motor-loan/motor.png',
+    title: 'SH125i 2021',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/loyalty/car-loan/car-3.png',
-    title: 'BMW X1',
+    imgUrl: '/assets/loyalty/motor-loan/motor.png',
+    title: 'SH125i 2021',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/loyalty/car-loan/car-4.png',
-    title: 'BMW X3',
+    imgUrl: '/assets/loyalty/motor-loan/motor.png',
+    title: 'SH125i 2021',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/loyalty/car-loan/car-5.png',
-    title: 'BMW X4',
+    imgUrl: '/assets/loyalty/motor-loan/motor.png',
+    title: 'SH125i 2021',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/loyalty/car-loan/car-6.png',
-    title: 'BMW X5',
+    imgUrl: '/assets/loyalty/motor-loan/motor.png',
+    title: 'SH125i 2021',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/loyalty/car-loan/car-1.png',
-    title: 'BMW X6',
+    imgUrl: '/assets/loyalty/motor-loan/motor.png',
+    title: 'SH125i 2021',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
 ]

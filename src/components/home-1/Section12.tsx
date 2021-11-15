@@ -1,10 +1,10 @@
-import BazarCard from "@component/BazarCard";
-import LazyImage from "@component/LazyImage";
-import { Container, Grid } from "@material-ui/core";
-import ChevronRight from "@material-ui/icons/ChevronRight";
-import Link from "next/link";
-import React, { FC } from "react";
-import { H2, H4, Span } from "../Typography";
+import BazarCard from '@component/BazarCard'
+import LazyImage from '@component/LazyImage'
+import { Container, Grid } from '@material-ui/core'
+import ChevronRight from '@material-ui/icons/ChevronRight'
+import Link from 'next/link'
+import React, { FC } from 'react'
+import { H2, H4, Span } from '../Typography'
 
 const Section12: FC = () => {
   const renderProduct = (product: any, idx: number) => {
@@ -12,9 +12,9 @@ const Section12: FC = () => {
       <Grid item sm={6} xs={12} key={idx}>
         <BazarCard
           sx={{
-            p: "1.5rem",
-            height: "100%",
-            borderRadius: "16px",
+            p: '1.5rem',
+            height: '100%',
+            borderRadius: '16px',
           }}
           hoverEffect
         >
@@ -42,12 +42,12 @@ const Section12: FC = () => {
                   <Span color="grey.600">{product.sub}</Span>
                 </Grid>
 
-                <Link href="/car-loan">
+                <Link href={`${product.url}`}>
                   <Grid
                     container
                     alignItems="center"
                     mt={1}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                   >
                     <Span color="#0098CE" mr={2}>
                       Xem chi tiết
@@ -60,18 +60,18 @@ const Section12: FC = () => {
           </Grid>
         </BazarCard>
       </Grid>
-    );
-  };
+    )
+  }
 
   return (
-    <Container sx={{ mb: "70px" }}>
+    <Container sx={{ mb: '70px' }}>
       <Grid container justifyContent="center">
         <Grid item md={6} textAlign="center">
           <H2>Sản phẩm của chúng tôi</H2>
           <Span display="block" color="grey.600" my={3}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. sedut et
-            labore et dolore magna aliqua.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. sedut et labore et
+            dolore magna aliqua.
           </Span>
         </Grid>
       </Grid>
@@ -83,40 +83,46 @@ const Section12: FC = () => {
         </Grid>
       </Grid>
     </Container>
-  );
-};
+  )
+}
 
 const lstProduct = [
   {
-    imgUrl: "/assets/loyalty/home/batdongsan.png",
-    title: "Bất động sản",
-    sub: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec",
+    imgUrl: '/assets/loyalty/home/batdongsan.png',
+    title: 'Bất động sản',
+    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
+    url: '/real-estate',
   },
   {
-    imgUrl: "/assets/loyalty/home/tieudung.png",
-    title: "Tiêu dùng",
-    sub: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec",
+    imgUrl: '/assets/loyalty/home/tieudung.png',
+    title: 'Tiêu dùng',
+    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
+    url: '/consumer-loan',
   },
   {
-    imgUrl: "/assets/loyalty/home/oto.png",
-    title: "Ô tô",
-    sub: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec",
+    imgUrl: '/assets/loyalty/home/oto.png',
+    title: 'Ô tô',
+    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
+    url: '/car-loan',
   },
   {
-    imgUrl: "/assets/loyalty/home/thetindung.png",
-    title: "Thẻ tín dụng",
-    sub: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec",
+    imgUrl: '/assets/loyalty/home/thetindung.png',
+    title: 'Thẻ tín dụng',
+    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
+    url: '/credit-card',
   },
   {
-    imgUrl: "/assets/loyalty/home/xemay.png",
-    title: "Xe máy",
-    sub: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec",
+    imgUrl: '/assets/loyalty/home/xemay.png',
+    title: 'Xe máy',
+    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
+    url: '/motor-loan',
   },
   {
-    imgUrl: "/assets/loyalty/home/tinchap.png",
-    title: "Tín chấp",
-    sub: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec",
+    imgUrl: '/assets/loyalty/home/tinchap.png',
+    title: 'Tín chấp',
+    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
+    url: '/unsecured-loan',
   },
-];
+]
 
-export default Section12;
+export default Section12

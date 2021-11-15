@@ -75,7 +75,7 @@ const Product: FC = () => {
                 />
 
                 <div className={Style.text}>
-                  <span>Vay ô tô</span>
+                  <span>Vay tiêu dùng</span>
                   <span>F5Second</span>
                 </div>
               </div>
@@ -91,9 +91,9 @@ const Product: FC = () => {
                     {product.title}
                   </H4>
                   <Span color="grey.600">{product.sub}</Span>
-                  <H4 mb={1.5} mt={1}>
-                    995.000.000 VNĐ
-                  </H4>
+                  {/* <H4 mb={1.5} mt={1}>
+                    79.790.000VNĐ
+                  </H4> */}
                 </Grid>
 
                 <Link href="/product/1">
@@ -102,6 +102,7 @@ const Product: FC = () => {
                     pt={1.5}
                     alignItems="center"
                     className={Style.btnGroup}
+                    mt={1}
                   >
                     <Span color="#0098CE" mr={2}>
                       Xem chi tiết gói vay
@@ -166,38 +167,43 @@ const Product: FC = () => {
 
 const lstProduct = [
   {
-    imgUrl: '/assets/loyalty/car-loan/car-1.png',
-    title: 'BMW X1',
+    imgUrl: '/assets/loyalty/consumer-loan/consumer-loan.png',
+    title: 'Gói vay 50 triệu',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/loyalty/car-loan/car-2.png',
-    title: 'BMW X2',
+    imgUrl: '/assets/loyalty/consumer-loan/consumer-loan.png',
+    title: 'Gói vay 50 triệu',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/loyalty/car-loan/car-3.png',
-    title: 'BMW X1',
+    imgUrl: '/assets/loyalty/consumer-loan/consumer-loan.png',
+    title: 'Gói vay 50 triệu',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/loyalty/car-loan/car-4.png',
-    title: 'BMW X3',
+    imgUrl: '/assets/loyalty/consumer-loan/consumer-loan.png',
+    title: 'Gói vay 50 triệu',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/loyalty/car-loan/car-5.png',
-    title: 'BMW X4',
+    imgUrl: '/assets/loyalty/consumer-loan/consumer-loan.png',
+    title: 'Gói vay 50 triệu',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/loyalty/car-loan/car-6.png',
-    title: 'BMW X5',
+    imgUrl: '/assets/loyalty/consumer-loan/consumer-loan.png',
+    title: 'Gói vay 50 triệu',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
   {
-    imgUrl: '/assets/loyalty/car-loan/car-1.png',
-    title: 'BMW X6',
+    imgUrl: '/assets/loyalty/consumer-loan/consumer-loan.png',
+    title: 'Gói vay 50 triệu',
+    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
+  },
+  {
+    imgUrl: '/assets/loyalty/consumer-loan/consumer-loan.png',
+    title: 'Gói vay 50 triệu',
     sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
   },
 ]

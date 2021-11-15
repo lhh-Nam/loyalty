@@ -23,7 +23,7 @@ const MainProduct: FC = () => {
 
               <div className={Style.text}>
                 <span>Vay ô tô</span>
-                <span>Eximbank</span>
+                <span>F5Second</span>
               </div>
             </div>
           </Grid>

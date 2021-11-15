@@ -5,34 +5,52 @@ import Style from '@styles/pages/car-loan/Form.module.scss'
 import React, { FC, useState } from 'react'
 import { H2 } from '../Typography'
 
-const lstCarPrice = [
-  { name: 'Từ 500 triệu - 1 tỷ', value: 'Từ 500 triệu - 1 tỷ' },
-  { name: 'Từ 300 triệu - 1 tỷ', value: 'Từ 300 triệu - 1 tỷ' },
+const lstExigency = [
+  { name: 'Căn hộ', value: 'Căn hộ' },
+  { name: 'Văn phòng', value: 'Văn phòng' },
 ]
-const lstCarBrand = [
-  { name: 'BMW', value: 'BMW' },
-  { name: 'Honda', value: 'Honda' },
+
+const lstBorrowingLimit = [
+  { name: '1 tỷ', value: '1 tỷ' },
+  { name: '2 tỷ', value: '2 tỷ' },
 ]
-const lstDistributor = [
-  { name: 'Nam', value: 'Nam' },
-  { name: 'Huy', value: 'Huy' },
+
+const lstLoanProperty = [
+  { name: '2 tỷ', value: '2 tỷ' },
+  { name: '3 tỷ', value: '3 tỷ' },
 ]
+
+const lstBank = [
+  { name: 'Eximbank', value: 'Eximbank' },
+  { name: 'Vietbank', value: 'Vietbank' },
+]
+
+const lstTime = [
+  { name: '25 năm', value: '25 năm' },
+  { name: '30 năm', value: '30 năm' },
+]
+
+const lstCollateral = [
+  { name: 'Tài sản vay', value: 'Tài sản vay' },
+  { name: 'Tài sản vay - 2', value: 'Tài sản vay - 2' },
+]
+
 const Form: FC = () => {
   const [form, setForm] = useState({
-    exigency: 'Vay ô tô',
-    carPrice: 'Từ 500 triệu - 1 tỷ',
-    carBrand: 'BMW',
-    bank: '',
-    borrowingLimit: '',
-    distributor: '',
+    exigency: 'Căn hộ',
+    borrowingLimit: '2 tỷ',
+    loanProperty: '2 tỷ',
+    bank: 'Eximbank',
+    collateral: 'Tài sản vay',
+    timeLimit: '25 năm',
   })
 
   const handleForm = (value: any, key: string) => setForm({ ...form, [key]: value })
 
   const renderFormLeft = () => {
     return (
-      <Grid item sm={4} xs={12}>
-        {/* <div className={Style.textFieldWrapper}>
+      <Grid item sm={6} xs={12}>
+        <div className={Style.textFieldWrapper}>
           <CustomSelect
             label="Nhu cầu vay"
             placeholder="chọn"
@@ -42,21 +60,39 @@ const Form: FC = () => {
               handleForm(value, 'exigency')
             }}
           />
-        </div> */}
+        </div>
 
         <div className={Style.textFieldWrapper}>
           <CustomSelect
-            label="Giá xe"
-            placeholder="chọn"
-            value={form.carPrice}
-            options={lstCarPrice}
+            label="Hạn mức vay"
+            placeholder="Chọn hạn mức vay"
+            value={form.borrowingLimit}
+            options={lstBorrowingLimit}
             onChange={(value) => {
-              handleForm(value, 'carPrice')
+              handleForm(value, 'borrowingLimit')
             }}
           />
         </div>
 
-        {/* <div className={Style.textFieldWrapper}>
+        <div className={Style.textFieldWrapper}>
+          <CustomSelect
+            label="Giá trị tài sản vay"
+            placeholder="Chọn giá trị tài sản vay"
+            value={form.loanProperty}
+            options={lstLoanProperty}
+            onChange={(value) => {
+              handleForm(value, 'loanProperty')
+            }}
+          />
+        </div>
+      </Grid>
+    )
+  }
+
+  const renderFormRight = () => {
+    return (
+      <Grid item sm={6} xs={12} className={Style.formGroup}>
+        <div className={Style.textFieldWrapper}>
           <CustomSelect
             label="Ngân hàng"
             placeholder="Chọn ngân hàng"
@@ -66,41 +102,32 @@ const Form: FC = () => {
               handleForm(value, 'bank')
             }}
           />
-        </div> */}
-      </Grid>
-    )
-  }
+        </div>
 
-  const renderFormRight = () => {
-    return (
-      <>
-        <Grid item sm={4} xs={12} className={Style.formGroup}>
-          <div className={Style.textFieldWrapper}>
-            <CustomSelect
-              label="Thương hiệu xe"
-              placeholder="chọn"
-              value={form.carBrand}
-              options={lstCarBrand}
-              onChange={(value) => {
-                handleForm(value, 'carBrand')
-              }}
-            />
-          </div>
-        </Grid>
-        <Grid item sm={4} xs={12} className={Style.formGroup}>
-          <div className={Style.textFieldWrapper}>
-            <CustomSelect
-              label="Nhà phân phối"
-              placeholder="Chọn nhà phân phối"
-              value={form.distributor}
-              options={lstDistributor}
-              onChange={(value) => {
-                handleForm(value, 'distributor')
-              }}
-            />
-          </div>
-        </Grid>
-      </>
+        <div className={Style.textFieldWrapper}>
+          <CustomSelect
+            label="Thời hạn vay"
+            placeholder="Chọn thời hạn vay"
+            value={form.timeLimit}
+            options={lstTime}
+            onChange={(value) => {
+              handleForm(value, 'timeLimit')
+            }}
+          />
+        </div>
+
+        <div className={Style.textFieldWrapper}>
+          <CustomSelect
+            label="Tài sản đảm bảo"
+            placeholder="Chọn tài sản đảm bảo"
+            value={form.collateral}
+            options={lstCollateral}
+            onChange={(value) => {
+              handleForm(value, 'collateral')
+            }}
+          />
+        </div>
+      </Grid>
     )
   }
 
@@ -180,7 +207,7 @@ const Form: FC = () => {
     <Container sx={{ mb: '30px' }}>
       <Grid container justifyContent="center">
         <Grid item md={6} textAlign="center" mb={2}>
-          <H2>Màn hình vay ô tô</H2>
+          <H2>Vay mua bất động sản</H2>
         </Grid>
       </Grid>
       <Grid

@@ -1,5 +1,4 @@
 import BazarCard from '@component/BazarCard'
-import BazarImage from '@component/BazarImage'
 import BreadcrumbsCustom from '@component/common/Breadcum'
 import Contact from '@component/common/Contact'
 import Accept from '@component/icons/Accept'
@@ -133,7 +132,7 @@ const PrebiewInfo: FC = () => {
               <p className={style['text-content']}>{''}</p>
             </Box>
           </Box>
-          <BazarImage
+          {/* <BazarImage
             src="/assets/loyalty/home/eximbank.png"
             sx={{
               minWidth: '700px',
@@ -141,7 +140,7 @@ const PrebiewInfo: FC = () => {
               height: '100%',
               width: '100%',
             }}
-          />
+          /> */}
           <Box sx={{ mt: '30px' }} />
           <Grid container spacing={5} justifyContent="flex-end">
             <Grid item>

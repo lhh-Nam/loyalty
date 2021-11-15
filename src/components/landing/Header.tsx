@@ -104,7 +104,7 @@ const Header = () => {
                   <Image
                     width="96px"
                     height="44px"
-                    src="/assets/loyalty/logo-eximbank.svg"
+                    src="/assets/loyalty/logo-f5s.jpg"
                     alt="logo"
                   />
                 </Box>

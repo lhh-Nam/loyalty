@@ -55,16 +55,8 @@
     }
 
     .unit{
-        flex-basis: 20%;
-        width: 20%;
-
-        justify-content: space-between;
-
-        border: 1px solid $app--border;
-        padding: .1rem .5rem;
-        border-radius: 0.25rem;
-
-        background: rgba($color: #E3E9EF, $alpha: .2);
+        flex-basis: 22%;
+        width: 22%;
     }
 }
 
@@ -161,4 +153,46 @@
             }
         }
    }
+}
+
+.root {
+    .track {
+        background-color: $app--primary--01;
+        border-radius: 1.25rem;
+        height: 2px;
+    }
+
+    .rail {
+        border-radius: 1.25rem;
+        background: rgba($color: $app--border, $alpha: 1);
+    }
+
+    .thumb {
+        width: 0.938rem;
+        height: 0.938rem;
+        box-shadow: none;
+    }
+
+    // .valueLabel {
+    //     left: calc(-50% - 2rem);
+    //     transform: scale(1) translateY(-0.313rem);
+    //     span {
+    //     &:first-of-type {
+    //         width: 6rem;
+    //         height: fit-content;
+
+    //         text-align: center;
+
+    //         border-radius: 0.188rem;
+
+    //         transform: rotate(0);
+    //     }
+
+    //     &:last-child {
+    //         font-weight: 700;
+    //         font-size: 0.875rem;
+    //         padding: 0.2rem 0.4rem;
+    //     }
+    //     }
+    // }
 }

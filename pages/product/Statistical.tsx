@@ -1,4 +1,5 @@
 import CustomSelect from '@component/common/CustomSelect'
+import TextFieldCustom from '@component/common/TextFieldCustom'
 import { H3, Span } from '@component/Typography'
 import {
   Box,
@@ -7,25 +8,24 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
-  LinearProgress,
   Radio,
   RadioGroup,
+  Slider,
 } from '@material-ui/core'
 import { makeStyles } from '@mui/styles'
 import Style from '@styles/pages/product/Detail.module.scss'
 import clsx from 'clsx'
+import { debounce } from 'lodash'
 import { useRouter } from 'next/router'
-import { FC, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 
-const lstRadioValue = ['Giá trị khoản vay', 'Giá trị ô tô']
-const lstRadioEndow = ['Tuỳ chỉnh', 'Theo ngân hàng']
 const lstRadioInterest = ['Dư nợ giảm dần', 'trả đều hàng tháng']
 
 const lstBank = [
   {
-    name: 'Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam',
-    value: 'Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam',
+    name: 'F5Second',
+    value: 'F5Second',
   },
   { name: 'Vietnambank', value: 'Vietnambank' },
 ]
@@ -100,12 +100,31 @@ const Statistical: FC = () => {
     endow: 'Theo ngân hàng',
     interest: 'Dư nợ giảm dần',
   })
+
   const [select, setSelect] = useState(
-    'Eximbank - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam'
+    'F5Second - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam'
   )
+
+  const [slider, setSlider] = useState({
+    loanValue: 110,
+    duration: 2,
+    interest: 1,
+    time: 3,
+    later: 4,
+  })
 
   const handleChange = (event: any, key: string) =>
     setRadio({ ...radio, [key]: event.target.value })
+
+  const request = debounce((value, name) => {
+    setSlider((prevState) => ({ ...prevState, [name]: value }))
+  }, 200)
+
+  const debouceRequest = useCallback((value, name) => request(value, name), [])
+
+  const handleValueChange = (e: any, name: any) => {
+    debouceRequest(e.target.value, name)
+  }
 
   function StyledRadio(props: any) {
     const classes = useStyles()
@@ -155,8 +174,8 @@ const Statistical: FC = () => {
     )
   }
 
-  const LinearProgressLable = (props: any) => {
-    const { label, valueProgress, valueNumber, unit } = props
+  const CustomSlide = (props: any) => {
+    const { label, unit, min, max, value, name } = props
     return (
       <Box className={Style.progressWrap}>
         <Box width="100%">
@@ -164,20 +183,34 @@ const Statistical: FC = () => {
             <Span color="grey.600">{label}</Span>
 
             <Grid container className={Style.unit}>
-              <Span>{valueNumber}</Span>
-              <Span color="grey.600" fontWeight="400">
-                {unit}
-              </Span>
+              <TextFieldCustom
+                variant="outlined"
+                value={value || 0}
+                onChange={(e) => handleValueChange(e, name)}
+                endAdor={
+                  <Span color="grey.600" pl={1}>
+                    {unit}
+                  </Span>
+                }
+              />
             </Grid>
           </Grid>
-          <LinearProgress
-            variant="determinate"
-            value={valueProgress}
+          <Slider
+            key={`slider-${value}`}
+            defaultValue={value}
+            min={min}
+            max={max}
+            // value={rangeValue || 0}
+            valueLabelDisplay="auto"
+            onChange={(e) => handleValueChange(e, name)}
             classes={{
-              root: Style.rootProgress,
-              colorPrimary: Style.colorPrimary,
-              barColorPrimary: Style.barColorPrimary,
+              root: Style.root,
+              track: Style.track,
+              rail: Style.rail,
+              thumb: Style.thumb,
+              valueLabel: Style.valueLabel,
             }}
+            //valueLabelFormat={valueLabelFormat}
           />
         </Box>
       </Box>
@@ -187,9 +220,6 @@ const Statistical: FC = () => {
   const renderLeft = () => {
     return (
       <>
-        {/* <Grid className={Style.statisticalItem}>
-          {renderGroupRadio(lstRadioValue, "", radio.value, "value")}
-        </Grid> */}
         <Grid className={Style.statisticalItem}>
           <CustomSelect
             value={select}
@@ -201,53 +231,26 @@ const Statistical: FC = () => {
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <LinearProgressLable
+          <CustomSlide
+            min={0}
+            max={2000}
+            value={slider.loanValue}
+            name="loanValue"
             label="Giá trị khoảng vay"
-            valueProgress={8}
-            valueNumber="1.859"
             unit="tỷ"
           />
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <LinearProgressLable
+          <CustomSlide
+            min={1}
+            max={12}
+            value={slider.duration}
+            name="duration"
             label="Thời hạn vay"
-            valueProgress={83}
-            valueNumber="300"
             unit="tháng"
           />
         </Grid>
-
-        {/* <Grid className={Style.haveLabel}>
-          {renderGroupRadio(lstRadioEndow, 'Lãi suất ưu đãi', radio.endow, 'endow')}
-        </Grid> */}
-
-        {/* <Grid className={Style.statisticalItem}>
-          <LinearProgressLable
-            label="Lãi suất ưu đãi"
-            valueProgress={20}
-            valueNumber="7.5"
-            unit="%"
-          />
-        </Grid>
-
-        <Grid className={Style.statisticalItem}>
-          <LinearProgressLable
-            label="Thời gian ưu đãi"
-            valueProgress={22}
-            valueNumber="1"
-            unit="năm"
-          />
-        </Grid>
-
-        <Grid className={Style.statisticalItem}>
-          <LinearProgressLable
-            label="Lãi suất sau ưu đãi"
-            valueProgress={25}
-            valueNumber="11"
-            unit="%"
-          />
-        </Grid> */}
 
         <Grid className={Style.haveLabel}>
           {renderGroupRadio(
