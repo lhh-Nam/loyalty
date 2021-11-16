@@ -14,13 +14,19 @@ const ProductDetails = () => {
     { label: 'Ô tô', link: '/car-loan', isActive: false },
     { label: 'BMW X1', isActive: true },
   ]
+  const data = {
+    giaSP: 500000000,
+    tiLeVay: 70 / 100,
+    thoiGianVayMax: 24,
+    laiHangNam: 6 / 100,
+  }
   return (
     <AppLayout>
       <Box sx={{ backgroundColor: 'white', padding: '16px 13%' }}>
         <BreadcrumbsCustom breadcrumbs={breadcrumbs} />
       </Box>
-      <MainProduct />
-      <Statistical />
+      <MainProduct data={data} />
+      <Statistical data={data} />
       <Bimmer />
       <OtherProduct />
       <Contact />

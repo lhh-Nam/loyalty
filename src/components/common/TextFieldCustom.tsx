@@ -1,28 +1,28 @@
-import Star from "@component/icons/Star";
+import Star from '@component/icons/Star'
 import {
   Box,
   OutlinedTextFieldProps,
   TextField,
   TextFieldProps,
   Typography,
-} from "@material-ui/core";
-import { styled } from "@material-ui/styles";
-import Style from "@styles/components/CustomSelect.module.scss";
-import { FC } from "react";
+} from '@material-ui/core'
+import { styled } from '@material-ui/styles'
+import Style from '@styles/components/CustomSelect.module.scss'
+import { FC } from 'react'
 
-const TextFieldStyled = styled((props: TextFieldProps) => (
-  <TextField {...props} />
-))(() => ({
-  "& .MuiOutlinedInput-root": {
-    //borderRadius: "10px",
-    backgroundColor: "#FAFAFA",
-  },
-}));
+const TextFieldStyled = styled((props: TextFieldProps) => <TextField {...props} />)(
+  () => ({
+    '& .MuiOutlinedInput-root': {
+      //borderRadius: "10px",
+      backgroundColor: '#FAFAFA',
+    },
+  })
+)
 
 interface TextFieldCustomProps extends OutlinedTextFieldProps {
-  label?: string;
-  required?: boolean;
-  endAdor?: JSX.Element;
+  label?: string
+  required?: boolean
+  endAdor?: JSX.Element
 }
 
 const TextFieldCustom: FC<TextFieldCustomProps> = ({
@@ -50,7 +50,7 @@ const TextFieldCustom: FC<TextFieldCustomProps> = ({
         }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default TextFieldCustom;
+export default TextFieldCustom

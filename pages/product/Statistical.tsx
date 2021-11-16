@@ -1,5 +1,4 @@
 import CustomSelect from '@component/common/CustomSelect'
-import TextFieldCustom from '@component/common/TextFieldCustom'
 import { H3, Span } from '@component/Typography'
 import {
   Box,
@@ -11,13 +10,14 @@ import {
   Radio,
   RadioGroup,
   Slider,
+  TextField,
 } from '@material-ui/core'
 import { makeStyles } from '@mui/styles'
 import Style from '@styles/pages/product/Detail.module.scss'
 import clsx from 'clsx'
 import { debounce } from 'lodash'
 import { useRouter } from 'next/router'
-import { FC, useCallback, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 
 const lstRadioInterest = ['Dư nợ giảm dần', 'trả đều hàng tháng']
@@ -48,7 +48,7 @@ const lstNote = [
   },
 ]
 
-const data = [
+const dataPie = [
   { name: 'A', value: 150, color: '#0098CE' },
   { name: 'B', value: 70, color: '#72b9db' },
 ]
@@ -93,13 +93,46 @@ const useStyles = makeStyles({
   },
 })
 
-const Statistical: FC = () => {
+const laiHangThang = (laiHangNam: any, giaTriKhoanVay: any) =>
+  (laiHangNam * giaTriKhoanVay) / 12
+interface StatisticalProps {
+  data: {
+    giaSP: number
+    tiLeVay: number
+    thoiGianVayMax: number
+    laiHangNam: number
+  }
+}
+const Statistical: FC<StatisticalProps> = ({ data }) => {
+  const [listNote, setListNote] = useState(lstNote)
+
+  const [value, setValue] = useState<any>({})
   const router = useRouter()
   const [radio, setRadio] = useState({
     value: 'Giá trị khoản vay',
     endow: 'Theo ngân hàng',
     interest: 'Dư nợ giảm dần',
   })
+
+  useEffect(() => {
+    const traTruoc = Math.round(data.giaSP * (1 - data.tiLeVay))
+    const gocCanTraMax = data.giaSP * data.tiLeVay
+    const giaTriKhoanVay = data.giaSP * data.tiLeVay
+    const laiCanTra = giaTriKhoanVay * data.laiHangNam
+    setValue((prev: any) => ({
+      ...prev,
+      gocCanTraMax,
+      giaTriKhoanVay,
+      thoiGianVay: 12,
+    }))
+    setListNote((prev: any) => {
+      const newState = [...prev]
+      newState[0].amount = traTruoc
+      newState[1].amount = giaTriKhoanVay
+      newState[2].amount = laiCanTra
+      return newState
+    })
+  }, [])
 
   const [select, setSelect] = useState(
     'F5Second - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam'
@@ -116,11 +149,38 @@ const Statistical: FC = () => {
   const handleChange = (event: any, key: string) =>
     setRadio({ ...radio, [key]: event.target.value })
 
-  const request = debounce((value, name) => {
-    setSlider((prevState) => ({ ...prevState, [name]: value }))
+  const request = debounce((newValue, name) => {
+    if (name === 'giaTriKhoanVay') {
+      const laiCanTra =
+        laiHangThang(data.laiHangNam, parseInt(newValue, 10)) * value?.thoiGianVay
+      console.log(laiCanTra, laiHangThang(data.laiHangNam, parseInt(newValue, 10)))
+
+      setListNote((prev: any) => {
+        const newState = [...prev]
+        newState[0].amount = data.giaSP - parseInt(newValue, 10)
+        newState[1].amount = parseInt(newValue, 10)
+        newState[2].amount = laiCanTra
+        return newState
+      })
+    } else if (name === 'thoiGianVay') {
+      const laiCanTra =
+        laiHangThang(data.laiHangNam, value.giaTriKhoanVay) * parseInt(newValue, 10)
+      console.log(
+        value.giaTriKhoanVay,
+        data.laiHangNam,
+        laiCanTra,
+        laiHangThang(data.laiHangNam, value.giaTriKhoanVay)
+      )
+      setListNote((prev: any) => {
+        const newState = [...prev]
+        newState[2].amount = laiCanTra
+        return newState
+      })
+    }
+    setValue((prevState: any) => ({ ...prevState, [name]: parseInt(newValue, 10) }))
   }, 200)
 
-  const debouceRequest = useCallback((value, name) => request(value, name), [])
+  const debouceRequest = useCallback((value, name) => request(value, name), [value])
 
   const handleValueChange = (e: any, name: any) => {
     debouceRequest(e.target.value, name)
@@ -175,7 +235,7 @@ const Statistical: FC = () => {
   }
 
   const CustomSlide = (props: any) => {
-    const { label, unit, min, max, value, name } = props
+    const { label, unit, min, max, value, name, step } = props
     return (
       <Box className={Style.progressWrap}>
         <Box width="100%">
@@ -183,21 +243,22 @@ const Statistical: FC = () => {
             <Span color="grey.600">{label}</Span>
 
             <Grid container className={Style.unit}>
-              <TextFieldCustom
+              <TextField
                 variant="outlined"
                 value={value || 0}
                 onChange={(e) => handleValueChange(e, name)}
-                endAdor={
-                  <Span color="grey.600" pl={1}>
-                    {unit}
-                  </Span>
-                }
+                // endAdor={
+                //   <Span color="grey.600" pl={1}>
+                //     {unit}
+                //   </Span>
+                // }
               />
             </Grid>
           </Grid>
           <Slider
             key={`slider-${value}`}
             defaultValue={value}
+            step={step || 1}
             min={min}
             max={max}
             // value={rangeValue || 0}
@@ -232,21 +293,22 @@ const Statistical: FC = () => {
 
         <Grid className={Style.statisticalItem}>
           <CustomSlide
+            step={1000}
             min={0}
-            max={2000}
-            value={slider.loanValue}
-            name="loanValue"
+            max={value?.gocCanTraMax}
+            value={value?.giaTriKhoanVay}
+            name="giaTriKhoanVay"
             label="Giá trị khoảng vay"
-            unit="tỷ"
+            unit="VNĐ"
           />
         </Grid>
 
         <Grid className={Style.statisticalItem}>
           <CustomSlide
             min={1}
-            max={12}
-            value={slider.duration}
-            name="duration"
+            max={data.thoiGianVayMax}
+            value={value?.thoiGianVay}
+            name="thoiGianVay"
             label="Thời hạn vay"
             unit="tháng"
           />
@@ -269,17 +331,23 @@ const Statistical: FC = () => {
       <>
         <Grid className={Style.firstMonthWrap}>
           <H3>Thanh toán tháng đầu</H3>
-          <H3>17.835.447 VNĐ</H3>
+          <H3>
+            {Math.round(
+              value.giaTriKhoanVay / value.thoiGianVay +
+                laiHangThang(data.laiHangNam, value.giaTriKhoanVay)
+            )}{' '}
+            VNĐ
+          </H3>
           <Grid container>
-            <Span>Tỉ lệ vay 70%</Span>
+            <Span>Tỉ lệ vay {data.tiLeVay * 100}%</Span>
 
             <Span className={Style.line}>|</Span>
 
-            <Span>25 năm</Span>
+            <Span>{value.thoiGianVay} tháng</Span>
 
             <Span className={Style.line}>|</Span>
 
-            <Span>11%/năm</Span>
+            <Span>{data.laiHangNam * 100}%/năm</Span>
           </Grid>
         </Grid>
 
@@ -291,13 +359,13 @@ const Statistical: FC = () => {
                   dataKey="value"
                   cx="50%"
                   cy="50%"
-                  data={data}
+                  data={dataPie}
                   innerRadius={65}
                   outerRadius={75}
                   startAngle={90}
                   endAngle={450}
                 >
-                  {data?.map((entry, index) => (
+                  {dataPie?.map((entry, index) => (
                     <Cell key={index} fill={entry.color} />
                   ))}
                 </Pie>
@@ -310,7 +378,7 @@ const Statistical: FC = () => {
           </Grid>
           <Grid item xs={6} height="100%">
             <Grid container className={Style.noteWrap}>
-              {lstNote.map((note, idx) => {
+              {listNote.map((note, idx) => {
                 return (
                   <Grid className={Style.noteItem} key={idx}>
                     <div

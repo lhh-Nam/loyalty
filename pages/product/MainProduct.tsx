@@ -3,8 +3,15 @@ import { H3, Span } from '@component/Typography'
 import { Container, Grid } from '@material-ui/core'
 import Style from '@styles/pages/product/Detail.module.scss'
 import { FC } from 'react'
-
-const MainProduct: FC = () => {
+interface MainProductProps {
+  data: {
+    giaSP: number
+    tiLeVay: number
+    thoiGianVayMax: number
+    laiHangNam: number
+  }
+}
+const MainProduct: FC<MainProductProps> = ({ data }) => {
   return (
     <Container>
       <Grid container bgcolor="white" mt={7.5} mb={3} p={3} borderRadius={2}>
@@ -58,7 +65,9 @@ const MainProduct: FC = () => {
                 </Span>
               </Grid>
 
-              <H3 className={Style.price}>1.859.000.000 VNĐ</H3>
+              <H3 className={Style.price}>
+                {Intl.NumberFormat('it-It').format(data.giaSP)} VNĐ
+              </H3>
             </Grid>
           </Grid>
         </Grid>
