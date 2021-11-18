@@ -1,25 +1,12 @@
-import CustomSelect from '@component/common/CustomSelect'
-import TextFieldCustom from '@component/common/TextFieldCustom'
 import { H3, Span } from '@component/Typography'
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  FormControlLabel,
-  Grid,
-  Radio,
-  RadioGroup,
-  Slider,
-} from '@material-ui/core'
+import { Button, Container, Grid, Radio } from '@material-ui/core'
 import { makeStyles } from '@mui/styles'
 import Style from '@styles/pages/product/Detail.module.scss'
 import clsx from 'clsx'
-import { debounce } from 'lodash'
 import { useRouter } from 'next/router'
-import { FC, useCallback, useState } from 'react'
+import { FC, useState } from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
-
+import CustomSlider from './CustomSlider'
 const lstRadioInterest = ['Dư nợ giảm dần', 'trả đều hàng tháng']
 
 const lstBank = [
@@ -105,26 +92,26 @@ const Statistical: FC = () => {
     'F5Second - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam'
   )
 
-  const [slider, setSlider] = useState({
-    loanValue: 110,
-    duration: 2,
-    interest: 1,
-    time: 3,
-    later: 4,
+  // const [slider, setSlider] = useState({
+  //   loanValue: 110,
+  //   duration: 2,
+  //   interest: 1,
+  //   time: 3,
+  //   later: 4,
+  // })
+
+  const [tren, setTren] = useState({
+    value: 0,
+    max: 10000,
+    min: 0,
   })
+
+  const handleTren = (value: number) => {
+    setTren((prevState) => ({ ...prevState, value }))
+  }
 
   const handleChange = (event: any, key: string) =>
     setRadio({ ...radio, [key]: event.target.value })
-
-  const request = debounce((value, name) => {
-    setSlider((prevState) => ({ ...prevState, [name]: value }))
-  }, 200)
-
-  const debouceRequest = useCallback((value, name) => request(value, name), [])
-
-  const handleValueChange = (e: any, name: any) => {
-    debouceRequest(e.target.value, name)
-  }
 
   function StyledRadio(props: any) {
     const classes = useStyles()
@@ -141,86 +128,10 @@ const Statistical: FC = () => {
     )
   }
 
-  const renderGroupRadio = (
-    lstRadio: any,
-    label: string,
-    value: any,
-    key: string
-  ) => {
-    return (
-      <Grid container flexDirection="column" className={Style.radioWrap}>
-        {label && <span className={Style.label}>{label}</span>}
-        <FormControl component="fieldset">
-          <RadioGroup
-            row
-            aria-label="gender"
-            name="gender1"
-            value={value}
-            onChange={(e) => handleChange(e, key)}
-          >
-            {lstRadio.map((radio: any, idx: number) => {
-              return (
-                <FormControlLabel
-                  key={idx}
-                  value={radio}
-                  control={<StyledRadio />}
-                  label={radio}
-                />
-              )
-            })}
-          </RadioGroup>
-        </FormControl>
-      </Grid>
-    )
-  }
-
-  const CustomSlide = (props: any) => {
-    const { label, unit, min, max, value, name } = props
-    return (
-      <Box className={Style.progressWrap}>
-        <Box width="100%">
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Span color="grey.600">{label}</Span>
-
-            <Grid container className={Style.unit}>
-              <TextFieldCustom
-                variant="outlined"
-                value={value || 0}
-                onChange={(e) => handleValueChange(e, name)}
-                endAdor={
-                  <Span color="grey.600" pl={1}>
-                    {unit}
-                  </Span>
-                }
-              />
-            </Grid>
-          </Grid>
-          <Slider
-            key={`slider-${value}`}
-            defaultValue={value}
-            min={min}
-            max={max}
-            // value={rangeValue || 0}
-            valueLabelDisplay="auto"
-            onChange={(e) => handleValueChange(e, name)}
-            classes={{
-              root: Style.root,
-              track: Style.track,
-              rail: Style.rail,
-              thumb: Style.thumb,
-              valueLabel: Style.valueLabel,
-            }}
-            //valueLabelFormat={valueLabelFormat}
-          />
-        </Box>
-      </Box>
-    )
-  }
-
   const renderLeft = () => {
     return (
       <>
-        <Grid className={Style.statisticalItem}>
+        {/* <Grid className={Style.statisticalItem}>
           <CustomSelect
             value={select}
             options={lstBank}
@@ -228,20 +139,20 @@ const Statistical: FC = () => {
               setSelect(value)
             }}
           />
-        </Grid>
+        </Grid> */}
 
-        <Grid className={Style.statisticalItem}>
+        {/* <Grid className={Style.statisticalItem}>
           <CustomSlide
             min={0}
             max={2000}
-            value={slider.loanValue}
+            //value={slider.loanValue}
             name="loanValue"
             label="Giá trị khoảng vay"
             unit="tỷ"
           />
-        </Grid>
+        </Grid> */}
 
-        <Grid className={Style.statisticalItem}>
+        {/* <Grid className={Style.statisticalItem}>
           <CustomSlide
             min={1}
             max={12}
@@ -259,7 +170,7 @@ const Statistical: FC = () => {
             radio.interest,
             'interest'
           )}
-        </Grid>
+        </Grid> */}
       </>
     )
   }
@@ -352,10 +263,18 @@ const Statistical: FC = () => {
         <Grid container spacing={3} className={Style.statisticalWrap}>
           <Grid item xs={12} md={6}>
             {renderLeft()}
+            <CustomSlider
+              label="nam"
+              unit="nam"
+              max={tren.max}
+              min={tren.min}
+              value={tren.value}
+              onChange={(value) => handleTren(value)}
+            />
           </Grid>
-          <Grid item xs={12} md={6}>
+          {/* <Grid item xs={12} md={6}>
             {renderRight()}
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </Container>
