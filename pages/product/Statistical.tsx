@@ -124,7 +124,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
 
   const [listNote, setListNote] = useState(lstNote)
   const [chartData, setChartData] = useState(data)
-  const [chartTitle, setChartTitle] = useState(0)
+  const [_, setChartTitle] = useState(0)
 
   const [necessaryValue, setNecessaryValue] = useState<any>({
     min: 0,
