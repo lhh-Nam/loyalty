@@ -91,18 +91,17 @@ const useStyles = makeStyles({
 })
 
 interface IStatisticalProps {
-  price: number
-  loanRate: number
-  loanTerm: number
-  annualProfit: number
+  price: number // Giá sản phẩm
+  loanRate: number // tỉ lệ vay
+  loanTermMax: number // thời hạn vay
+  annualProfit: number // lãi hàng năm
 }
 
 const Statistical: FC<IStatisticalProps> = (props) => {
-  const { price, loanRate, loanTerm, annualProfit } = props
+  const { price, loanRate, loanTermMax, annualProfit } = props
   const router = useRouter()
   const [radio, setRadio] = useState({
     value: 'Giá trị khoản vay',
-    endow: 'Theo ngân hàng',
     interest: 'Dư nợ giảm dần',
   })
 
@@ -115,21 +114,52 @@ const Statistical: FC<IStatisticalProps> = (props) => {
     min: 0,
     initiallyPaid: 0,
     loanValueCalculated: 0,
-    loanTerm: 0,
-  })
-
-  const [loanValue, setLoanValue] = useState({
-    value: 0,
-    max: 10000,
-    min: 0,
+    loanTerm: 12,
   })
 
   useEffect(() => {
-    handleDecreases()
+    handlePaidMonthly()
   }, [])
 
+  // ============ Dư nợ giảm giần =================
   const handleDecreases = () => {
-    // Dư nợ giảm dần
+    const prepay = Math.round(price * (1 - loanRate)) // trả trước
+    const initiallyPaid = price * loanRate // gốc cần trả
+    const loanValueCalculated = price * loanRate // giá trị khoản vay
+    console.log(
+      'log => ~ handleDecreases ~ loanValueCalculated',
+      loanValueCalculated
+    )
+
+    const tempPaid = loanValueCalculated / necessaryValue.loanTerm
+
+    let interestPayable = 0
+
+    for (let i = 0; i < necessaryValue.loanTerm; i++) {
+      interestPayable +=
+        ((loanValueCalculated - tempPaid * i) * annualProfit) /
+        necessaryValue.loanTerm
+    }
+
+    setNecessaryValue((prev: any) => ({
+      ...prev,
+      initiallyPaid,
+      loanValueCalculated,
+      loanTerm: 12,
+    }))
+    setListNote((prev: any) => {
+      const newState = [...prev]
+      newState[0].amount = prepay
+      newState[1].amount = loanValueCalculated
+      newState[2].amount = interestPayable
+      return newState
+    })
+  }
+
+  // ========x======== Dư nợ giảm giần ==========x=========
+
+  // ============ Dư nợ giảm giần =================
+  const handlePaidMonthly = () => {
     const prepay = Math.round(price * (1 - loanRate)) // trả trước
     const initiallyPaid = price * loanRate // gốc cần trả
     const loanValueCalculated = price * loanRate // giá trị khoản vay
@@ -149,12 +179,16 @@ const Statistical: FC<IStatisticalProps> = (props) => {
     })
   }
 
+  // ========x======== Trả đều hàng tháng ==========x=========
+
   const monthlyProfit = (annualProfit: any, loanValue: any) =>
     (annualProfit * loanValue) / 12
 
+  // ================= Giá trị khoản vay ====================
+
   const handleLoanValue = (value: number) => {
     // tính giá trị khoản vay
-    const interestPayable = monthlyProfit(annualProfit, value) * loanTerm
+    const interestPayable = monthlyProfit(annualProfit, value) * loanTermMax
 
     setListNote((prev: any) => {
       const newState = [...prev]
@@ -170,6 +204,10 @@ const Statistical: FC<IStatisticalProps> = (props) => {
     }))
   }
 
+  // ========x======== Giá trị khoản vay ==========x=========
+
+  // ================= thời hạn vay ====================
+
   const handleLoanTerm = (value: number) => {
     const interestPayable =
       monthlyProfit(annualProfit, necessaryValue.loanValueCalculated) * value
@@ -184,6 +222,8 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       loanTerm: value,
     }))
   }
+
+  // ========x======== thời hạn vay ==========x=========
 
   const handleChangeRadio = (event: any, key: string) =>
     setRadio({ ...radio, [key]: event.target.value })
@@ -264,7 +304,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
           <CustomSlider
             label="Thời hạn vay vay"
             unit="tháng"
-            max={loanTerm}
+            max={loanTermMax}
             min={1}
             value={necessaryValue.loanTerm}
             onChange={(value) => handleLoanTerm(value)}

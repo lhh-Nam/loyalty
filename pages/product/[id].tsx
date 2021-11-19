@@ -18,7 +18,7 @@ const ProductDetails = () => {
   const data = {
     price: 500000000,
     loanRate: 70 / 100,
-    loanTerm: 24,
+    loanTermMax: 24,
     annualProfit: 6 / 100,
   }
 
