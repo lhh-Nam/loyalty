@@ -10,10 +10,11 @@ interface ICustomSliderProps {
   max?: number
   min?: number
   value?: number
+  step?: number
 }
 
 const CustomSlider: FC<ICustomSliderProps> = (props) => {
-  const { label, unit, max, min, value, onChange } = props
+  const { label, unit, max, min, value, onChange, step } = props
 
   const handleOnChange = (e: any) => {
     onChange(e?.target?.value)
@@ -46,6 +47,7 @@ const CustomSlider: FC<ICustomSliderProps> = (props) => {
         <Slider
           max={max}
           min={min}
+          step={step}
           valueLabelDisplay="auto"
           value={value}
           onChange={(e) => handleOnChange(e)}

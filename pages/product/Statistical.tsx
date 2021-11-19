@@ -17,7 +17,7 @@ import { FC, useEffect, useState } from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 import CustomSlider from './CustomSlider'
 
-const lstRadioInterest = ['Dư nợ giảm dần', 'trả đều hàng tháng']
+const lstRadioInterest = ['Dư nợ giảm dần', 'Trả đều hàng tháng']
 
 const lstBank = [
   {
@@ -101,9 +101,10 @@ const Statistical: FC<IStatisticalProps> = (props) => {
   const { price, loanRate, loanTermMax, annualProfit } = props
   const router = useRouter()
   const [radio, setRadio] = useState({
-    value: 'Giá trị khoản vay',
+    value: 'Trả đều hàng tháng',
     interest: 'Dư nợ giảm dần',
   })
+  const [isDecreases, setIsDecreases] = useState(true)
 
   const [select, setSelect] = useState(
     'F5Second - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam'
@@ -118,28 +119,30 @@ const Statistical: FC<IStatisticalProps> = (props) => {
   })
 
   useEffect(() => {
-    handlePaidMonthly()
-  }, [])
+    isDecreases ? handleDecreases() : handlePaidMonthly()
+  }, [isDecreases])
+
+  // commons function
+  const monthlyProfit = (annualProfit: any, loanValue: any) =>
+    (annualProfit * loanValue) / 12
+
+  const getInterest = (loanValue: number, term: number) => {
+    const tempPaid = loanValue / term
+
+    let interestPayable = 0
+
+    for (let i = 0; i < term; i++) {
+      interestPayable += ((loanValue - tempPaid * i) * annualProfit) / term
+    }
+    return interestPayable
+  }
+  // commons function
 
   // ============ Dư nợ giảm giần =================
   const handleDecreases = () => {
     const prepay = Math.round(price * (1 - loanRate)) // trả trước
     const initiallyPaid = price * loanRate // gốc cần trả
     const loanValueCalculated = price * loanRate // giá trị khoản vay
-    console.log(
-      'log => ~ handleDecreases ~ loanValueCalculated',
-      loanValueCalculated
-    )
-
-    const tempPaid = loanValueCalculated / necessaryValue.loanTerm
-
-    let interestPayable = 0
-
-    for (let i = 0; i < necessaryValue.loanTerm; i++) {
-      interestPayable +=
-        ((loanValueCalculated - tempPaid * i) * annualProfit) /
-        necessaryValue.loanTerm
-    }
 
     setNecessaryValue((prev: any) => ({
       ...prev,
@@ -151,14 +154,14 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       const newState = [...prev]
       newState[0].amount = prepay
       newState[1].amount = loanValueCalculated
-      newState[2].amount = interestPayable
+      newState[2].amount = getInterest(loanValueCalculated, necessaryValue.loanTerm)
       return newState
     })
   }
 
   // ========x======== Dư nợ giảm giần ==========x=========
 
-  // ============ Dư nợ giảm giần =================
+  // ============ Trả đều hàng tháng =================
   const handlePaidMonthly = () => {
     const prepay = Math.round(price * (1 - loanRate)) // trả trước
     const initiallyPaid = price * loanRate // gốc cần trả
@@ -181,14 +184,34 @@ const Statistical: FC<IStatisticalProps> = (props) => {
 
   // ========x======== Trả đều hàng tháng ==========x=========
 
-  const monthlyProfit = (annualProfit: any, loanValue: any) =>
-    (annualProfit * loanValue) / 12
-
   // ================= Giá trị khoản vay ====================
 
-  const handleLoanValue = (value: number) => {
+  // ===== decreases =====
+
+  const handleLoanValueDecreases = (value: number) => {
     // tính giá trị khoản vay
-    const interestPayable = monthlyProfit(annualProfit, value) * loanTermMax
+
+    setListNote((prev: any) => {
+      const newState = [...prev]
+      newState[0].amount = price - value
+      newState[1].amount = value
+      newState[2].amount = getInterest(value, necessaryValue.loanTerm)
+      return newState
+    })
+
+    setNecessaryValue((prevState: any) => ({
+      ...prevState,
+      loanValueCalculated: value,
+    }))
+  }
+
+  // ==x== decreases ==x==
+
+  // ===== month =====
+  const handleLoanValueMonth = (value: number) => {
+    // tính giá trị khoản vay
+    const interestPayable =
+      monthlyProfit(annualProfit, value) * necessaryValue.loanTerm
 
     setListNote((prev: any) => {
       const newState = [...prev]
@@ -203,12 +226,29 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       loanValueCalculated: value,
     }))
   }
+  // ==x== month ==x==
 
   // ========x======== Giá trị khoản vay ==========x=========
 
   // ================= thời hạn vay ====================
 
-  const handleLoanTerm = (value: number) => {
+  // ===== decreases =====
+  const handleLoanTermDecreases = (value: number) => {
+    setListNote((prev: any) => {
+      const newState = [...prev]
+      newState[2].amount = getInterest(necessaryValue.loanValueCalculated, value)
+      return newState
+    })
+
+    setNecessaryValue((prevState: any) => ({
+      ...prevState,
+      loanTerm: value,
+    }))
+  }
+  // ==x== decreases ==x==
+
+  // ===== month =====
+  const handleLoanTermMonth = (value: number) => {
     const interestPayable =
       monthlyProfit(annualProfit, necessaryValue.loanValueCalculated) * value
     setListNote((prev: any) => {
@@ -222,11 +262,14 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       loanTerm: value,
     }))
   }
+  // ==x== month ==x==
 
   // ========x======== thời hạn vay ==========x=========
 
-  const handleChangeRadio = (event: any, key: string) =>
+  const handleChangeRadio = (event: any, key: string) => {
     setRadio({ ...radio, [key]: event.target.value })
+    setIsDecreases(!isDecreases)
+  }
 
   function StyledRadio(props: any) {
     const classes = useStyles()
@@ -292,22 +335,32 @@ const Statistical: FC<IStatisticalProps> = (props) => {
         <Grid className={Style.statisticalItem}>
           <CustomSlider
             label="Giá trị khoảng vay"
+            step={1000}
             unit="VNĐ"
             max={necessaryValue.initiallyPaid}
             min={necessaryValue.min}
             value={necessaryValue.loanValueCalculated}
-            onChange={(value) => handleLoanValue(value)}
+            onChange={(value) =>
+              isDecreases
+                ? handleLoanValueDecreases(value)
+                : handleLoanValueMonth(value)
+            }
           />
         </Grid>
 
         <Grid className={Style.statisticalItem}>
           <CustomSlider
-            label="Thời hạn vay vay"
+            step={1}
+            label="Thời hạn vay"
             unit="tháng"
             max={loanTermMax}
             min={1}
             value={necessaryValue.loanTerm}
-            onChange={(value) => handleLoanTerm(value)}
+            onChange={(value) =>
+              isDecreases
+                ? handleLoanTermDecreases(value)
+                : handleLoanTermMonth(value)
+            }
           />
         </Grid>
 
