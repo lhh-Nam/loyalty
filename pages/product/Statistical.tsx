@@ -1,12 +1,22 @@
+import CustomSelect from '@component/common/CustomSelect'
 import { H3, Span } from '@component/Typography'
-import { Button, Container, Grid, Radio } from '@material-ui/core'
+import {
+  Button,
+  Container,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+} from '@material-ui/core'
 import { makeStyles } from '@mui/styles'
 import Style from '@styles/pages/product/Detail.module.scss'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 import CustomSlider from './CustomSlider'
+
 const lstRadioInterest = ['Dư nợ giảm dần', 'trả đều hàng tháng']
 
 const lstBank = [
@@ -80,7 +90,15 @@ const useStyles = makeStyles({
   },
 })
 
-const Statistical: FC = () => {
+interface IStatisticalProps {
+  price: number
+  loanRate: number
+  loanTerm: number
+  annualProfit: number
+}
+
+const Statistical: FC<IStatisticalProps> = (props) => {
+  const { price, loanRate, loanTerm, annualProfit } = props
   const router = useRouter()
   const [radio, setRadio] = useState({
     value: 'Giá trị khoản vay',
@@ -92,25 +110,77 @@ const Statistical: FC = () => {
     'F5Second - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam'
   )
 
-  // const [slider, setSlider] = useState({
-  //   loanValue: 110,
-  //   duration: 2,
-  //   interest: 1,
-  //   time: 3,
-  //   later: 4,
-  // })
+  const [listNote, setListNote] = useState(lstNote)
+  const [necessaryValue, setNecessaryValue] = useState<any>({
+    min: 0,
+    initiallyPaid: 0,
+    loanValueCalculated: 0,
+    loanTerm: 0,
+  })
 
-  const [tren, setTren] = useState({
+  const [loanValue, setLoanValue] = useState({
     value: 0,
     max: 10000,
     min: 0,
   })
 
-  const handleTren = (value: number) => {
-    setTren((prevState) => ({ ...prevState, value }))
+  useEffect(() => {
+    handleDecreases()
+  }, [])
+
+  const handleDecreases = () => {
+    // Dư nợ giảm dần
+    const prepay = Math.round(price * (1 - loanRate)) // trả trước
+    const initiallyPaid = price * loanRate // gốc cần trả
+    const loanValueCalculated = price * loanRate // giá trị khoản vay
+    const interestPayable = loanValueCalculated * annualProfit // lãi cần trả
+    setNecessaryValue((prev: any) => ({
+      ...prev,
+      initiallyPaid,
+      loanValueCalculated,
+      loanTerm: 12,
+    }))
+    setListNote((prev: any) => {
+      const newState = [...prev]
+      newState[0].amount = prepay
+      newState[1].amount = loanValueCalculated
+      newState[2].amount = interestPayable
+      return newState
+    })
   }
 
-  const handleChange = (event: any, key: string) =>
+  const monthlyProfit = (annualProfit: any, loanValue: any) =>
+    (annualProfit * loanValue) / 12
+
+  const handleLoanValue = (value: number) => {
+    // tính giá trị khoản vay
+    const interestPayable = monthlyProfit(annualProfit, value) * loanTerm
+
+    setListNote((prev: any) => {
+      const newState = [...prev]
+      newState[0].amount = price - value
+      newState[1].amount = value
+      newState[2].amount = interestPayable
+      return newState
+    })
+
+    setNecessaryValue((prevState: any) => ({
+      ...prevState,
+      loanValueCalculated: value,
+    }))
+  }
+
+  const handleLoanTerm = (value: number) => {
+    const interestPayable =
+      monthlyProfit(annualProfit, necessaryValue.loanValueCalculated) * value
+    setListNote((prev: any) => {
+      const newState = [...prev]
+      newState[2].amount = interestPayable
+      return newState
+    })
+  }
+
+  const handleChangeRadio = (event: any, key: string) =>
     setRadio({ ...radio, [key]: event.target.value })
 
   function StyledRadio(props: any) {
@@ -128,10 +198,43 @@ const Statistical: FC = () => {
     )
   }
 
+  const renderGroupRadio = (
+    lstRadio: any,
+    label: string,
+    value: any,
+    key: string
+  ) => {
+    return (
+      <Grid container flexDirection="column" className={Style.radioWrap}>
+        {label && <span className={Style.label}>{label}</span>}
+        <FormControl component="fieldset">
+          <RadioGroup
+            row
+            aria-label="gender"
+            name="gender1"
+            value={value}
+            onChange={(e) => handleChangeRadio(e, key)}
+          >
+            {lstRadio.map((radio: any, idx: number) => {
+              return (
+                <FormControlLabel
+                  key={idx}
+                  value={radio}
+                  control={<StyledRadio />}
+                  label={radio}
+                />
+              )
+            })}
+          </RadioGroup>
+        </FormControl>
+      </Grid>
+    )
+  }
+
   const renderLeft = () => {
     return (
       <>
-        {/* <Grid className={Style.statisticalItem}>
+        <Grid className={Style.statisticalItem}>
           <CustomSelect
             value={select}
             options={lstBank}
@@ -139,27 +242,27 @@ const Statistical: FC = () => {
               setSelect(value)
             }}
           />
-        </Grid> */}
+        </Grid>
 
-        {/* <Grid className={Style.statisticalItem}>
-          <CustomSlide
-            min={0}
-            max={2000}
-            //value={slider.loanValue}
-            name="loanValue"
+        <Grid className={Style.statisticalItem}>
+          <CustomSlider
             label="Giá trị khoảng vay"
-            unit="tỷ"
+            unit="VNĐ"
+            max={necessaryValue.initiallyPaid}
+            min={necessaryValue.min}
+            value={necessaryValue.loanValueCalculated}
+            onChange={(value) => handleLoanValue(value)}
           />
-        </Grid> */}
+        </Grid>
 
-        {/* <Grid className={Style.statisticalItem}>
-          <CustomSlide
-            min={1}
-            max={12}
-            value={slider.duration}
-            name="duration"
-            label="Thời hạn vay"
+        <Grid className={Style.statisticalItem}>
+          <CustomSlider
+            label="Thời hạn vay vay"
             unit="tháng"
+            max={loanTerm}
+            min={1}
+            value={necessaryValue.loanTerm}
+            onChange={(value) => handleLoanTerm(value)}
           />
         </Grid>
 
@@ -170,7 +273,7 @@ const Statistical: FC = () => {
             radio.interest,
             'interest'
           )}
-        </Grid> */}
+        </Grid>
       </>
     )
   }
@@ -221,7 +324,7 @@ const Statistical: FC = () => {
           </Grid>
           <Grid item xs={6} height="100%">
             <Grid container className={Style.noteWrap}>
-              {lstNote.map((note, idx) => {
+              {listNote.map((note, idx) => {
                 return (
                   <Grid className={Style.noteItem} key={idx}>
                     <div
@@ -263,18 +366,10 @@ const Statistical: FC = () => {
         <Grid container spacing={3} className={Style.statisticalWrap}>
           <Grid item xs={12} md={6}>
             {renderLeft()}
-            <CustomSlider
-              label="nam"
-              unit="nam"
-              max={tren.max}
-              min={tren.min}
-              value={tren.value}
-              onChange={(value) => handleTren(value)}
-            />
           </Grid>
-          {/* <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6}>
             {renderRight()}
-          </Grid> */}
+          </Grid>
         </Grid>
       </Grid>
     </Container>

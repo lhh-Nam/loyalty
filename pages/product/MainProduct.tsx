@@ -4,7 +4,15 @@ import { Container, Grid } from '@material-ui/core'
 import Style from '@styles/pages/product/Detail.module.scss'
 import { FC } from 'react'
 
-const MainProduct: FC = () => {
+interface IMainProductProps {
+  price: number
+  loanRate?: number
+  loanTerm?: number
+  annualProfit?: number
+}
+
+const MainProduct: FC<IMainProductProps> = (props) => {
+  const { price } = props
   return (
     <Container>
       <Grid container bgcolor="white" mt={7.5} mb={3} p={3} borderRadius={2}>
@@ -58,7 +66,9 @@ const MainProduct: FC = () => {
                 </Span>
               </Grid>
 
-              <H3 className={Style.price}>1.859.000.000 VNĐ</H3>
+              <H3 className={Style.price}>
+                {Intl.NumberFormat('it-It').format(price)} VNĐ
+              </H3>
             </Grid>
           </Grid>
         </Grid>

@@ -1,7 +1,7 @@
 import { Span } from '@component/Typography'
 import { Box, Grid, Slider, TextField } from '@material-ui/core'
 import Style from '@styles/pages/product/Detail.module.scss'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 
 interface ICustomSliderProps {
   label?: string
@@ -14,10 +14,6 @@ interface ICustomSliderProps {
 
 const CustomSlider: FC<ICustomSliderProps> = (props) => {
   const { label, unit, max, min, value, onChange } = props
-  const [sliderValue, setsliderValue] = useState(15)
-  const nam = (e: any) => {
-    setsliderValue(parseInt(e.target.value))
-  }
 
   const handleOnChange = (e: any) => {
     onChange(e?.target?.value)
@@ -53,6 +49,13 @@ const CustomSlider: FC<ICustomSliderProps> = (props) => {
           valueLabelDisplay="auto"
           value={value}
           onChange={(e) => handleOnChange(e)}
+          classes={{
+            root: Style.root,
+            track: Style.track,
+            rail: Style.rail,
+            thumb: Style.thumb,
+            valueLabel: Style.valueLabel,
+          }}
         />
       </Box>
     </Box>
