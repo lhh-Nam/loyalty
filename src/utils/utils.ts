@@ -17,3 +17,7 @@ export const getDateDifference = (date: string | number | Date) => {
   diff = diff / 12
   return `${diff.toFixed(1)} year${ceil(diff) === 0 ? '' : 's'} ago`
 }
+
+export const formatCurrency = (number: number) => {
+  return Intl.NumberFormat('it-IT').format(number)
+}

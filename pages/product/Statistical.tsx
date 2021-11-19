@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@mui/styles'
 import Style from '@styles/pages/product/Detail.module.scss'
+import { formatCurrency } from '@utils/utils'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
@@ -31,17 +32,17 @@ const lstNote = [
   {
     color: '#b5dced',
     title: 'Cần trả trước',
-    amount: '0 triệu',
+    amount: '0',
   },
   {
     color: '#72b9db',
     title: 'Gốc cần trả',
-    amount: '1.85 tỷ',
+    amount: '0',
   },
   {
     color: '#0098CE',
     title: 'Lãi cần trả',
-    amount: '2.5 tỷ',
+    amount: '0',
   },
 ]
 
@@ -90,6 +91,17 @@ const useStyles = makeStyles({
   },
 })
 
+const getUnitCurrency = (labelValue: number) => {
+  // Nine Zeroes for Billions
+  return Math.abs(Number(labelValue)) >= 1.0e9
+    ? Math.abs(Number(labelValue)) / 1.0e9 + ' tỷ'
+    : // Six Zeroes for Millions
+    Math.abs(Number(labelValue)) >= 1.0e6
+    ? Math.abs(Number(labelValue)) / 1.0e6 + ' triệu'
+    : // Three Zeroes for Thousands
+      formatCurrency(labelValue) + ' vnđ'
+}
+
 interface IStatisticalProps {
   price: number // Giá sản phẩm
   loanRate: number // tỉ lệ vay
@@ -111,6 +123,9 @@ const Statistical: FC<IStatisticalProps> = (props) => {
   )
 
   const [listNote, setListNote] = useState(lstNote)
+  const [chartData, setChartData] = useState(data)
+  const [chartTitle, setChartTitle] = useState(0)
+
   const [necessaryValue, setNecessaryValue] = useState<any>({
     min: 0,
     initiallyPaid: 0,
@@ -150,13 +165,28 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       loanValueCalculated,
       loanTerm: 12,
     }))
+
     setListNote((prev: any) => {
       const newState = [...prev]
-      newState[0].amount = prepay
-      newState[1].amount = loanValueCalculated
-      newState[2].amount = getInterest(loanValueCalculated, necessaryValue.loanTerm)
+      newState[0].amount = getUnitCurrency(prepay)
+      newState[1].amount = getUnitCurrency(loanValueCalculated)
+      newState[2].amount = getUnitCurrency(
+        getInterest(loanValueCalculated, necessaryValue.loanTerm)
+      )
       return newState
     })
+
+    setChartData((prev: any) => {
+      const newState = [...prev]
+      newState[0].value = getInterest(loanValueCalculated, necessaryValue.loanTerm)
+      newState[1].value = loanValueCalculated
+
+      return newState
+    })
+
+    setChartTitle(
+      loanValueCalculated + getInterest(loanValueCalculated, necessaryValue.loanTerm)
+    )
   }
 
   // ========x======== Dư nợ giảm giần ==========x=========
@@ -175,11 +205,21 @@ const Statistical: FC<IStatisticalProps> = (props) => {
     }))
     setListNote((prev: any) => {
       const newState = [...prev]
-      newState[0].amount = prepay
-      newState[1].amount = loanValueCalculated
-      newState[2].amount = interestPayable
+      newState[0].amount = getUnitCurrency(prepay)
+      newState[1].amount = getUnitCurrency(loanValueCalculated)
+      newState[2].amount = getUnitCurrency(interestPayable)
       return newState
     })
+
+    setChartData((prev: any) => {
+      const newState = [...prev]
+      newState[0].value = interestPayable
+      newState[1].value = loanValueCalculated
+
+      return newState
+    })
+
+    setChartTitle(loanValueCalculated + interestPayable)
   }
 
   // ========x======== Trả đều hàng tháng ==========x=========
@@ -193,9 +233,19 @@ const Statistical: FC<IStatisticalProps> = (props) => {
 
     setListNote((prev: any) => {
       const newState = [...prev]
-      newState[0].amount = price - value
-      newState[1].amount = value
-      newState[2].amount = getInterest(value, necessaryValue.loanTerm)
+      newState[0].amount = getUnitCurrency(price - value)
+      newState[1].amount = getUnitCurrency(value)
+      newState[2].amount = getUnitCurrency(
+        getInterest(value, necessaryValue.loanTerm)
+      )
+      return newState
+    })
+
+    setChartData((prev: any) => {
+      const newState = [...prev]
+      newState[0].value = getInterest(value, necessaryValue.loanTerm)
+      newState[1].value = value
+
       return newState
     })
 
@@ -203,6 +253,8 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       ...prevState,
       loanValueCalculated: value,
     }))
+
+    setChartTitle(value + getInterest(value, necessaryValue.loanTerm))
   }
 
   // ==x== decreases ==x==
@@ -215,9 +267,17 @@ const Statistical: FC<IStatisticalProps> = (props) => {
 
     setListNote((prev: any) => {
       const newState = [...prev]
-      newState[0].amount = price - value
-      newState[1].amount = value
-      newState[2].amount = interestPayable
+      newState[0].amount = getUnitCurrency(price - value)
+      newState[1].amount = getUnitCurrency(value)
+      newState[2].amount = getUnitCurrency(interestPayable)
+      return newState
+    })
+
+    setChartData((prev: any) => {
+      const newState = [...prev]
+      newState[0].value = interestPayable
+      newState[1].value = value
+
       return newState
     })
 
@@ -225,6 +285,8 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       ...prevState,
       loanValueCalculated: value,
     }))
+
+    setChartTitle(value + interestPayable)
   }
   // ==x== month ==x==
 
@@ -236,7 +298,17 @@ const Statistical: FC<IStatisticalProps> = (props) => {
   const handleLoanTermDecreases = (value: number) => {
     setListNote((prev: any) => {
       const newState = [...prev]
-      newState[2].amount = getInterest(necessaryValue.loanValueCalculated, value)
+      newState[2].amount = getUnitCurrency(
+        getInterest(necessaryValue.loanValueCalculated, value)
+      )
+      return newState
+    })
+
+    setChartData((prev: any) => {
+      const newState = [...prev]
+      newState[0].value = getInterest(necessaryValue.loanValueCalculated, value)
+      newState[1].value = necessaryValue.loanValueCalculated
+
       return newState
     })
 
@@ -244,6 +316,11 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       ...prevState,
       loanTerm: value,
     }))
+
+    setChartTitle(
+      necessaryValue.loanValueCalculated +
+        getInterest(necessaryValue.loanValueCalculated, value)
+    )
   }
   // ==x== decreases ==x==
 
@@ -253,7 +330,15 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       monthlyProfit(annualProfit, necessaryValue.loanValueCalculated) * value
     setListNote((prev: any) => {
       const newState = [...prev]
-      newState[2].amount = interestPayable
+      newState[2].amount = getUnitCurrency(interestPayable)
+      return newState
+    })
+
+    setChartData((prev: any) => {
+      const newState = [...prev]
+      newState[0].value = interestPayable
+      newState[1].value = necessaryValue.loanValueCalculated
+
       return newState
     })
 
@@ -261,6 +346,8 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       ...prevState,
       loanTerm: value,
     }))
+
+    setChartTitle(interestPayable + necessaryValue.loanValueCalculated)
   }
   // ==x== month ==x==
 
@@ -382,9 +469,11 @@ const Statistical: FC<IStatisticalProps> = (props) => {
         <Grid className={Style.firstMonthWrap}>
           <H3>Thanh toán tháng đầu</H3>
           <H3>
-            {Math.round(
-              necessaryValue.loanValueCalculated / necessaryValue.loanTerm +
-                monthlyProfit(annualProfit, necessaryValue.loanValueCalculated)
+            {formatCurrency(
+              Math.round(
+                necessaryValue.loanValueCalculated / necessaryValue.loanTerm +
+                  monthlyProfit(annualProfit, necessaryValue.loanValueCalculated)
+              )
             )}{' '}
             VNĐ
           </H3>
@@ -409,13 +498,13 @@ const Statistical: FC<IStatisticalProps> = (props) => {
                   dataKey="value"
                   cx="50%"
                   cy="50%"
-                  data={data}
+                  data={chartData}
                   innerRadius={65}
                   outerRadius={75}
                   startAngle={90}
                   endAngle={450}
                 >
-                  {data?.map((entry, index) => (
+                  {chartData?.map((entry, index) => (
                     <Cell key={index} fill={entry.color} />
                   ))}
                 </Pie>
@@ -424,6 +513,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
             <Grid className={Style.chartText}>
               <H3>4.35&nbsp;</H3>
               <H3>tỷ</H3>
+              {/* <H3>{getUnitCurrency(Math.round(chartTitle))}</H3> */}
             </Grid>
           </Grid>
           <Grid item xs={6} height="100%">
