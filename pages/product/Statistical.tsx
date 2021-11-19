@@ -178,6 +178,11 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       newState[2].amount = interestPayable
       return newState
     })
+
+    setNecessaryValue((prevState: any) => ({
+      ...prevState,
+      loanTerm: value,
+    }))
   }
 
   const handleChangeRadio = (event: any, key: string) =>
@@ -283,17 +288,23 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       <>
         <Grid className={Style.firstMonthWrap}>
           <H3>Thanh toán tháng đầu</H3>
-          <H3>17.835.447 VNĐ</H3>
+          <H3>
+            {Math.round(
+              necessaryValue.loanValueCalculated / necessaryValue.loanTerm +
+                monthlyProfit(annualProfit, necessaryValue.loanValueCalculated)
+            )}{' '}
+            VNĐ
+          </H3>
           <Grid container>
-            <Span>Tỉ lệ vay 70%</Span>
+            <Span>Tỉ lệ vay {loanRate * 100}%</Span>
 
             <Span className={Style.line}>|</Span>
 
-            <Span>25 năm</Span>
+            <Span>{necessaryValue.loanTerm} tháng</Span>
 
             <Span className={Style.line}>|</Span>
 
-            <Span>11%/năm</Span>
+            <Span>{annualProfit * 100}%/năm</Span>
           </Grid>
         </Grid>
 
