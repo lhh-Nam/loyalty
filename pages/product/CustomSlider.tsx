@@ -72,7 +72,7 @@ const CustomTextField = React.forwardRef<HTMLInputElement, ICustomSliderProps>(
     const { label, unit, max, min, value, onChange, step } = props
 
     const handleOnChange = (e: any) => {
-      onChange(e?.target?.value)
+      onChange(parseInt(e?.target?.value))
     }
 
     return (

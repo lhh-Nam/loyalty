@@ -124,7 +124,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
 
   const [listNote, setListNote] = useState(lstNote)
   const [chartData, setChartData] = useState(data)
-  const [_, setChartTitle] = useState(0)
+  const [chartTitle, setChartTitle] = useState(0)
 
   const [necessaryValue, setNecessaryValue] = useState<any>({
     min: 0,
@@ -176,7 +176,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       return newState
     })
 
-    setChartData((prev: any) => {
+    setChartData((prev) => {
       const newState = [...prev]
       newState[0].value = getInterest(loanValueCalculated, necessaryValue.loanTerm)
       newState[1].value = loanValueCalculated
@@ -318,7 +318,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
     }))
 
     setChartTitle(
-      necessaryValue.loanValueCalculated +
+      parseInt(necessaryValue.loanValueCalculated) +
         getInterest(necessaryValue.loanValueCalculated, value)
     )
   }
@@ -347,7 +347,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       loanTerm: value,
     }))
 
-    setChartTitle(interestPayable + necessaryValue.loanValueCalculated)
+    setChartTitle(interestPayable + parseInt(necessaryValue.loanValueCalculated))
   }
   // ==x== month ==x==
 
@@ -511,9 +511,9 @@ const Statistical: FC<IStatisticalProps> = (props) => {
               </PieChart>
             </ResponsiveContainer>
             <Grid className={Style.chartText}>
-              <H3>4.35&nbsp;</H3>
-              <H3>tỷ</H3>
-              {/* <H3>{getUnitCurrency(Math.round(chartTitle))}</H3> */}
+              {/* <H3>4.35&nbsp;</H3>
+              <H3>tỷ</H3> */}
+              <H3>{getUnitCurrency(Math.round(chartTitle))}</H3>
             </Grid>
           </Grid>
           <Grid item xs={6} height="100%">
