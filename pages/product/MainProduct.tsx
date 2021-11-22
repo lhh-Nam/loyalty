@@ -3,10 +3,18 @@ import { H3, Span } from '@component/Typography'
 import { Container, Grid } from '@material-ui/core'
 import Style from '@styles/pages/product/Detail.module.scss'
 import { FC } from 'react'
-interface MainProductProps {
-  data: any
+
+interface IMainProductProps {
+  price: number
+  loanRate?: number
+  loanTerm?: number
+  annualProfit?: number
+  name?: string
+  description?: string
 }
-const MainProduct: FC<MainProductProps> = ({ data }) => {
+
+const MainProduct: FC<IMainProductProps> = (props) => {
+  const { price, name, description } = props
   return (
     <Container>
       <Grid container bgcolor="white" mt={7.5} mb={3} p={3} borderRadius={2}>
@@ -52,12 +60,12 @@ const MainProduct: FC<MainProductProps> = ({ data }) => {
               </Grid>
 
               <Grid className={Style.info}>
-                <H3 mb={1}>{data?.name}</H3>
-                <Span color="grey.600">{data?.description}</Span>
+                <H3 mb={1}>{name}</H3>
+                <Span color="grey.600">{description}</Span>
               </Grid>
 
               <H3 className={Style.price}>
-                {Intl.NumberFormat('it-It').format(data?.price)} VNĐ
+                {Intl.NumberFormat('it-It').format(price)} VNĐ
               </H3>
             </Grid>
           </Grid>

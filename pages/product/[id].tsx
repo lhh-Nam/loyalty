@@ -22,19 +22,21 @@ const ProductDetails = () => {
       res.json()
     )
   )
+
   // const data = {
-  //   giaSP: 500000000,
-  //   tiLeVay: 70 / 100,
-  //   thoiGianVayMax: 24,
-  //   laiHangNam: 6 / 100,
+  //   price: 500000000,
+  //   loanRate: 70 / 100,
+  //   loanTermMax: 24,
+  //   annualProfit: 6 / 100,
   // }
+
   return (
     <AppLayout>
       <Box sx={{ backgroundColor: 'white', padding: '16px 13%' }}>
         <BreadcrumbsCustom breadcrumbs={breadcrumbs} />
       </Box>
-      <MainProduct data={data} />
-      {/* <Statistical data={data} /> */}
+      <MainProduct {...data} />
+      {/* <Statistical {...data} /> */}
       <Bimmer />
       <OtherProduct />
       <Contact />

@@ -1,7 +1,6 @@
 import CustomSelect from '@component/common/CustomSelect'
 import { H3, Span } from '@component/Typography'
 import {
-  Box,
   Button,
   Container,
   FormControl,
@@ -9,18 +8,17 @@ import {
   Grid,
   Radio,
   RadioGroup,
-  Slider,
-  TextField,
 } from '@material-ui/core'
 import { makeStyles } from '@mui/styles'
 import Style from '@styles/pages/product/Detail.module.scss'
+import { formatCurrency } from '@utils/utils'
 import clsx from 'clsx'
-import { debounce } from 'lodash'
 import { useRouter } from 'next/router'
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
+import CustomSlider from './CustomSlider'
 
-const lstRadioInterest = ['Dư nợ giảm dần', 'trả đều hàng tháng']
+const lstRadioInterest = ['Dư nợ giảm dần', 'Trả đều hàng tháng']
 
 const lstBank = [
   {
@@ -34,21 +32,21 @@ const lstNote = [
   {
     color: '#b5dced',
     title: 'Cần trả trước',
-    amount: '0 triệu',
+    amount: '0',
   },
   {
     color: '#72b9db',
     title: 'Gốc cần trả',
-    amount: '1.85 tỷ',
+    amount: '0',
   },
   {
     color: '#0098CE',
     title: 'Lãi cần trả',
-    amount: '2.5 tỷ',
+    amount: '0',
   },
 ]
 
-const dataPie = [
+const data = [
   { name: 'A', value: 150, color: '#0098CE' },
   { name: 'B', value: 70, color: '#72b9db' },
 ]
@@ -93,97 +91,271 @@ const useStyles = makeStyles({
   },
 })
 
-const laiHangThang = (laiHangNam: any, giaTriKhoanVay: any) =>
-  (laiHangNam * giaTriKhoanVay) / 12
-interface StatisticalProps {
-  data: {
-    giaSP: number
-    tiLeVay: number
-    thoiGianVayMax: number
-    laiHangNam: number
-  }
+const getUnitCurrency = (labelValue: number) => {
+  // Nine Zeroes for Billions
+  return Math.abs(Number(labelValue)) >= 1.0e9
+    ? Math.abs(Number(labelValue)) / 1.0e9 + ' tỷ'
+    : // Six Zeroes for Millions
+    Math.abs(Number(labelValue)) >= 1.0e6
+    ? Math.abs(Number(labelValue)) / 1.0e6 + ' triệu'
+    : // Three Zeroes for Thousands
+      formatCurrency(labelValue) + ' vnđ'
 }
-const Statistical: FC<StatisticalProps> = ({ data }) => {
-  const [listNote, setListNote] = useState(lstNote)
 
-  const [value, setValue] = useState<any>({})
+interface IStatisticalProps {
+  price: number // Giá sản phẩm
+  loanRate: number // tỉ lệ vay
+  loanTermMax: number // thời hạn vay
+  annualProfit: number // lãi hàng năm
+}
+
+const Statistical: FC<IStatisticalProps> = (props) => {
+  const { price, loanRate, loanTermMax, annualProfit } = props
   const router = useRouter()
   const [radio, setRadio] = useState({
-    value: 'Giá trị khoản vay',
-    endow: 'Theo ngân hàng',
+    value: 'Trả đều hàng tháng',
     interest: 'Dư nợ giảm dần',
   })
-
-  useEffect(() => {
-    const traTruoc = Math.round(data.giaSP * (1 - data.tiLeVay))
-    const gocCanTraMax = data.giaSP * data.tiLeVay
-    const giaTriKhoanVay = data.giaSP * data.tiLeVay
-    const laiCanTra = giaTriKhoanVay * data.laiHangNam
-    setValue((prev: any) => ({
-      ...prev,
-      gocCanTraMax,
-      giaTriKhoanVay,
-      thoiGianVay: 12,
-    }))
-    setListNote((prev: any) => {
-      const newState = [...prev]
-      newState[0].amount = traTruoc
-      newState[1].amount = giaTriKhoanVay
-      newState[2].amount = laiCanTra
-      return newState
-    })
-  }, [])
+  const [isDecreases, setIsDecreases] = useState(true)
 
   const [select, setSelect] = useState(
     'F5Second - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam'
   )
 
-  // const [slider, setSlider] = useState({
-  //   loanValue: 110,
-  //   duration: 2,
-  //   interest: 1,
-  //   time: 3,
-  //   later: 4,
-  // })
+  const [listNote, setListNote] = useState(lstNote)
+  const [chartData, setChartData] = useState(data)
+  const [chartTitle, setChartTitle] = useState(0)
 
-  const handleChange = (event: any, key: string) =>
-    setRadio({ ...radio, [key]: event.target.value })
+  const [necessaryValue, setNecessaryValue] = useState<any>({
+    min: 0,
+    initiallyPaid: 0,
+    loanValueCalculated: 0,
+    loanTerm: 12,
+  })
 
-  const request = debounce((newValue, name) => {
-    if (name === 'giaTriKhoanVay') {
-      const laiCanTra =
-        laiHangThang(data.laiHangNam, parseInt(newValue, 10)) * value?.thoiGianVay
-      console.log(laiCanTra, laiHangThang(data.laiHangNam, parseInt(newValue, 10)))
+  useEffect(() => {
+    isDecreases ? handleDecreases() : handlePaidMonthly()
+  }, [isDecreases])
 
-      setListNote((prev: any) => {
-        const newState = [...prev]
-        newState[0].amount = data.giaSP - parseInt(newValue, 10)
-        newState[1].amount = parseInt(newValue, 10)
-        newState[2].amount = laiCanTra
-        return newState
-      })
-    } else if (name === 'thoiGianVay') {
-      const laiCanTra =
-        laiHangThang(data.laiHangNam, value.giaTriKhoanVay) * parseInt(newValue, 10)
-      console.log(
-        value.giaTriKhoanVay,
-        data.laiHangNam,
-        laiCanTra,
-        laiHangThang(data.laiHangNam, value.giaTriKhoanVay)
-      )
-      setListNote((prev: any) => {
-        const newState = [...prev]
-        newState[2].amount = laiCanTra
-        return newState
-      })
+  // commons function
+  const monthlyProfit = (annualProfit: any, loanValue: any) =>
+    (annualProfit * loanValue) / 12
+
+  const getInterest = (loanValue: number, term: number) => {
+    const tempPaid = loanValue / term
+
+    let interestPayable = 0
+
+    for (let i = 0; i < term; i++) {
+      interestPayable += ((loanValue - tempPaid * i) * annualProfit) / term
     }
-    setValue((prevState: any) => ({ ...prevState, [name]: parseInt(newValue, 10) }))
-  }, 200)
+    return interestPayable
+  }
+  // commons function
 
-  const debouceRequest = useCallback((value, name) => request(value, name), [value])
+  // ============ Dư nợ giảm giần =================
+  const handleDecreases = () => {
+    const prepay = Math.round(price * (1 - loanRate)) // trả trước
+    const initiallyPaid = price * loanRate // gốc cần trả
+    const loanValueCalculated = price * loanRate // giá trị khoản vay
 
-  const handleValueChange = (e: any, name: any) => {
-    debouceRequest(e.target.value, name)
+    setNecessaryValue((prev: any) => ({
+      ...prev,
+      initiallyPaid,
+      loanValueCalculated,
+      loanTerm: 12,
+    }))
+
+    setListNote((prev: any) => {
+      const newState = [...prev]
+      newState[0].amount = getUnitCurrency(prepay)
+      newState[1].amount = getUnitCurrency(loanValueCalculated)
+      newState[2].amount = getUnitCurrency(
+        getInterest(loanValueCalculated, necessaryValue.loanTerm)
+      )
+      return newState
+    })
+
+    setChartData((prev) => {
+      const newState = [...prev]
+      newState[0].value = getInterest(loanValueCalculated, necessaryValue.loanTerm)
+      newState[1].value = loanValueCalculated
+
+      return newState
+    })
+
+    setChartTitle(
+      loanValueCalculated + getInterest(loanValueCalculated, necessaryValue.loanTerm)
+    )
+  }
+
+  // ========x======== Dư nợ giảm giần ==========x=========
+
+  // ============ Trả đều hàng tháng =================
+  const handlePaidMonthly = () => {
+    const prepay = Math.round(price * (1 - loanRate)) // trả trước
+    const initiallyPaid = price * loanRate // gốc cần trả
+    const loanValueCalculated = price * loanRate // giá trị khoản vay
+    const interestPayable = loanValueCalculated * annualProfit // lãi cần trả
+    setNecessaryValue((prev: any) => ({
+      ...prev,
+      initiallyPaid,
+      loanValueCalculated,
+      loanTerm: 12,
+    }))
+    setListNote((prev: any) => {
+      const newState = [...prev]
+      newState[0].amount = getUnitCurrency(prepay)
+      newState[1].amount = getUnitCurrency(loanValueCalculated)
+      newState[2].amount = getUnitCurrency(interestPayable)
+      return newState
+    })
+
+    setChartData((prev: any) => {
+      const newState = [...prev]
+      newState[0].value = interestPayable
+      newState[1].value = loanValueCalculated
+
+      return newState
+    })
+
+    setChartTitle(loanValueCalculated + interestPayable)
+  }
+
+  // ========x======== Trả đều hàng tháng ==========x=========
+
+  // ================= Giá trị khoản vay ====================
+
+  // ===== decreases =====
+
+  const handleLoanValueDecreases = (value: number) => {
+    // tính giá trị khoản vay
+
+    setListNote((prev: any) => {
+      const newState = [...prev]
+      newState[0].amount = getUnitCurrency(price - value)
+      newState[1].amount = getUnitCurrency(value)
+      newState[2].amount = getUnitCurrency(
+        getInterest(value, necessaryValue.loanTerm)
+      )
+      return newState
+    })
+
+    setChartData((prev: any) => {
+      const newState = [...prev]
+      newState[0].value = getInterest(value, necessaryValue.loanTerm)
+      newState[1].value = value
+
+      return newState
+    })
+
+    setNecessaryValue((prevState: any) => ({
+      ...prevState,
+      loanValueCalculated: value,
+    }))
+
+    setChartTitle(value + getInterest(value, necessaryValue.loanTerm))
+  }
+
+  // ==x== decreases ==x==
+
+  // ===== month =====
+  const handleLoanValueMonth = (value: number) => {
+    // tính giá trị khoản vay
+    const interestPayable =
+      monthlyProfit(annualProfit, value) * necessaryValue.loanTerm
+
+    setListNote((prev: any) => {
+      const newState = [...prev]
+      newState[0].amount = getUnitCurrency(price - value)
+      newState[1].amount = getUnitCurrency(value)
+      newState[2].amount = getUnitCurrency(interestPayable)
+      return newState
+    })
+
+    setChartData((prev: any) => {
+      const newState = [...prev]
+      newState[0].value = interestPayable
+      newState[1].value = value
+
+      return newState
+    })
+
+    setNecessaryValue((prevState: any) => ({
+      ...prevState,
+      loanValueCalculated: value,
+    }))
+
+    setChartTitle(value + interestPayable)
+  }
+  // ==x== month ==x==
+
+  // ========x======== Giá trị khoản vay ==========x=========
+
+  // ================= thời hạn vay ====================
+
+  // ===== decreases =====
+  const handleLoanTermDecreases = (value: number) => {
+    setListNote((prev: any) => {
+      const newState = [...prev]
+      newState[2].amount = getUnitCurrency(
+        getInterest(necessaryValue.loanValueCalculated, value)
+      )
+      return newState
+    })
+
+    setChartData((prev: any) => {
+      const newState = [...prev]
+      newState[0].value = getInterest(necessaryValue.loanValueCalculated, value)
+      newState[1].value = necessaryValue.loanValueCalculated
+
+      return newState
+    })
+
+    setNecessaryValue((prevState: any) => ({
+      ...prevState,
+      loanTerm: value,
+    }))
+
+    setChartTitle(
+      parseInt(necessaryValue.loanValueCalculated) +
+        getInterest(necessaryValue.loanValueCalculated, value)
+    )
+  }
+  // ==x== decreases ==x==
+
+  // ===== month =====
+  const handleLoanTermMonth = (value: number) => {
+    const interestPayable =
+      monthlyProfit(annualProfit, necessaryValue.loanValueCalculated) * value
+    setListNote((prev: any) => {
+      const newState = [...prev]
+      newState[2].amount = getUnitCurrency(interestPayable)
+      return newState
+    })
+
+    setChartData((prev: any) => {
+      const newState = [...prev]
+      newState[0].value = interestPayable
+      newState[1].value = necessaryValue.loanValueCalculated
+
+      return newState
+    })
+
+    setNecessaryValue((prevState: any) => ({
+      ...prevState,
+      loanTerm: value,
+    }))
+
+    setChartTitle(interestPayable + parseInt(necessaryValue.loanValueCalculated))
+  }
+  // ==x== month ==x==
+
+  // ========x======== thời hạn vay ==========x=========
+
+  const handleChangeRadio = (event: any, key: string) => {
+    setRadio({ ...radio, [key]: event.target.value })
+    setIsDecreases(!isDecreases)
   }
 
   function StyledRadio(props: any) {
@@ -216,7 +388,7 @@ const Statistical: FC<StatisticalProps> = ({ data }) => {
             aria-label="gender"
             name="gender1"
             value={value}
-            onChange={(e) => handleChange(e, key)}
+            onChange={(e) => handleChangeRadio(e, key)}
           >
             {lstRadio.map((radio: any, idx: number) => {
               return (
@@ -234,50 +406,6 @@ const Statistical: FC<StatisticalProps> = ({ data }) => {
     )
   }
 
-  const CustomSlide = (props: any) => {
-    const { label, min, max, value, name, step } = props
-    return (
-      <Box className={Style.progressWrap}>
-        <Box width="100%">
-          <Grid container justifyContent="space-between" alignItems="center">
-            <Span color="grey.600">{label}</Span>
-
-            <Grid container className={Style.unit}>
-              <TextField
-                variant="outlined"
-                value={value || 0}
-                onChange={(e) => handleValueChange(e, name)}
-                // endAdor={
-                //   <Span color="grey.600" pl={1}>
-                //     {unit}
-                //   </Span>
-                // }
-              />
-            </Grid>
-          </Grid>
-          <Slider
-            key={`slider-${value}`}
-            defaultValue={value}
-            step={step || 1}
-            min={min}
-            max={max}
-            // value={rangeValue || 0}
-            valueLabelDisplay="auto"
-            onChange={(e) => handleValueChange(e, name)}
-            classes={{
-              root: Style.root,
-              track: Style.track,
-              rail: Style.rail,
-              thumb: Style.thumb,
-              valueLabel: Style.valueLabel,
-            }}
-            //valueLabelFormat={valueLabelFormat}
-          />
-        </Box>
-      </Box>
-    )
-  }
-
   const renderLeft = () => {
     return (
       <>
@@ -292,25 +420,34 @@ const Statistical: FC<StatisticalProps> = ({ data }) => {
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <CustomSlide
-            step={1000}
-            min={0}
-            max={value?.gocCanTraMax}
-            value={value?.giaTriKhoanVay}
-            name="giaTriKhoanVay"
+          <CustomSlider
             label="Giá trị khoảng vay"
+            step={1000}
             unit="VNĐ"
+            max={necessaryValue.initiallyPaid}
+            min={necessaryValue.min}
+            value={necessaryValue.loanValueCalculated}
+            onChange={(value) =>
+              isDecreases
+                ? handleLoanValueDecreases(value)
+                : handleLoanValueMonth(value)
+            }
           />
         </Grid>
 
         <Grid className={Style.statisticalItem}>
-          <CustomSlide
-            min={1}
-            max={data.thoiGianVayMax}
-            value={value?.thoiGianVay}
-            name="thoiGianVay"
+          <CustomSlider
+            step={1}
             label="Thời hạn vay"
             unit="tháng"
+            max={loanTermMax}
+            min={1}
+            value={necessaryValue.loanTerm}
+            onChange={(value) =>
+              isDecreases
+                ? handleLoanTermDecreases(value)
+                : handleLoanTermMonth(value)
+            }
           />
         </Grid>
 
@@ -332,22 +469,24 @@ const Statistical: FC<StatisticalProps> = ({ data }) => {
         <Grid className={Style.firstMonthWrap}>
           <H3>Thanh toán tháng đầu</H3>
           <H3>
-            {Math.round(
-              value.giaTriKhoanVay / value.thoiGianVay +
-                laiHangThang(data.laiHangNam, value.giaTriKhoanVay)
+            {formatCurrency(
+              Math.round(
+                necessaryValue.loanValueCalculated / necessaryValue.loanTerm +
+                  monthlyProfit(annualProfit, necessaryValue.loanValueCalculated)
+              )
             )}{' '}
             VNĐ
           </H3>
           <Grid container>
-            <Span>Tỉ lệ vay {data.tiLeVay * 100}%</Span>
+            <Span>Tỉ lệ vay {loanRate * 100}%</Span>
 
             <Span className={Style.line}>|</Span>
 
-            <Span>{value.thoiGianVay} tháng</Span>
+            <Span>{necessaryValue.loanTerm} tháng</Span>
 
             <Span className={Style.line}>|</Span>
 
-            <Span>{data.laiHangNam * 100}%/năm</Span>
+            <Span>{annualProfit * 100}%/năm</Span>
           </Grid>
         </Grid>
 
@@ -359,21 +498,22 @@ const Statistical: FC<StatisticalProps> = ({ data }) => {
                   dataKey="value"
                   cx="50%"
                   cy="50%"
-                  data={dataPie}
+                  data={chartData}
                   innerRadius={65}
                   outerRadius={75}
                   startAngle={90}
                   endAngle={450}
                 >
-                  {dataPie?.map((entry, index) => (
+                  {chartData?.map((entry, index) => (
                     <Cell key={index} fill={entry.color} />
                   ))}
                 </Pie>
               </PieChart>
             </ResponsiveContainer>
             <Grid className={Style.chartText}>
-              <H3>4.35&nbsp;</H3>
-              <H3>tỷ</H3>
+              {/* <H3>4.35&nbsp;</H3>
+              <H3>tỷ</H3> */}
+              <H3>{getUnitCurrency(Math.round(chartTitle))}</H3>
             </Grid>
           </Grid>
           <Grid item xs={6} height="100%">
