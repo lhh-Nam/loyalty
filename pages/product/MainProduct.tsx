@@ -4,12 +4,7 @@ import { Container, Grid } from '@material-ui/core'
 import Style from '@styles/pages/product/Detail.module.scss'
 import { FC } from 'react'
 interface MainProductProps {
-  data: {
-    giaSP: number
-    tiLeVay: number
-    thoiGianVayMax: number
-    laiHangNam: number
-  }
+  data: any
 }
 const MainProduct: FC<MainProductProps> = ({ data }) => {
   return (
@@ -57,16 +52,12 @@ const MainProduct: FC<MainProductProps> = ({ data }) => {
               </Grid>
 
               <Grid className={Style.info}>
-                <H3 mb={1}>BMW X1</H3>
-                <Span color="grey.600">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea
-                  nisl diam nisl pretium nec Lorem ipsum dolor sit amet, consectetur
-                  adipiscing elit. Platea nisl diam nisl pretium nec
-                </Span>
+                <H3 mb={1}>{data?.name}</H3>
+                <Span color="grey.600">{data?.description}</Span>
               </Grid>
 
               <H3 className={Style.price}>
-                {Intl.NumberFormat('it-It').format(data.giaSP)} VNĐ
+                {Intl.NumberFormat('it-It').format(data?.price)} VNĐ
               </H3>
             </Grid>
           </Grid>

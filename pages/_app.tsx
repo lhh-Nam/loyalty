@@ -9,6 +9,7 @@ import Router from 'next/router'
 import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import React, { Fragment, useEffect } from 'react'
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
 import 'styles/common/fonts.scss'
 export const cache = createCache({ key: 'css', prepend: true })
 
@@ -20,6 +21,7 @@ Router.events.on('routeChangeError', () => nProgress.done())
 nProgress.configure({ showSpinner: false })
 
 const App = ({ Component, pageProps }: any) => {
+  const [queryClient] = React.useState(() => new QueryClient())
   const Layout = Component.layout || Fragment
 
   useEffect(() => {
@@ -31,21 +33,25 @@ const App = ({ Component, pageProps }: any) => {
   }, [])
 
   return (
-    <CacheProvider value={cache}>
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
-        <GoogleAnalytics />
-        <OpenGraphTags />
-      </Head>
-      <AppProvider>
-        <MuiTheme>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </MuiTheme>
-      </AppProvider>
-    </CacheProvider>
+    <QueryClientProvider client={queryClient}>
+      <CacheProvider value={cache}>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+          <GoogleAnalytics />
+          <OpenGraphTags />
+        </Head>
+        <AppProvider>
+          <MuiTheme>
+            <Layout>
+              <Hydrate state={pageProps.dehydratedState}>
+                <Component {...pageProps} />
+              </Hydrate>
+            </Layout>
+          </MuiTheme>
+        </AppProvider>
+      </CacheProvider>
+    </QueryClientProvider>
   )
 }
 

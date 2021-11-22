@@ -138,13 +138,13 @@ const Statistical: FC<StatisticalProps> = ({ data }) => {
     'F5Second - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam'
   )
 
-  const [slider, setSlider] = useState({
-    loanValue: 110,
-    duration: 2,
-    interest: 1,
-    time: 3,
-    later: 4,
-  })
+  // const [slider, setSlider] = useState({
+  //   loanValue: 110,
+  //   duration: 2,
+  //   interest: 1,
+  //   time: 3,
+  //   later: 4,
+  // })
 
   const handleChange = (event: any, key: string) =>
     setRadio({ ...radio, [key]: event.target.value })
@@ -235,7 +235,7 @@ const Statistical: FC<StatisticalProps> = ({ data }) => {
   }
 
   const CustomSlide = (props: any) => {
-    const { label, unit, min, max, value, name, step } = props
+    const { label, min, max, value, name, step } = props
     return (
       <Box className={Style.progressWrap}>
         <Box width="100%">

@@ -7,13 +7,25 @@ import ChevronRight from '@material-ui/icons/ChevronRight'
 import { Pagination } from '@material-ui/lab'
 import Style from '@styles/pages/car-loan/Product.module.scss'
 import Link from 'next/link'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { H4, Span } from '../Typography'
 
 const Product: FC = () => {
+  const [products, setProducts] = useState<any>()
   const [pageNumber, setPageNumber] = useState(1)
   const [pageSize] = useState(6)
   const [sort, setSort] = useState('Sắp xếp kết quả')
+
+  const getProducts = async () => {
+    const res = await fetch('http://localhost:1337/auto-products')
+    const products = await res.json()
+    console.log(products)
+    if (products) setProducts(products)
+  }
+  useEffect(() => {
+    getProducts()
+  }, [])
+
   const handleChange = (event: any) => {
     setSort(event.target.value)
   }
@@ -26,12 +38,12 @@ const Product: FC = () => {
     setPageNumber(newPage)
   }
 
-  const getContent = () => {
-    return lstProduct.slice(
-      (pageNumber - 1) * pageSize,
-      (pageNumber - 1) * pageSize + pageSize
-    )
-  }
+  // const getContent = () => {
+  //   return products?.slice(
+  //     (pageNumber - 1) * pageSize,
+  //     (pageNumber - 1) * pageSize + pageSize
+  //   )
+  // }
 
   const renderProduct = (product: any, idx: number) => {
     return (
@@ -49,23 +61,23 @@ const Product: FC = () => {
               <Grid container pb={1.5}>
                 <Span>
                   Lãi suất&nbsp;
-                  <Span color="#0098CE">6.25</Span>%
+                  <Span color="#0098CE">{product?.banks[0]?.interestRate}</Span>%
                 </Span>
 
                 <Span color="grey.500" px={1}>
                   |
                 </Span>
 
-                <Span>
+                {/* <Span>
                   Ưu đãi
                   <Span color="#0098CE">&nbsp;12&nbsp;</Span>
                   tháng
-                </Span>
+                </Span> */}
               </Grid>
 
               <div className={Style.imgGroup}>
                 <LazyImage
-                  src={product.imgUrl}
+                  src={product.imgUrl || '/assets/loyalty/car-loan/car-1.png'}
                   width={350}
                   height={200}
                   layout="responsive"
@@ -76,27 +88,27 @@ const Product: FC = () => {
 
                 <div className={Style.text}>
                   <span>Vay ô tô</span>
-                  <span>F5Second</span>
+                  <span>{product?.banks[0]?.name}</span>
                 </div>
               </div>
 
               <Grid
                 container
-                flexDirection="column"
+                // flexDirection="column"
                 height="100%"
                 justifyContent="space-between"
               >
                 <Grid>
                   <H4 mb={0.5} mt={1.5}>
-                    {product.title}
+                    {product.name}
                   </H4>
-                  <Span color="grey.600">{product.sub}</Span>
+                  <Span color="grey.600">{product.description}</Span>
                   <H4 mb={1.5} mt={1}>
-                    995.000.000 VNĐ
+                    {product.price} VNĐ
                   </H4>
                 </Grid>
 
-                <Link href="/product/1">
+                <Link href={`/product/${product.id}`}>
                   <Grid
                     container
                     pt={1.5}
@@ -145,7 +157,9 @@ const Product: FC = () => {
         <Grid container justifyContent="center" mt={2}>
           <Grid item xs={12}>
             <Grid container spacing={5}>
-              {getContent().map((product, idx) => renderProduct(product, idx))}
+              {products?.map((product: any, idx: any) =>
+                renderProduct(product, idx)
+              )}
             </Grid>
           </Grid>
         </Grid>
