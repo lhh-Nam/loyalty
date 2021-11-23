@@ -1,4 +1,3 @@
-import TableRow from '@component/TableRow'
 import {
   Button,
   Dialog,
@@ -12,6 +11,7 @@ import {
   tableCellClasses,
   TableContainer,
   TableHead,
+  TableRow,
 } from '@material-ui/core'
 import { styled } from '@material-ui/styles'
 import React, { FC } from 'react'
