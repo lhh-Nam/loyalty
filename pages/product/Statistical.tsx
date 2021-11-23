@@ -1,4 +1,5 @@
 import CustomSelect from '@component/common/CustomSelect'
+import DialogLoanRepaymentSchedule from '@component/dialogs/DialogLoanRepaymentSchedule'
 import { H3, Span } from '@component/Typography'
 import {
   Button,
@@ -535,10 +536,15 @@ const Statistical: FC<IStatisticalProps> = (props) => {
         </Grid>
 
         <Grid container>
-          <Button color="primary" variant="outlined" fullWidth>
+          {/* <Button color="primary" variant="outlined" fullWidth>
             Xem thanh toán từng tháng
-          </Button>
-
+          </Button> */}
+          <DialogLoanRepaymentSchedule
+            principalAmount={necessaryValue.loanValueCalculated}
+            loanTerm={necessaryValue.loanTerm}
+            interestAmount={annualProfit}
+            calculationMethod={radio.interest}
+          />
           <Button
             color="primary"
             variant="contained"
