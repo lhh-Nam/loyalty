@@ -37,7 +37,8 @@
       "@hook/*": ["hooks/*"],
       "@utils/*": ["utils/*"],
       "@reducer/*": ["reducers/*"],
-      "@styles/*": ["styles/*"]
+      "@styles/*": ["styles/*"],
+      "@stores/*": ["stores/*"]
     }
   },
   "exclude": ["node_modules", ".next"],

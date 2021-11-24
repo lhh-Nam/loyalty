@@ -21,14 +21,6 @@ import CustomSlider from './CustomSlider'
 
 const lstRadioInterest = ['Dư nợ giảm dần', 'Trả đều hàng tháng']
 
-const lstBank = [
-  {
-    name: 'F5Second',
-    value: 'F5Second',
-  },
-  { name: 'Vietnambank', value: 'Vietnambank' },
-]
-
 const lstNote = [
   {
     color: '#b5dced',
@@ -103,25 +95,33 @@ const getUnitCurrency = (labelValue: number) => {
       formatCurrency(labelValue) + ' vnđ'
 }
 
-interface IStatisticalProps {
-  price: number // Giá sản phẩm
-  loanRate: number // tỉ lệ vay
-  loanTermMax: number // thời hạn vay
-  annualProfit: number // lãi hàng năm
+interface IStatisticalProps {}
+
+interface IStatisticalProps extends Object {
+  price: number
+  loanRate: number
+  loanTermMax: number
+  interestRate: number
+  banks: string[]
+  currentBank: string
 }
 
 const Statistical: FC<IStatisticalProps> = (props) => {
-  const { price, loanRate, loanTermMax, annualProfit } = props
+  const { banks, price, loanRate, loanTermMax, interestRate, currentBank } = props
   const router = useRouter()
+  let lstBank = banks.map((bank: any) => ({ ...bank, value: bank.code }))
+
+  const [isDecreases, setIsDecreases] = useState(true)
+  useEffect(() => {
+    isDecreases ? handleDecreases() : handlePaidMonthly()
+  }, [isDecreases])
+
   const [radio, setRadio] = useState({
     value: 'Trả đều hàng tháng',
     interest: 'Dư nợ giảm dần',
   })
-  const [isDecreases, setIsDecreases] = useState(true)
 
-  const [select, setSelect] = useState(
-    'F5Second - Ngân hàng TMCP Xuất Nhập Khẩu Việt Nam'
-  )
+  const [select, setSelect] = useState(currentBank)
 
   const [listNote, setListNote] = useState(lstNote)
   const [chartData, setChartData] = useState(data)
@@ -134,9 +134,10 @@ const Statistical: FC<IStatisticalProps> = (props) => {
     loanTerm: 12,
   })
 
-  useEffect(() => {
-    isDecreases ? handleDecreases() : handlePaidMonthly()
-  }, [isDecreases])
+  const [bankInfo, setBankInfo] = useState<any>({
+    loanRate,
+    interestRate,
+  })
 
   // commons function
   const monthlyProfit = (annualProfit: any, loanValue: any) =>
@@ -148,7 +149,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
     let interestPayable = 0
 
     for (let i = 0; i < term; i++) {
-      interestPayable += ((loanValue - tempPaid * i) * annualProfit) / term
+      interestPayable += ((loanValue - tempPaid * i) * bankInfo.interestRate) / term
     }
     return interestPayable
   }
@@ -156,9 +157,9 @@ const Statistical: FC<IStatisticalProps> = (props) => {
 
   // ============ Dư nợ giảm giần =================
   const handleDecreases = () => {
-    const prepay = Math.round(price * (1 - loanRate)) // trả trước
-    const initiallyPaid = price * loanRate // gốc cần trả
-    const loanValueCalculated = price * loanRate // giá trị khoản vay
+    const prepay = Math.round(price * (1 - bankInfo.loanRate)) // trả trước
+    const initiallyPaid = price * bankInfo.loanRate // gốc cần trả
+    const loanValueCalculated = price * bankInfo.loanRate // giá trị khoản vay
 
     setNecessaryValue((prev: any) => ({
       ...prev,
@@ -194,10 +195,10 @@ const Statistical: FC<IStatisticalProps> = (props) => {
 
   // ============ Trả đều hàng tháng =================
   const handlePaidMonthly = () => {
-    const prepay = Math.round(price * (1 - loanRate)) // trả trước
-    const initiallyPaid = price * loanRate // gốc cần trả
-    const loanValueCalculated = price * loanRate // giá trị khoản vay
-    const interestPayable = loanValueCalculated * annualProfit // lãi cần trả
+    const prepay = Math.round(price * (1 - bankInfo.loanRate)) // trả trước
+    const initiallyPaid = price * bankInfo.loanRate // gốc cần trả
+    const loanValueCalculated = price * bankInfo.loanRate // giá trị khoản vay
+    const interestPayable = loanValueCalculated * bankInfo.interestRate // lãi cần trả
     setNecessaryValue((prev: any) => ({
       ...prev,
       initiallyPaid,
@@ -264,7 +265,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
   const handleLoanValueMonth = (value: number) => {
     // tính giá trị khoản vay
     const interestPayable =
-      monthlyProfit(annualProfit, value) * necessaryValue.loanTerm
+      monthlyProfit(bankInfo.interestRate, value) * necessaryValue.loanTerm
 
     setListNote((prev: any) => {
       const newState = [...prev]
@@ -328,7 +329,8 @@ const Statistical: FC<IStatisticalProps> = (props) => {
   // ===== month =====
   const handleLoanTermMonth = (value: number) => {
     const interestPayable =
-      monthlyProfit(annualProfit, necessaryValue.loanValueCalculated) * value
+      monthlyProfit(bankInfo.interestRate, necessaryValue.loanValueCalculated) *
+      value
     setListNote((prev: any) => {
       const newState = [...prev]
       newState[2].amount = getUnitCurrency(interestPayable)
@@ -374,6 +376,18 @@ const Statistical: FC<IStatisticalProps> = (props) => {
     )
   }
 
+  const handleSelect = (value: string) => {
+    lstBank.map((bank) => {
+      if (bank.value === value) {
+        setBankInfo({
+          loanRate: bank.loanRate / 100,
+          interestRate: bank.interestRate / 100,
+        })
+      }
+    })
+    setSelect(value)
+  }
+
   const renderGroupRadio = (
     lstRadio: any,
     label: string,
@@ -415,7 +429,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
             value={select}
             options={lstBank}
             onChange={(value) => {
-              setSelect(value)
+              handleSelect(value)
             }}
           />
         </Grid>
@@ -473,13 +487,16 @@ const Statistical: FC<IStatisticalProps> = (props) => {
             {formatCurrency(
               Math.round(
                 necessaryValue.loanValueCalculated / necessaryValue.loanTerm +
-                  monthlyProfit(annualProfit, necessaryValue.loanValueCalculated)
+                  monthlyProfit(
+                    bankInfo.interestRate,
+                    necessaryValue.loanValueCalculated
+                  )
               )
             )}{' '}
             VNĐ
           </H3>
           <Grid container>
-            <Span>Tỉ lệ vay {loanRate * 100}%</Span>
+            <Span>Tỉ lệ vay {bankInfo.loanRate * 100}%</Span>
 
             <Span className={Style.line}>|</Span>
 
@@ -487,7 +504,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
 
             <Span className={Style.line}>|</Span>
 
-            <Span>{annualProfit * 100}%/năm</Span>
+            <Span>{bankInfo.interestRate * 100}%/năm</Span>
           </Grid>
         </Grid>
 
@@ -542,7 +559,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
           <DialogLoanRepaymentSchedule
             principalAmount={necessaryValue.loanValueCalculated}
             loanTerm={necessaryValue.loanTerm}
-            interestAmount={annualProfit}
+            interestAmount={bankInfo.interestRate}
             calculationMethod={radio.interest}
           />
           <Button

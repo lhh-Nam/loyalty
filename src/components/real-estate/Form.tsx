@@ -1,6 +1,6 @@
 import BazarImage from '@component/BazarImage'
 import CustomSelect from '@component/common/CustomSelect'
-import { Button, Container, Grid } from '@material-ui/core'
+import { Button, Container, Divider, Grid } from '@material-ui/core'
 import Style from '@styles/pages/car-loan/Form.module.scss'
 import React, { FC, useState } from 'react'
 import { H2 } from '../Typography'
@@ -218,10 +218,13 @@ const Form: FC = () => {
         borderRadius="16px"
       >
         <Grid item xs={12} p={3}>
-          <Grid container spacing={5}>
+          <Grid container spacing={3}>
             {renderFormLeft()}
             {renderFormRight()}
           </Grid>
+
+          <Divider className={Style.hr} />
+
           {renderButtonGroup()}
         </Grid>
       </Grid>

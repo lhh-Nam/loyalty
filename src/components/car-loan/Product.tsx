@@ -1,7 +1,7 @@
 import BazarCard from '@component/BazarCard'
+import BazarImage from '@component/BazarImage'
 import Bimmer from '@component/common/Bimmer'
 import Contact from '@component/common/Contact'
-import LazyImage from '@component/LazyImage'
 import { Container, FormControl, Grid, MenuItem, Select } from '@material-ui/core'
 import ChevronRight from '@material-ui/icons/ChevronRight'
 import { Pagination } from '@material-ui/lab'
@@ -11,7 +11,7 @@ import React, { FC, useEffect, useState } from 'react'
 import { H4, Span } from '../Typography'
 
 const Product: FC = () => {
-  const [products, setProducts] = useState<any>()
+  const [products, setProducts] = useState<any>([])
   const [pageNumber, setPageNumber] = useState(1)
   const [pageSize] = useState(6)
   const [sort, setSort] = useState('Sắp xếp kết quả')
@@ -30,7 +30,7 @@ const Product: FC = () => {
     setSort(event.target.value)
   }
 
-  const countPage = Math.ceil(lstProduct.length / pageSize)
+  const countPage = Math.ceil(products.length / pageSize)
   // const from = (pageNumber - 1) * pageSize + 1
   // const to = Math.min(from + pageSize - 1, lstProduct.length)
 
@@ -38,12 +38,12 @@ const Product: FC = () => {
     setPageNumber(newPage)
   }
 
-  // const getContent = () => {
-  //   return products?.slice(
-  //     (pageNumber - 1) * pageSize,
-  //     (pageNumber - 1) * pageSize + pageSize
-  //   )
-  // }
+  const getContent = () => {
+    return products?.slice(
+      (pageNumber - 1) * pageSize,
+      (pageNumber - 1) * pageSize + pageSize
+    )
+  }
 
   const renderProduct = (product: any, idx: number) => {
     return (
@@ -76,7 +76,7 @@ const Product: FC = () => {
               </Grid>
 
               <div className={Style.imgGroup}>
-                <LazyImage
+                {/* <LazyImage
                   src={product.imgUrl || '/assets/loyalty/car-loan/car-1.png'}
                   width={350}
                   height={200}
@@ -84,6 +84,14 @@ const Product: FC = () => {
                   objectFit="cover"
                   borderRadius="8px"
                   // alt={title}
+                /> */}
+
+                <BazarImage
+                  src={product.imgUrl || '/assets/loyalty/car-loan/car-1.png'}
+                  sx={{
+                    width: '100%',
+                    height: '200px',
+                  }}
                 />
 
                 <div className={Style.text}>
@@ -157,7 +165,7 @@ const Product: FC = () => {
         <Grid container justifyContent="center" mt={2}>
           <Grid item xs={12}>
             <Grid container spacing={5}>
-              {products?.map((product: any, idx: any) =>
+              {getContent().map((product: any, idx: any) =>
                 renderProduct(product, idx)
               )}
             </Grid>
