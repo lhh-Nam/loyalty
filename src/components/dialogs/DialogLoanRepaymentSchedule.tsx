@@ -51,6 +51,7 @@ const DialogLoanRepaymentSchedule: FC<DialogLoanRepaymentScheduleProps> = ({
   interestAmount,
   calculationMethod,
 }) => {
+  console.log('log => ~ calculationMethod', calculationMethod)
   const [open, setOpen] = React.useState(false)
 
   const handleClickOpen = () => {

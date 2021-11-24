@@ -19,9 +19,11 @@ import {
 } from '@material-ui/core'
 import { DesktopDatePicker, LocalizationProvider } from '@material-ui/lab'
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns'
+import { car } from '@stores/products/car'
 import { useRouter } from 'next/router'
 import React, { FC, useState } from 'react'
 import { useQuery } from 'react-query'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 
 const fetchProvinces = () =>
   fetch('https://provinces.open-api.vn/api/p').then((res) => res.json())
@@ -35,6 +37,9 @@ const fetchDistricts = (provinceId: any) =>
   )
 const BorrowerInfo: FC = () => {
   const router = useRouter()
+  const carState = useRecoilState(car)
+  console.log('log => ~ carState', carState)
+  const setCarState = useSetRecoilState(car)
 
   const [state, setState] = useState<any>({
     name: '',
@@ -84,6 +89,23 @@ const BorrowerInfo: FC = () => {
     { label: 'Trang chủ', link: '/', isActive: false },
     { label: 'Thông tin vay', isActive: true },
   ]
+
+  const handleRegister = () => {
+    setCarState({
+      ...carState,
+      customer: {
+        name: state.name,
+        dateOfBirth: state.dateOfBirth,
+        icNumber: state.icNumber,
+        phoneNumber: state.phoneNumber,
+        permanentAddress: `${state.diaChiThC}, ${state.phuongThc?.name}, ${state.quanThc?.name}, ${state.thanhPhoThc?.name}`,
+        currentAddress: `${state.diaChiTC}, ${state.phuongTc?.name}, ${state.quanTc?.name}, ${state.thanhPhoTc?.name}`,
+        declaredIncome: state.declaredIncome,
+      },
+    })
+
+    router.push('/preview')
+  }
 
   return (
     <AppLayout>
@@ -407,21 +429,7 @@ const BorrowerInfo: FC = () => {
                   sx={{
                     marginLeft: '20px',
                   }}
-                  onClick={() => {
-                    // localStorage.setItem('info', JSON.stringify(state))
-                    router.push('/preview')
-                    console.log({
-                      customer: {
-                        name: state.name,
-                        dateOfBirth: state.dateOfBirth,
-                        icNumber: state.icNumber,
-                        phoneNumber: state.phoneNumber,
-                        permanentAddress: `${state.diaChiThC}, ${state.phuongThc?.name}, ${state.quanThc?.name}, ${state.thanhPhoThc?.name}`,
-                        currentAddress: `${state.diaChiTC}, ${state.phuongTc?.name}, ${state.quanTc?.name}, ${state.thanhPhoTc?.name}`,
-                        declaredIncome: state.declaredIncome,
-                      },
-                    })
-                  }}
+                  onClick={handleRegister}
                 >
                   Đăng kí vay
                 </Button>

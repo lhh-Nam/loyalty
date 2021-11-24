@@ -6,13 +6,17 @@ import Edit from '@component/icons/Edit'
 import AppLayout from '@component/layout/AppLayout'
 import { H1 } from '@component/Typography'
 import { Box, Button, Container, Grid } from '@material-ui/core'
+import { car } from '@stores/products/car'
 import style from '@styles/pages/preview-info-loan/Info.module.scss'
 import { sweetAlert } from '@utils/alert'
 import { useRouter } from 'next/router'
 import React, { FC, useEffect, useState } from 'react'
+import { useRecoilState } from 'recoil'
 
 const PrebiewInfo: FC = () => {
   const router = useRouter()
+  const carState = useRecoilState(car)
+  console.log('log => ~ carState', carState)
 
   const [state, setState] = useState({
     hoTen: '',

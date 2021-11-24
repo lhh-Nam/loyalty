@@ -149,7 +149,7 @@ const Product: FC = () => {
         >
           <Span>
             Có
-            <Span color="#0098CE">&nbsp;68&nbsp;</Span>
+            <Span color="#0098CE">&nbsp;{products.length}&nbsp;</Span>
             sản phẩm vay phù hợp
           </Span>
 

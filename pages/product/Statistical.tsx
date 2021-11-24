@@ -11,12 +11,14 @@ import {
   RadioGroup,
 } from '@material-ui/core'
 import { makeStyles } from '@mui/styles'
+import { car } from '@stores/products/car'
 import Style from '@styles/pages/product/Detail.module.scss'
 import { formatCurrency } from '@utils/utils'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import CustomSlider from './CustomSlider'
 
 const lstRadioInterest = ['Dư nợ giảm dần', 'Trả đều hàng tháng']
@@ -104,10 +106,16 @@ interface IStatisticalProps extends Object {
   interestRate: number
   banks: string[]
   currentBank: string
+  name?: string
 }
 
 const Statistical: FC<IStatisticalProps> = (props) => {
-  const { banks, price, loanRate, loanTermMax, interestRate, currentBank } = props
+  const { banks, price, loanRate, loanTermMax, interestRate, currentBank, name } =
+    props
+
+  const carState = useRecoilState(car)
+  const setCarState = useSetRecoilState(car)
+
   const router = useRouter()
   let lstBank = banks.map((bank: any) => ({ ...bank, value: bank.code }))
 
@@ -388,6 +396,60 @@ const Statistical: FC<IStatisticalProps> = (props) => {
     setSelect(value)
   }
 
+  const handleRegister = () => {
+    let principalAmount = necessaryValue.loanValueCalculated
+    let loanTerm = necessaryValue.loanTerm
+    let interestAmount = bankInfo.interestRate
+
+    let newList = [...Array(necessaryValue.loanTerm).keys()].map((_, idx) => {
+      const principal = principalAmount / loanTerm
+      const interest = isDecreases
+        ? ((principalAmount - principal * idx) * interestAmount) / loanTerm
+        : principal * interestAmount
+      return {
+        month: idx + 1,
+        referenceInterest: interestAmount / loanTerm,
+        interestAmount: interest,
+        balance: principalAmount - principal * (idx + 1),
+        monthlyPrincipal: principal,
+        monthlyRepayment: interest + principal,
+      }
+    })
+    console.log('log => ~ newList ~ newList', newList)
+
+    setCarState({
+      ...carState,
+      merchantId: 'merchant 1', // Nhà phân phối {fake}
+      saleCode: 'sale code 1', // NV bán hàng
+      bankCode: select, // Ngân hàng
+      flagMarkBank: true, // True => Ngân hàng thẩm định, False => F5S thẩm định
+      productName: name, // Model xe/ Tên xe (SP được chọn khi vay)
+      productPrice: price.toString, // Giá trị xe
+      collateral: 'The Chap Nha', // {fake}
+
+      loan: {
+        requestAmount: necessaryValue.loanValueCalculated, // Giá trị khoảng vay
+        requestTenor: necessaryValue.loanTerm, // Thời hạn vay
+        interestRate: bankInfo.interestRate, // Lãi xuất
+        interestRateIncentive: 0.09, // Lãi xuất ưu đãi {fake}
+        interestRateAfterIncentive: 0.197, // Lãi xuất sau ưu đãi {fake}
+        tenorIncentive: 6, // Thời gian ưu đãi {fake}
+        loanPurpose: 'Vay Mua xe', // Nhu cầu vay {fake}
+      },
+
+      offer: {
+        emi: 10000000, // khoảng tiền trả hàng tháng {fake}
+        repaymentAmount: listNote[0].amount, // Cần trả trước
+        principalAmount: listNote[1].amount, // Số tiền vay
+        interestAmount: listNote[2].amount, // Số tiền lãi
+        calculationMethod: radio.interest, // phương thức tính lãi (dư nợ giảm dâ || trả đều hàng tháng)
+        loanRepaymentSchedule: newList,
+      },
+    })
+
+    router.push('/borrower-info')
+  }
+
   const renderGroupRadio = (
     lstRadio: any,
     label: string,
@@ -566,9 +628,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
             color="primary"
             variant="contained"
             fullWidth
-            onClick={() => {
-              router.push('/borrower-info')
-            }}
+            onClick={handleRegister}
           >
             Đăng kí gói vay
           </Button>
