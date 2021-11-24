@@ -19,6 +19,7 @@ import {
 } from '@material-ui/core'
 import { DesktopDatePicker, LocalizationProvider } from '@material-ui/lab'
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns'
+import { useRouter } from 'next/router'
 import React, { FC, useState } from 'react'
 import { useQuery } from 'react-query'
 
@@ -33,7 +34,7 @@ const fetchDistricts = (provinceId: any) =>
     res.json()
   )
 const BorrowerInfo: FC = () => {
-  // const router = useRouter()
+  const router = useRouter()
 
   const [state, setState] = useState<any>({
     name: '',
@@ -51,23 +52,23 @@ const BorrowerInfo: FC = () => {
   })
   const { data: provinces = [] } = useQuery('provinces', fetchProvinces)
 
-  const { data: provinceInfo } = useQuery(
+  const { data: provinceInfo = [] } = useQuery(
     ['districts', state?.thanhPhoThc],
     () => fetchDistricts(state?.thanhPhoThc?.code),
     { enabled: !!state?.thanhPhoThc }
   )
-  const { data: districtInfo } = useQuery(
+  const { data: districtInfo = [] } = useQuery(
     ['wards', state?.quanThc],
     () => fetchWards(state?.quanThc?.code),
     { enabled: !!state?.quanThc }
   )
 
-  const { data: provinceInfoTC } = useQuery(
+  const { data: provinceInfoTC = [] } = useQuery(
     ['districts', state?.thanhPhoTc],
     () => fetchDistricts(state?.thanhPhoTc?.code),
     { enabled: !!state?.thanhPhoTc }
   )
-  const { data: districtInfoTC } = useQuery(
+  const { data: districtInfoTC = [] } = useQuery(
     ['wards', state?.quanTc],
     () => fetchWards(state?.quanTc?.code),
     { enabled: !!state?.quanTc }
@@ -408,7 +409,7 @@ const BorrowerInfo: FC = () => {
                   }}
                   onClick={() => {
                     // localStorage.setItem('info', JSON.stringify(state))
-                    // router.push('/preview')
+                    router.push('/preview')
                     console.log({
                       customer: {
                         name: state.name,
@@ -417,7 +418,7 @@ const BorrowerInfo: FC = () => {
                         phoneNumber: state.phoneNumber,
                         permanentAddress: `${state.diaChiThC}, ${state.phuongThc?.name}, ${state.quanThc?.name}, ${state.thanhPhoThc?.name}`,
                         currentAddress: `${state.diaChiTC}, ${state.phuongTc?.name}, ${state.quanTc?.name}, ${state.thanhPhoTc?.name}`,
-                        declaredIncome: 12000000,
+                        declaredIncome: state.declaredIncome,
                       },
                     })
                   }}
