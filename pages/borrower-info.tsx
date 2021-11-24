@@ -1,7 +1,6 @@
 import BazarCard from '@component/BazarCard'
 import BreadcrumbsCustom from '@component/common/Breadcum'
 import Contact from '@component/common/Contact'
-import TextFieldCustom from '@component/common/TextFieldCustom'
 import Delete from '@component/icons/Delete'
 import Save from '@component/icons/Save'
 import Send from '@component/icons/Send'
@@ -9,25 +8,38 @@ import Star from '@component/icons/Star'
 import AppLayout from '@component/layout/AppLayout'
 import { H2, Span } from '@component/Typography'
 import {
+  Autocomplete,
   Box,
   Button,
   Container,
   Divider,
   Grid,
-  MenuItem,
+  TextField,
   Typography,
 } from '@material-ui/core'
-import { useRouter } from 'next/router'
-import React, { FC, useEffect, useState } from 'react'
+import { DesktopDatePicker, LocalizationProvider } from '@material-ui/lab'
+import AdapterDateFns from '@material-ui/lab/AdapterDateFns'
+import React, { FC, useState } from 'react'
+import { useQuery } from 'react-query'
 
+const fetchProvinces = () =>
+  fetch('https://provinces.open-api.vn/api/p').then((res) => res.json())
+const fetchWards = (districtId: any) =>
+  fetch(`https://provinces.open-api.vn/api/d/${districtId}?depth=2`).then((res) =>
+    res.json()
+  )
+const fetchDistricts = (provinceId: any) =>
+  fetch(`https://provinces.open-api.vn/api/p/${provinceId}?depth=2`).then((res) =>
+    res.json()
+  )
 const BorrowerInfo: FC = () => {
-  const router = useRouter()
+  // const router = useRouter()
 
-  const [state, setState] = useState({
-    hoTen: '',
-    cmnd: '',
-    ngaySinh: '',
-    sdt: '',
+  const [state, setState] = useState<any>({
+    name: '',
+    icNumber: '',
+    dateOfBirth: new Date(),
+    phoneNumber: '',
     diaChiThC: '',
     thanhPhoThc: '',
     phuongThc: '',
@@ -37,15 +49,31 @@ const BorrowerInfo: FC = () => {
     phuongTc: '',
     quanTc: '',
   })
+  const { data: provinces = [] } = useQuery('provinces', fetchProvinces)
 
-  useEffect(() => {
-    const infoLocalStorage = localStorage.getItem('info')
-    const info = infoLocalStorage && JSON.parse(infoLocalStorage)
-    info && setState(info)
-  }, [])
+  const { data: provinceInfo } = useQuery(
+    ['districts', state?.thanhPhoThc],
+    () => fetchDistricts(state?.thanhPhoThc?.code),
+    { enabled: !!state?.thanhPhoThc }
+  )
+  const { data: districtInfo } = useQuery(
+    ['wards', state?.quanThc],
+    () => fetchWards(state?.quanThc?.code),
+    { enabled: !!state?.quanThc }
+  )
 
+  const { data: provinceInfoTC } = useQuery(
+    ['districts', state?.thanhPhoTc],
+    () => fetchDistricts(state?.thanhPhoTc?.code),
+    { enabled: !!state?.thanhPhoTc }
+  )
+  const { data: districtInfoTC } = useQuery(
+    ['wards', state?.quanTc],
+    () => fetchWards(state?.quanTc?.code),
+    { enabled: !!state?.quanTc }
+  )
   const handleValueChange = (e: any) => {
-    setState((prevState) => ({
+    setState((prevState: any) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }))
@@ -98,48 +126,64 @@ const BorrowerInfo: FC = () => {
 
           <Grid container spacing={5}>
             <Grid item md={6}>
-              <TextFieldCustom
+              <TextField
                 required
                 label="Họ và Tên"
-                name="hoTen"
-                value={state.hoTen}
+                name="name"
+                value={state.name}
                 onChange={handleValueChange}
                 variant="outlined"
                 placeholder="Nguyễn Thị Lan"
+                fullWidth
               />
             </Grid>
             <Grid item md={6}>
-              <TextFieldCustom
+              <TextField
                 required
                 label="Số CMND/ CCCD"
-                name="cmnd"
-                value={state.cmnd}
+                name="icNumber"
+                value={state.icNumber}
                 onChange={handleValueChange}
                 variant="outlined"
                 placeholder="025987654"
+                fullWidth
               />
             </Grid>
             <Grid item md={6}>
-              <TextFieldCustom
-                required
-                label="Ngày sinh"
-                name="ngaySinh"
-                value={state.ngaySinh}
-                defaultValue="2017-05-24"
-                type="date"
-                onChange={handleValueChange}
-                variant="outlined"
-              />
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DesktopDatePicker
+                  label="Ngày sinh"
+                  inputFormat="dd/MM/yyyy"
+                  value={state.dateOfBirth}
+                  onChange={handleValueChange}
+                  renderInput={(params: any) => (
+                    <TextField {...params} variant="outlined" fullWidth />
+                  )}
+                />
+              </LocalizationProvider>
             </Grid>
             <Grid item md={6}>
-              <TextFieldCustom
+              <TextField
                 required
                 label="Số điện thoại"
-                name="sdt"
-                value={state.sdt}
+                name="phoneNumber"
+                value={state.phoneNumber}
                 onChange={handleValueChange}
                 variant="outlined"
                 placeholder="0936223677"
+                fullWidth
+              />
+            </Grid>
+            <Grid item md={6}>
+              <TextField
+                required
+                label="Thu nhập khách hàng"
+                name="declaredIncome"
+                value={state.declaredIncome}
+                onChange={handleValueChange}
+                variant="outlined"
+                placeholder="120.000.000"
+                fullWidth
               />
             </Grid>
           </Grid>
@@ -159,7 +203,7 @@ const BorrowerInfo: FC = () => {
           <Grid container spacing={5}>
             <Grid item container spacing={5} md={6}>
               <Grid item md={12}>
-                <TextFieldCustom
+                <TextField
                   required
                   label="Địa chỉ thường chú"
                   variant="outlined"
@@ -167,155 +211,148 @@ const BorrowerInfo: FC = () => {
                   value={state.diaChiThC}
                   onChange={handleValueChange}
                   placeholder="100/3"
+                  fullWidth
                 />
               </Grid>
               <Grid item md={12}>
-                <TextFieldCustom
-                  required
-                  label="Thành phố"
-                  variant="outlined"
-                  name="thanhPhoThc"
-                  value={state.thanhPhoThc || ''}
-                  onChange={handleValueChange}
-                  select
-                  placeholder="Chọn Thành phố"
-                >
-                  <MenuItem value="" disabled>
-                    Chọn Thành phố
-                  </MenuItem>
-                  <MenuItem value="Hồ Chí Minh">Hồ Chí Minh</MenuItem>
-                </TextFieldCustom>
+                <Autocomplete
+                  id="country-select-demo"
+                  options={provinces}
+                  fullWidth
+                  autoHighlight
+                  getOptionLabel={(option: any) => option?.name}
+                  onChange={(_, value) =>
+                    setState((prev: any) => ({ ...prev, thanhPhoThc: value }))
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Thành phố"
+                      variant="outlined"
+                      value={state.thanhPhoThc || ''}
+                      placeholder="Chọn Thành phố"
+                    />
+                  )}
+                />
               </Grid>
               <Grid item md={6}>
-                <TextFieldCustom
-                  required
-                  label="Phường/ Xã"
-                  variant="outlined"
-                  name="phuongThc"
-                  value={state.phuongThc || ''}
-                  onChange={handleValueChange}
-                  select
-                  placeholder="Chọn Phường/ Xã"
-                >
-                  <MenuItem value="" disabled>
-                    Chọn Phường/ Xã
-                  </MenuItem>
-                  <MenuItem value="Phường 1">Phường 1</MenuItem>
-                  <MenuItem value="Phường 2">Phường 2</MenuItem>
-                  <MenuItem value="Phường 3">Phường 3</MenuItem>
-                  <MenuItem value="Phường 4">Phường 4</MenuItem>
-                  <MenuItem value="Phường 5">Phường 5</MenuItem>
-                  <MenuItem value="Phường 6">Phường 6</MenuItem>
-                  <MenuItem value="Phường 7">Phường 7</MenuItem>
-                  <MenuItem value="Phường 8">Phường 8</MenuItem>
-                  <MenuItem value="Phường 9">Phường 9</MenuItem>
-                  <MenuItem value="Phường 10">Phường 10</MenuItem>
-                </TextFieldCustom>
+                <Autocomplete
+                  id="country-select-demo"
+                  options={provinceInfo?.districts}
+                  fullWidth
+                  autoHighlight
+                  getOptionLabel={(option: any) => option?.name}
+                  onChange={(_, value) =>
+                    setState((prev: any) => ({ ...prev, quanThc: value }))
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Quận/ Huyện"
+                      variant="outlined"
+                      value={state.quanThc || ''}
+                      placeholder="Chọn Quận/ Huyện"
+                    />
+                  )}
+                />
               </Grid>
               <Grid item md={6}>
-                <TextFieldCustom
-                  required
-                  label="Quận/ Huyện"
-                  variant="outlined"
-                  name="quanThc"
-                  value={state.quanThc || ''}
-                  onChange={handleValueChange}
-                  select
-                  placeholder="Chọn Quận/ Huyện"
-                >
-                  <MenuItem value="" disabled>
-                    Chọn Quận/ Huyện
-                  </MenuItem>
-                  <MenuItem value="Quận 1">Quận 1</MenuItem>
-                  <MenuItem value="Quận 2">Quận 2</MenuItem>
-                  <MenuItem value="Quận 3">Quận 3</MenuItem>
-                  <MenuItem value="Quận 4">Quận 4</MenuItem>
-                  <MenuItem value="Quận 5">Quận 5</MenuItem>
-                  <MenuItem value="Quận 6">Quận 6</MenuItem>
-                  <MenuItem value="Quận 7">Quận 7</MenuItem>
-                  <MenuItem value="Quận 8">Quận 8</MenuItem>
-                  <MenuItem value="Quận 9">Quận 9</MenuItem>
-                  <MenuItem value="Quận 10">Quận 10</MenuItem>
-                </TextFieldCustom>
+                <Autocomplete
+                  id="country-select-demo"
+                  options={districtInfo?.wards}
+                  fullWidth
+                  autoHighlight
+                  getOptionLabel={(option: any) => option?.name}
+                  onChange={(_, value) =>
+                    setState((prev: any) => ({ ...prev, phuongThc: value }))
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Phường/ Xã"
+                      variant="outlined"
+                      value={state.phuongThc || ''}
+                      placeholder="Chọn Phường/ Xã"
+                    />
+                  )}
+                />
               </Grid>
             </Grid>
 
             <Grid item container spacing={5} md={6}>
               <Grid item md={12}>
-                <TextFieldCustom
+                <TextField
                   label="Địa chỉ tạm chú"
                   variant="outlined"
                   name="diaChiTC"
                   value={state.diaChiTC}
                   onChange={handleValueChange}
                   placeholder="100/3"
+                  fullWidth
                 />
               </Grid>
               <Grid item md={12}>
-                <TextFieldCustom
-                  label="Thành phố"
-                  variant="outlined"
-                  select
-                  name="thanhPhoTc"
-                  value={state.thanhPhoTc || ''}
-                  onChange={handleValueChange}
-                  placeholder="Chọn Thành phố"
-                >
-                  <MenuItem value="" disabled>
-                    Chọn Thành phố
-                  </MenuItem>
-                  <MenuItem value="Hồ Chí Minh">Hồ Chí Minh</MenuItem>
-                </TextFieldCustom>
+                <Autocomplete
+                  id="country-select-demo"
+                  options={provinces}
+                  fullWidth
+                  autoHighlight
+                  getOptionLabel={(option: any) => option?.name}
+                  onChange={(_, value) =>
+                    setState((prev: any) => ({ ...prev, thanhPhoTc: value }))
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Thành phố"
+                      variant="outlined"
+                      value={state.thanhPhoTc || ''}
+                      placeholder="Chọn Thành phố"
+                    />
+                  )}
+                />
               </Grid>
               <Grid item md={6}>
-                <TextFieldCustom
-                  label="Phường/ Xã"
-                  variant="outlined"
-                  name="phuongTc"
-                  select
-                  value={state.phuongTc || ''}
-                  onChange={handleValueChange}
-                  placeholder="Chọn Phường/ Xã"
-                >
-                  <MenuItem value="" disabled>
-                    Chọn Phường/ Xã
-                  </MenuItem>
-                  <MenuItem value="Phường 1">Phường 1</MenuItem>
-                  <MenuItem value="Phường 2">Phường 2</MenuItem>
-                  <MenuItem value="Phường 3">Phường 3</MenuItem>
-                  <MenuItem value="Phường 4">Phường 4</MenuItem>
-                  <MenuItem value="Phường 5">Phường 5</MenuItem>
-                  <MenuItem value="Phường 6">Phường 6</MenuItem>
-                  <MenuItem value="Phường 7">Phường 7</MenuItem>
-                  <MenuItem value="Phường 8">Phường 8</MenuItem>
-                  <MenuItem value="Phường 9">Phường 9</MenuItem>
-                  <MenuItem value="Phường 10">Phường 10</MenuItem>
-                </TextFieldCustom>
+                <Autocomplete
+                  id="country-select-demo"
+                  options={provinceInfoTC?.districts}
+                  fullWidth
+                  autoHighlight
+                  getOptionLabel={(option: any) => option?.name}
+                  onChange={(_, value) =>
+                    setState((prev: any) => ({ ...prev, quanTc: value }))
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Quận/ Huyện"
+                      variant="outlined"
+                      value={state.quanTc || ''}
+                      placeholder="Chọn Quận/ Huyện"
+                    />
+                  )}
+                />
               </Grid>
               <Grid item md={6}>
-                <TextFieldCustom
-                  label="Quận/ Huyện"
-                  variant="outlined"
-                  name="quanTc"
-                  select
-                  value={state.quanTc}
-                  onChange={handleValueChange}
-                  placeholder="Chọn Quận/ Huyện"
-                >
-                  <MenuItem value="" disabled>
-                    Chọn Quận/ Huyện
-                  </MenuItem>
-                  <MenuItem value="Quận 1">Quận 1</MenuItem>
-                  <MenuItem value="Quận 2">Quận 2</MenuItem>
-                  <MenuItem value="Quận 3">Quận 3</MenuItem>
-                  <MenuItem value="Quận 4">Quận 4</MenuItem>
-                  <MenuItem value="Quận 5">Quận 5</MenuItem>
-                  <MenuItem value="Quận 6">Quận 6</MenuItem>
-                  <MenuItem value="Quận 7">Quận 7</MenuItem>
-                  <MenuItem value="Quận 8">Quận 8</MenuItem>
-                  <MenuItem value="Quận 9">Quận 9</MenuItem>
-                  <MenuItem value="Quận 10">Quận 10</MenuItem>
-                </TextFieldCustom>
+                <Autocomplete
+                  id="country-select-demo"
+                  options={districtInfoTC?.wards}
+                  fullWidth
+                  autoHighlight
+                  getOptionLabel={(option: any) => option?.name}
+                  onChange={(_, value) =>
+                    setState((prev: any) => ({ ...prev, phuongTc: value }))
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Phường/ Xã"
+                      variant="outlined"
+                      value={state.phuongTc || ''}
+                      placeholder="Chọn Phường/ Xã"
+                    />
+                  )}
+                />
               </Grid>
             </Grid>
           </Grid>
@@ -345,10 +382,10 @@ const BorrowerInfo: FC = () => {
                   onClick={() => {
                     localStorage.removeItem('info')
                     setState({
-                      hoTen: '',
-                      cmnd: '',
-                      ngaySinh: '',
-                      sdt: '',
+                      name: '',
+                      icNumber: '',
+                      dateOfBirth: new Date(),
+                      phoneNumber: '',
                       diaChiThC: '',
                       thanhPhoThc: '',
                       phuongThc: '',
@@ -370,8 +407,19 @@ const BorrowerInfo: FC = () => {
                     marginLeft: '20px',
                   }}
                   onClick={() => {
-                    localStorage.setItem('info', JSON.stringify(state))
-                    router.push('/preview')
+                    // localStorage.setItem('info', JSON.stringify(state))
+                    // router.push('/preview')
+                    console.log({
+                      customer: {
+                        name: state.name,
+                        dateOfBirth: state.dateOfBirth,
+                        icNumber: state.icNumber,
+                        phoneNumber: state.phoneNumber,
+                        permanentAddress: `${state.diaChiThC}, ${state.phuongThc?.name}, ${state.quanThc?.name}, ${state.thanhPhoThc?.name}`,
+                        currentAddress: `${state.diaChiTC}, ${state.phuongTc?.name}, ${state.quanTc?.name}, ${state.thanhPhoTc?.name}`,
+                        declaredIncome: 12000000,
+                      },
+                    })
                   }}
                 >
                   Đăng kí vay
