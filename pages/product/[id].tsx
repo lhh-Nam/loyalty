@@ -3,7 +3,10 @@ import BreadcrumbsCustom from '@component/common/Breadcum'
 import Contact from '@component/common/Contact'
 import AppLayout from '@component/layout/AppLayout'
 import { Box } from '@material-ui/core'
-import React from 'react'
+import { getCarDetail } from 'apis/product/car'
+import { useRouter } from 'next/router'
+import React, { useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
 import MainProduct from './MainProduct'
 import OtherProduct from './OtherProduct'
 import Statistical from './Statistical'
@@ -14,28 +17,46 @@ const ProductDetails = () => {
     { label: 'Ô tô', link: '/car-loan', isActive: false },
     { label: 'BMW X1', isActive: true },
   ]
-  // const router = useRouter()
-  // const productId = router.query.id
-  // const { data } = useQuery(['product', productId], () =>
-  //   fetch(`http://localhost:1337/auto-products/${productId}`).then((res) =>
-  //     res.json()
-  //   )
-  // )
+  const router = useRouter()
+  const productId = router.query.id
 
-  const data = {
-    price: 500000000,
-    loanRate: 70 / 100,
+  const [contentPage, setContentPage] = useState({
+    price: 0,
+    banks: [],
     loanTermMax: 24,
-    annualProfit: 6 / 100,
-  }
+    loanRate: 0,
+    interestRate: 0,
+    currentBank: '',
+    fetchingVirtual: true,
+  })
+
+  const { data, isFetching } = useQuery(['carQuery', productId], () =>
+    getCarDetail(productId)
+  )
+
+  useEffect(() => {
+    if (!data) return
+    const bank = data.banks[0]
+    setContentPage({
+      ...contentPage,
+      ...data,
+      price: parseInt(data?.price),
+      currentBank: bank?.code,
+      interestRate: bank?.interestRate / 100,
+      loanRate: bank?.loanRate / 100,
+      fetchingVirtual: false,
+    })
+  }, [data])
+
+  if (isFetching || contentPage.fetchingVirtual) return <></>
 
   return (
     <AppLayout>
       <Box sx={{ backgroundColor: 'white', padding: '16px 13%' }}>
         <BreadcrumbsCustom breadcrumbs={breadcrumbs} />
       </Box>
-      <MainProduct {...data} />
-      <Statistical {...data} />
+      <MainProduct {...contentPage} />
+      <Statistical {...contentPage} />
       <Bimmer />
       <OtherProduct />
       <Contact />

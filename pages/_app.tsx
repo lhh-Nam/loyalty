@@ -10,6 +10,7 @@ import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import React, { Fragment, useEffect } from 'react'
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query'
+import { RecoilRoot } from 'recoil'
 import 'styles/common/fonts.scss'
 export const cache = createCache({ key: 'css', prepend: true })
 
@@ -43,11 +44,13 @@ const App = ({ Component, pageProps }: any) => {
         </Head>
         <AppProvider>
           <MuiTheme>
-            <Layout>
-              <Hydrate state={pageProps.dehydratedState}>
-                <Component {...pageProps} />
-              </Hydrate>
-            </Layout>
+            <RecoilRoot>
+              <Layout>
+                <Hydrate state={pageProps.dehydratedState}>
+                  <Component {...pageProps} />
+                </Hydrate>
+              </Layout>
+            </RecoilRoot>
           </MuiTheme>
         </AppProvider>
       </CacheProvider>

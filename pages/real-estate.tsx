@@ -7,7 +7,6 @@ const IndexPage = () => {
   return (
     <AppLayout>
       <Banner />
-
       <Form />
       <Product />
     </AppLayout>

@@ -44,6 +44,7 @@
     "react-scroll": "^1.8.2",
     "react-simple-image-viewer": "0.0.8",
     "recharts": "^2.1.5",
+    "recoil": "^0.5.2",
     "sass": "^1.43.2",
     "sweetalert2": "^11.1.9",
     "yup": "^0.32.9"

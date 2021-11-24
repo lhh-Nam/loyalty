@@ -4,11 +4,17 @@ import { Container, Grid } from '@material-ui/core'
 import Style from '@styles/pages/product/Detail.module.scss'
 import { FC } from 'react'
 
-interface IMainProductProps {
+// interface IMainProductProps {
+//   price: number
+//   loanRate?: number
+//   loanTerm?: number
+//   annualProfit?: number
+//   name?: string
+//   description?: string
+// }
+
+interface IMainProductProps extends Object {
   price: number
-  loanRate?: number
-  loanTerm?: number
-  annualProfit?: number
   name?: string
   description?: string
 }
