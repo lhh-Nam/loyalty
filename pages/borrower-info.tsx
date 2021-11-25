@@ -40,6 +40,8 @@ const BorrowerInfo: FC = () => {
   const carState = useRecoilState(car)
   const setCarState = useSetRecoilState(car)
 
+  const [loanInfo, setLoanInfo] = useState({})
+
   const [state, setState] = useState<any>({
     name: '',
     icNumber: '',
@@ -92,13 +94,25 @@ const BorrowerInfo: FC = () => {
   useEffect(() => {
     const infoLocalStorage = localStorage.getItem('info')
     const info = infoLocalStorage && JSON.parse(infoLocalStorage)
-    console.log('log => ~ useEffect ~ info', info)
-    // info && setState(info)
+    info && setLoanInfo(info)
   }, [])
 
   const handleRegister = () => {
-    setCarState({
-      ...carState,
+    // setCarState({
+    //   ...carState,
+    //   customer: {
+    //     name: state.name,
+    //     dateOfBirth: state.dateOfBirth,
+    //     icNumber: state.icNumber,
+    //     phoneNumber: state.phoneNumber,
+    //     permanentAddress: `${state.diaChiThC}, ${state.phuongThc?.name}, ${state.quanThc?.name}, ${state.thanhPhoThc?.name}`,
+    //     currentAddress: `${state.diaChiTC}, ${state.phuongTc?.name}, ${state.quanTc?.name}, ${state.thanhPhoTc?.name}`,
+    //     declaredIncome: state.declaredIncome,
+    //   },
+    // })
+
+    let temp = {
+      ...loanInfo,
       customer: {
         name: state.name,
         dateOfBirth: state.dateOfBirth,
@@ -108,7 +122,9 @@ const BorrowerInfo: FC = () => {
         currentAddress: `${state.diaChiTC}, ${state.phuongTc?.name}, ${state.quanTc?.name}, ${state.thanhPhoTc?.name}`,
         declaredIncome: state.declaredIncome,
       },
-    })
+    }
+
+    localStorage.setItem('info', JSON.stringify(temp))
 
     router.push('/preview')
   }

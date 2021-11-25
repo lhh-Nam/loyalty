@@ -6,38 +6,34 @@ import Edit from '@component/icons/Edit'
 import AppLayout from '@component/layout/AppLayout'
 import { H1 } from '@component/Typography'
 import { Box, Button, Container, Grid } from '@material-ui/core'
-import { car } from '@stores/products/car'
 import style from '@styles/pages/preview-info-loan/Info.module.scss'
-import { sweetAlert } from '@utils/alert'
+import { formatCurrency } from '@utils/utils'
+import { postLoan } from 'apis/product/car'
 import { useRouter } from 'next/router'
 import React, { FC, useEffect, useState } from 'react'
-import { useRecoilState } from 'recoil'
+import { useMutation } from 'react-query'
 
 const PrebiewInfo: FC = () => {
   const router = useRouter()
-  const carState = useRecoilState(car)
-  console.log('log => ~ carState', carState)
 
-  const [state, setState] = useState({
-    hoTen: '',
-    cmnd: '',
-    ngaySinh: new Date(),
-    sdt: '',
-    diaChiThC: '',
-    thanhPhoThc: '',
-    phuongThc: '',
-    quanThc: '',
-    diaChiTC: '',
-    thanhPhoTc: '',
-    phuongTc: '',
-    quanTc: '',
-  })
+  const [loanInfo, setLoanInfo] = useState<any>({})
 
   useEffect(() => {
     const infoLocalStorage = localStorage.getItem('info')
     const info = infoLocalStorage && JSON.parse(infoLocalStorage)
-    info && setState(info)
+    info && setLoanInfo(info)
   }, [])
+
+  const { mutateAsync } = useMutation(postLoan)
+
+  const onRegister = async () => {
+    const response = await mutateAsync({
+      ...loanInfo,
+    })
+    console.log('log => ~ onRegister ~ response', response)
+    if (response.isSuccessful)
+      console.log('log => ~ onRegister ~ response', response)
+  }
 
   const breadcrumbs = [
     { label: 'Trang chủ', link: '/', isActive: false },
@@ -74,77 +70,80 @@ const PrebiewInfo: FC = () => {
             <p className={style.matter}>1. Thông tin cá nhân</p>
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Họ và tên:</p>
-              <p className={style['text-content']}>{state.hoTen}</p>
+              <p className={style['text-content']}>{loanInfo?.customer?.name}</p>
             </Box>
 
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Ngày sinh:</p>
               <p className={style['text-content']}>
-                {new Date(state.ngaySinh).toLocaleDateString()}
+                {new Date(loanInfo?.customer?.dateOfBirth).toLocaleDateString()}
               </p>
             </Box>
 
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Số CMND/ CCCD:</p>
-              <p className={style['text-content']}>{state.cmnd}</p>
+              <p className={style['text-content']}>{loanInfo?.customer?.icNumber}</p>
             </Box>
 
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Số điện thoại:</p>
-              <p className={style['text-content']}>{state.sdt}</p>
+              <p className={style['text-content']}>
+                {loanInfo?.customer?.phoneNumber}
+              </p>
             </Box>
 
             <p className={style.matter}>2. Thông tin địa chỉ</p>
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Địa chỉ thường chú:</p>
-              <p className={style['text-content']}>{''}</p>
+              <p className={style['text-content']}>
+                {loanInfo?.customer?.permanentAddress}
+              </p>
             </Box>
 
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Địa chỉ tạm chú:</p>
-              <p className={style['text-content']}>{''}</p>
+              <p className={style['text-content']}>
+                {loanInfo?.customer?.currentAddress}
+              </p>
             </Box>
 
             <p className={style.matter}>3. Thông tin vay</p>
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Sản phẩm vay:</p>
-              <p className={style['text-content']}>{'1.859.000.000 đồng'}</p>
+              <p className={style['text-content']}>{loanInfo?.productName}</p>
             </Box>
 
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Giá sản phẩm (dự kiến):</p>
-              <p className={style['text-content']}>{'1.859.000.000 đồng'}</p>
+              <p className={style['text-content']}>
+                {formatCurrency(loanInfo?.productPrice)} VNĐ
+              </p>
             </Box>
 
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Ngân hàng đăng ký vay:</p>
-              <p className={style['text-content']}>{'Exinbank'}</p>
+              <p className={style['text-content']}>{loanInfo?.bankCode}</p>
             </Box>
 
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Thời gian vay:</p>
-              <p className={style['text-content']}>{'25 năm'}</p>
+              <p className={style['text-content']}>
+                {loanInfo?.loan?.requestTenor} tháng
+              </p>
             </Box>
 
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Số tiền vay:</p>
-              <p className={style['text-content']}>{'1.859.000.000 đồng'}</p>
+              <p className={style['text-content']}>
+                {formatCurrency(loanInfo?.loan?.requestAmount)} VNĐ
+              </p>
             </Box>
 
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Tài sản đảm bảo:</p>
-              <p className={style['text-content']}>{''}</p>
+              <p className={style['text-content']}>{loanInfo?.collateral}</p>
             </Box>
           </Box>
-          {/* <BazarImage
-            src="/assets/loyalty/home/eximbank.png"
-            sx={{
-              minWidth: '700px',
-              display: 'block',
-              height: '100%',
-              width: '100%',
-            }}
-          /> */}
           <Box sx={{ mt: '30px' }} />
           <Grid container spacing={5} justifyContent="flex-end">
             <Grid item>
@@ -162,14 +161,16 @@ const PrebiewInfo: FC = () => {
                 variant="contained"
                 color="primary"
                 endIcon={<Accept />}
-                onClick={() => {
-                  sweetAlert('Thành công', 'Đăng ký vay thành công', 'success').then(
-                    () => {
-                      router.replace('/')
-                      localStorage.removeItem('info')
-                    }
-                  )
-                }}
+                // onClick={() => {
+                //   sweetAlert('Thành công', 'Đăng ký vay thành công', 'success').then(
+                //     () => {
+                //       router.replace('/')
+                //       localStorage.removeItem('info')
+                //     }
+                //   )
+                // }}
+
+                onClick={onRegister}
               >
                 Xác nhận
               </Button>

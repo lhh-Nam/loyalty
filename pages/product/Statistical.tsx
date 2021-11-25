@@ -11,14 +11,12 @@ import {
   RadioGroup,
 } from '@material-ui/core'
 import { makeStyles } from '@mui/styles'
-import { car } from '@stores/products/car'
 import Style from '@styles/pages/product/Detail.module.scss'
 import { formatCurrency } from '@utils/utils'
 import clsx from 'clsx'
 import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
-import { useRecoilState, useSetRecoilState } from 'recoil'
 import CustomSlider from './CustomSlider'
 
 const lstRadioInterest = ['Dư nợ giảm dần', 'Trả đều hàng tháng']
@@ -27,17 +25,26 @@ const lstNote = [
   {
     color: '#b5dced',
     title: 'Cần trả trước',
-    amount: '0',
+    amount: {
+      string: '0',
+      number: 0,
+    },
   },
   {
     color: '#72b9db',
     title: 'Gốc cần trả',
-    amount: '0',
+    amount: {
+      string: '0',
+      number: 0,
+    },
   },
   {
     color: '#0098CE',
     title: 'Lãi cần trả',
-    amount: '0',
+    amount: {
+      string: '0',
+      number: 0,
+    },
   },
 ]
 
@@ -113,13 +120,9 @@ const Statistical: FC<IStatisticalProps> = (props) => {
   const { banks, price, loanRate, loanTermMax, interestRate, currentBank, name } =
     props
 
-  const carState = useRecoilState(car)
-  const setCarState = useSetRecoilState(car)
-
   const router = useRouter()
   let lstBank = banks.map((bank: any) => ({ ...bank, value: bank.code }))
 
-  const [nam, setNam] = useState({})
   const [isDecreases, setIsDecreases] = useState(true)
   useEffect(() => {
     isDecreases ? handleDecreases() : handlePaidMonthly()
@@ -179,11 +182,20 @@ const Statistical: FC<IStatisticalProps> = (props) => {
 
     setListNote((prev: any) => {
       const newState = [...prev]
-      newState[0].amount = getUnitCurrency(prepay)
-      newState[1].amount = getUnitCurrency(loanValueCalculated)
-      newState[2].amount = getUnitCurrency(
-        getInterest(loanValueCalculated, necessaryValue.loanTerm)
-      )
+      newState[0].amount = {
+        string: getUnitCurrency(prepay),
+        number: prepay,
+      }
+      newState[1].amount = {
+        string: getUnitCurrency(loanValueCalculated),
+        number: loanValueCalculated,
+      }
+      newState[2].amount = {
+        string: getUnitCurrency(
+          getInterest(loanValueCalculated, necessaryValue.loanTerm)
+        ),
+        number: getInterest(loanValueCalculated, necessaryValue.loanTerm),
+      }
       return newState
     })
 
@@ -216,9 +228,18 @@ const Statistical: FC<IStatisticalProps> = (props) => {
     }))
     setListNote((prev: any) => {
       const newState = [...prev]
-      newState[0].amount = getUnitCurrency(prepay)
-      newState[1].amount = getUnitCurrency(loanValueCalculated)
-      newState[2].amount = getUnitCurrency(interestPayable)
+      newState[0].amount = {
+        string: getUnitCurrency(prepay),
+        number: prepay,
+      }
+      newState[1].amount = {
+        string: getUnitCurrency(loanValueCalculated),
+        number: loanValueCalculated,
+      }
+      newState[2].amount = {
+        string: getUnitCurrency(interestPayable),
+        number: interestPayable,
+      }
       return newState
     })
 
@@ -244,11 +265,18 @@ const Statistical: FC<IStatisticalProps> = (props) => {
 
     setListNote((prev: any) => {
       const newState = [...prev]
-      newState[0].amount = getUnitCurrency(price - value)
-      newState[1].amount = getUnitCurrency(value)
-      newState[2].amount = getUnitCurrency(
-        getInterest(value, necessaryValue.loanTerm)
-      )
+      newState[0].amount = {
+        string: getUnitCurrency(price - value),
+        number: price - value,
+      }
+      newState[1].amount = {
+        string: getUnitCurrency(value),
+        number: value,
+      }
+      newState[2].amount = {
+        string: getUnitCurrency(getInterest(value, necessaryValue.loanTerm)),
+        number: getInterest(value, necessaryValue.loanTerm),
+      }
       return newState
     })
 
@@ -278,9 +306,18 @@ const Statistical: FC<IStatisticalProps> = (props) => {
 
     setListNote((prev: any) => {
       const newState = [...prev]
-      newState[0].amount = getUnitCurrency(price - value)
-      newState[1].amount = getUnitCurrency(value)
-      newState[2].amount = getUnitCurrency(interestPayable)
+      newState[0].amount = {
+        string: getUnitCurrency(price - value),
+        number: price - value,
+      }
+      newState[1].amount = {
+        string: getUnitCurrency(value),
+        number: value,
+      }
+      newState[2].amount = {
+        string: getUnitCurrency(interestPayable),
+        number: interestPayable,
+      }
       return newState
     })
 
@@ -309,9 +346,12 @@ const Statistical: FC<IStatisticalProps> = (props) => {
   const handleLoanTermDecreases = (value: number) => {
     setListNote((prev: any) => {
       const newState = [...prev]
-      newState[2].amount = getUnitCurrency(
-        getInterest(necessaryValue.loanValueCalculated, value)
-      )
+      newState[2].amount = {
+        string: getUnitCurrency(
+          getInterest(necessaryValue.loanValueCalculated, value)
+        ),
+        number: getInterest(necessaryValue.loanValueCalculated, value),
+      }
       return newState
     })
 
@@ -342,7 +382,10 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       value
     setListNote((prev: any) => {
       const newState = [...prev]
-      newState[2].amount = getUnitCurrency(interestPayable)
+      newState[2].amount = {
+        string: getUnitCurrency(interestPayable),
+        number: interestPayable,
+      }
       return newState
     })
 
@@ -417,14 +460,43 @@ const Statistical: FC<IStatisticalProps> = (props) => {
       }
     })
 
-    setCarState({
-      ...carState,
+    // setCarState({
+    //   ...carState,
+    //   merchantId: 'merchant 1', // Nhà phân phối {fake}
+    //   saleCode: 'sale code 1', // NV bán hàng
+    //   bankCode: select, // Ngân hàng
+    //   flagMarkBank: true, // True => Ngân hàng thẩm định, False => F5S thẩm định
+    //   productName: name, // Model xe/ Tên xe (SP được chọn khi vay)
+    //   productPrice: price.toString, // Giá trị xe
+    //   collateral: 'The Chap Nha', // {fake}
+
+    //   loan: {
+    //     requestAmount: necessaryValue.loanValueCalculated, // Giá trị khoảng vay
+    //     requestTenor: necessaryValue.loanTerm, // Thời hạn vay
+    //     interestRate: bankInfo.interestRate, // Lãi xuất
+    //     interestRateIncentive: 0.09, // Lãi xuất ưu đãi {fake}
+    //     interestRateAfterIncentive: 0.197, // Lãi xuất sau ưu đãi {fake}
+    //     tenorIncentive: 6, // Thời gian ưu đãi {fake}
+    //     loanPurpose: 'Vay Mua xe', // Nhu cầu vay {fake}
+    //   },
+
+    //   offer: {
+    //     emi: 10000000, // khoảng tiền trả hàng tháng {fake}
+    //     repaymentAmount: listNote[0].amount.number, // Cần trả trước
+    //     principalAmount: listNote[1].amount.number, // Số tiền vay
+    //     interestAmount: listNote[2].amount.number, // Số tiền lãi
+    //     calculationMethod: radio.interest, // phương thức tính lãi (dư nợ giảm dâ || trả đều hàng tháng)
+    //     loanRepaymentSchedule: newList,
+    //   },
+    // })
+
+    let loanInfo = {
       merchantId: 'merchant 1', // Nhà phân phối {fake}
       saleCode: 'sale code 1', // NV bán hàng
       bankCode: select, // Ngân hàng
       flagMarkBank: true, // True => Ngân hàng thẩm định, False => F5S thẩm định
       productName: name, // Model xe/ Tên xe (SP được chọn khi vay)
-      productPrice: price.toString, // Giá trị xe
+      productPrice: price.toString(), // Giá trị xe
       collateral: 'The Chap Nha', // {fake}
 
       loan: {
@@ -439,44 +511,15 @@ const Statistical: FC<IStatisticalProps> = (props) => {
 
       offer: {
         emi: 10000000, // khoảng tiền trả hàng tháng {fake}
-        repaymentAmount: listNote[0].amount, // Cần trả trước
-        principalAmount: listNote[1].amount, // Số tiền vay
-        interestAmount: listNote[2].amount, // Số tiền lãi
-        calculationMethod: radio.interest, // phương thức tính lãi (dư nợ giảm dâ || trả đều hàng tháng)
-        loanRepaymentSchedule: newList,
-      },
-    })
-
-    let nam = {
-      merchantId: 'merchant 1', // Nhà phân phối {fake}
-      saleCode: 'sale code 1', // NV bán hàng
-      bankCode: select, // Ngân hàng
-      flagMarkBank: true, // True => Ngân hàng thẩm định, False => F5S thẩm định
-      productName: name, // Model xe/ Tên xe (SP được chọn khi vay)
-      productPrice: price.toString, // Giá trị xe
-      collateral: 'The Chap Nha', // {fake}
-
-      loan: {
-        requestAmount: necessaryValue.loanValueCalculated, // Giá trị khoảng vay
-        requestTenor: necessaryValue.loanTerm, // Thời hạn vay
-        interestRate: bankInfo.interestRate, // Lãi xuất
-        interestRateIncentive: 0.09, // Lãi xuất ưu đãi {fake}
-        interestRateAfterIncentive: 0.197, // Lãi xuất sau ưu đãi {fake}
-        tenorIncentive: 6, // Thời gian ưu đãi {fake}
-        loanPurpose: 'Vay Mua xe', // Nhu cầu vay {fake}
-      },
-
-      offer: {
-        emi: 10000000, // khoảng tiền trả hàng tháng {fake}
-        repaymentAmount: listNote[0].amount, // Cần trả trước
-        principalAmount: listNote[1].amount, // Số tiền vay
-        interestAmount: listNote[2].amount, // Số tiền lãi
+        repaymentAmount: listNote[0].amount.number, // Cần trả trước
+        principalAmount: listNote[1].amount.number, // Số tiền vay
+        interestAmount: listNote[2].amount.number, // Số tiền lãi
         calculationMethod: radio.interest, // phương thức tính lãi (dư nợ giảm dâ || trả đều hàng tháng)
         loanRepaymentSchedule: newList,
       },
     }
 
-    localStorage.setItem('info', JSON.stringify(nam))
+    localStorage.setItem('info', JSON.stringify(loanInfo))
 
     router.push('/borrower-info')
   }
@@ -637,7 +680,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
                       className={Style.color}
                     ></div>
                     <Span>{note.title}</Span>
-                    <Span>{note.amount}</Span>
+                    <Span>{note.amount.string}</Span>
                   </Grid>
                 )
               })}
