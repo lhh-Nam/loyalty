@@ -110,38 +110,42 @@ const PrebiewInfo: FC = () => {
             <p className={style.matter}>3. Thông tin vay</p>
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Sản phẩm vay:</p>
-              <p className={style['text-content']}>{loanInfo?.productName}</p>
+              <p className={style['text-content']}>
+                {loanInfo?.product?.productName}
+              </p>
             </Box>
 
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Giá sản phẩm (dự kiến):</p>
               <p className={style['text-content']}>
-                {formatCurrency(loanInfo?.productPrice)} VNĐ
+                {formatCurrency(loanInfo?.product?.productPrice)} VNĐ
               </p>
             </Box>
 
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Ngân hàng đăng ký vay:</p>
-              <p className={style['text-content']}>{loanInfo?.bankCode}</p>
+              <p className={style['text-content']}>{loanInfo?.product?.bankCode}</p>
             </Box>
 
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Thời gian vay:</p>
               <p className={style['text-content']}>
-                {loanInfo?.loan?.requestTenor} tháng
+                {loanInfo?.loanInformation?.loan?.requestTenor} tháng
               </p>
             </Box>
 
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Số tiền vay:</p>
               <p className={style['text-content']}>
-                {formatCurrency(loanInfo?.loan?.requestAmount)} VNĐ
+                {formatCurrency(loanInfo?.loanInformation?.loan?.requestAmount)} VNĐ
               </p>
             </Box>
 
             <Box className={style['row-content']}>
               <p className={style['text-label']}>Tài sản đảm bảo:</p>
-              <p className={style['text-content']}>{loanInfo?.collateral}</p>
+              <p className={style['text-content']}>
+                {loanInfo?.product?.collateral}
+              </p>
             </Box>
           </Box>
           <Box sx={{ mt: '30px' }} />

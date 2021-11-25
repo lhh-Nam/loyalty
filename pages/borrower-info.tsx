@@ -19,11 +19,9 @@ import {
 } from '@material-ui/core'
 import { DesktopDatePicker, LocalizationProvider } from '@material-ui/lab'
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns'
-import { car } from '@stores/products/car'
 import { useRouter } from 'next/router'
 import React, { FC, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
-import { useRecoilState, useSetRecoilState } from 'recoil'
 
 const fetchProvinces = () =>
   fetch('https://provinces.open-api.vn/api/p').then((res) => res.json())
@@ -37,8 +35,8 @@ const fetchDistricts = (provinceId: any) =>
   )
 const BorrowerInfo: FC = () => {
   const router = useRouter()
-  const carState = useRecoilState(car)
-  const setCarState = useSetRecoilState(car)
+  // const carState = useRecoilState(car)
+  // const setCarState = useSetRecoilState(car)
 
   const [loanInfo, setLoanInfo] = useState({})
 
@@ -48,13 +46,13 @@ const BorrowerInfo: FC = () => {
     dateOfBirth: new Date(),
     phoneNumber: '',
     diaChiThC: '',
-    thanhPhoThc: '',
-    phuongThc: '',
-    quanThc: '',
-    diaChiTC: '',
-    thanhPhoTc: '',
-    phuongTc: '',
-    quanTc: '',
+    thanhPhoThc: null,
+    phuongThc: null,
+    quanThc: null,
+    diaChiTC: null,
+    thanhPhoTc: null,
+    phuongTc: null,
+    quanTc: null,
   })
   const { data: provinces = [] } = useQuery('provinces', fetchProvinces)
 
@@ -262,10 +260,11 @@ const BorrowerInfo: FC = () => {
               <Grid item md={12}>
                 <Autocomplete
                   id="country-select-demo"
-                  options={provinces}
+                  options={provinces || []}
                   fullWidth
                   autoHighlight
                   getOptionLabel={(option: any) => option?.name}
+                  value={state.thanhPhoThc}
                   onChange={(_, value) =>
                     setState((prev: any) => ({ ...prev, thanhPhoThc: value }))
                   }
@@ -274,7 +273,6 @@ const BorrowerInfo: FC = () => {
                       {...params}
                       label="Thành phố"
                       variant="outlined"
-                      value={state.thanhPhoThc || ''}
                       placeholder="Chọn Thành phố"
                     />
                   )}
@@ -283,10 +281,11 @@ const BorrowerInfo: FC = () => {
               <Grid item md={6}>
                 <Autocomplete
                   id="country-select-demo"
-                  options={provinceInfo?.districts}
+                  options={provinceInfo?.districts || []}
                   fullWidth
                   autoHighlight
                   getOptionLabel={(option: any) => option?.name}
+                  value={state.quanThc}
                   onChange={(_, value) =>
                     setState((prev: any) => ({ ...prev, quanThc: value }))
                   }
@@ -295,7 +294,6 @@ const BorrowerInfo: FC = () => {
                       {...params}
                       label="Quận/ Huyện"
                       variant="outlined"
-                      value={state.quanThc || ''}
                       placeholder="Chọn Quận/ Huyện"
                     />
                   )}
@@ -304,10 +302,11 @@ const BorrowerInfo: FC = () => {
               <Grid item md={6}>
                 <Autocomplete
                   id="country-select-demo"
-                  options={districtInfo?.wards}
+                  options={districtInfo?.wards || []}
                   fullWidth
                   autoHighlight
                   getOptionLabel={(option: any) => option?.name}
+                  value={state.phuongThc}
                   onChange={(_, value) =>
                     setState((prev: any) => ({ ...prev, phuongThc: value }))
                   }
@@ -316,7 +315,6 @@ const BorrowerInfo: FC = () => {
                       {...params}
                       label="Phường/ Xã"
                       variant="outlined"
-                      value={state.phuongThc || ''}
                       placeholder="Chọn Phường/ Xã"
                     />
                   )}
@@ -339,10 +337,11 @@ const BorrowerInfo: FC = () => {
               <Grid item md={12}>
                 <Autocomplete
                   id="country-select-demo"
-                  options={provinces}
+                  options={provinces || []}
                   fullWidth
                   autoHighlight
                   getOptionLabel={(option: any) => option?.name}
+                  value={state.thanhPhoTc}
                   onChange={(_, value) =>
                     setState((prev: any) => ({ ...prev, thanhPhoTc: value }))
                   }
@@ -351,7 +350,6 @@ const BorrowerInfo: FC = () => {
                       {...params}
                       label="Thành phố"
                       variant="outlined"
-                      value={state.thanhPhoTc || ''}
                       placeholder="Chọn Thành phố"
                     />
                   )}
@@ -360,10 +358,11 @@ const BorrowerInfo: FC = () => {
               <Grid item md={6}>
                 <Autocomplete
                   id="country-select-demo"
-                  options={provinceInfoTC?.districts}
+                  options={provinceInfoTC?.districts || []}
                   fullWidth
                   autoHighlight
                   getOptionLabel={(option: any) => option?.name}
+                  value={state.quanTc}
                   onChange={(_, value) =>
                     setState((prev: any) => ({ ...prev, quanTc: value }))
                   }
@@ -372,7 +371,6 @@ const BorrowerInfo: FC = () => {
                       {...params}
                       label="Quận/ Huyện"
                       variant="outlined"
-                      value={state.quanTc || ''}
                       placeholder="Chọn Quận/ Huyện"
                     />
                   )}
@@ -381,10 +379,11 @@ const BorrowerInfo: FC = () => {
               <Grid item md={6}>
                 <Autocomplete
                   id="country-select-demo"
-                  options={districtInfoTC?.wards}
+                  options={districtInfoTC?.wards || []}
                   fullWidth
                   autoHighlight
                   getOptionLabel={(option: any) => option?.name}
+                  value={state.phuongTc}
                   onChange={(_, value) =>
                     setState((prev: any) => ({ ...prev, phuongTc: value }))
                   }
@@ -393,7 +392,6 @@ const BorrowerInfo: FC = () => {
                       {...params}
                       label="Phường/ Xã"
                       variant="outlined"
-                      value={state.phuongTc || ''}
                       placeholder="Chọn Phường/ Xã"
                     />
                   )}
