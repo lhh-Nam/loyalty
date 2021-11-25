@@ -57,12 +57,12 @@ const handleErrorResponse = async (response: Response, method: string) => {
 }
 
 const getAsync = async <TResponse>(apiUrl: string): Promise<TResponse> => {
-  // const token = await requestAccessToken()
-  // const response = await fetch(apiUrl, {
-  //   headers: headersWithToken(token),
-  // })
+  const token = await requestAccessToken()
+  const response = await fetch(apiUrl, {
+    headers: headersWithToken(token),
+  })
 
-  const response = await fetch(apiUrl)
+  //const response = await fetch(apiUrl)
 
   return handleResponse(response, 'GET')
 }

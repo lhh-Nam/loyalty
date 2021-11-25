@@ -121,7 +121,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
     props
 
   const router = useRouter()
-  let lstBank = banks.map((bank: any) => ({ ...bank, value: bank.code }))
+  let lstBank = banks?.map((bank: any) => ({ ...bank, value: bank.code }))
 
   const [isDecreases, setIsDecreases] = useState(true)
   useEffect(() => {
@@ -429,7 +429,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
   }
 
   const handleSelect = (value: string) => {
-    lstBank.map((bank) => {
+    lstBank?.map((bank) => {
       if (bank.value === value) {
         setBankInfo({
           loanRate: bank.loanRate / 100,
@@ -445,7 +445,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
     let loanTerm = necessaryValue.loanTerm
     let interestAmount = bankInfo.interestRate
 
-    let newList = [...Array(necessaryValue.loanTerm).keys()].map((_, idx) => {
+    let newList = [...Array(necessaryValue.loanTerm).keys()]?.map((_, idx) => {
       const principal = principalAmount / loanTerm
       const interest = isDecreases
         ? ((principalAmount - principal * idx) * interestAmount) / loanTerm
@@ -546,7 +546,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
             value={value}
             onChange={(e) => handleChangeRadio(e, key)}
           >
-            {lstRadio.map((radio: any, idx: number) => {
+            {lstRadio?.map((radio: any, idx: number) => {
               return (
                 <FormControlLabel
                   key={idx}
@@ -677,7 +677,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
           </Grid>
           <Grid item xs={6} height="100%">
             <Grid container className={Style.noteWrap}>
-              {listNote.map((note, idx) => {
+              {listNote?.map((note, idx) => {
                 return (
                   <Grid className={Style.noteItem} key={idx}>
                     <div

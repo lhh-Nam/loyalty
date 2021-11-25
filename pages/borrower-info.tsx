@@ -84,6 +84,13 @@ const BorrowerInfo: FC = () => {
     }))
   }
 
+  const handleDateChange = (e: any, key: string) => {
+    setState((prevState: any) => ({
+      ...prevState,
+      [key]: e,
+    }))
+  }
+
   const breadcrumbs = [
     { label: 'Trang chủ', link: '/', isActive: false },
     { label: 'Thông tin vay', isActive: true },
@@ -198,7 +205,7 @@ const BorrowerInfo: FC = () => {
                   label="Ngày sinh"
                   inputFormat="dd/MM/yyyy"
                   value={state.dateOfBirth}
-                  onChange={handleValueChange}
+                  onChange={(e) => handleDateChange(e, 'dateOfBirth')}
                   renderInput={(params: any) => (
                     <TextField {...params} variant="outlined" fullWidth />
                   )}

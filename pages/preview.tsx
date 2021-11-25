@@ -7,6 +7,7 @@ import AppLayout from '@component/layout/AppLayout'
 import { H1 } from '@component/Typography'
 import { Box, Button, Container, Grid } from '@material-ui/core'
 import style from '@styles/pages/preview-info-loan/Info.module.scss'
+import { sweetAlert } from '@utils/alert'
 import { formatCurrency } from '@utils/utils'
 import { postLoan } from 'apis/product/car'
 import { useRouter } from 'next/router'
@@ -30,9 +31,11 @@ const PrebiewInfo: FC = () => {
     const response = await mutateAsync({
       ...loanInfo,
     })
-    console.log('log => ~ onRegister ~ response', response)
     if (response.isSuccessful)
-      console.log('log => ~ onRegister ~ response', response)
+      sweetAlert('Thành công', 'Đăng ký vay thành công', 'success').then(() => {
+        router.replace('/')
+        localStorage.removeItem('info')
+      })
   }
 
   const breadcrumbs = [
@@ -165,15 +168,6 @@ const PrebiewInfo: FC = () => {
                 variant="contained"
                 color="primary"
                 endIcon={<Accept />}
-                // onClick={() => {
-                //   sweetAlert('Thành công', 'Đăng ký vay thành công', 'success').then(
-                //     () => {
-                //       router.replace('/')
-                //       localStorage.removeItem('info')
-                //     }
-                //   )
-                // }}
-
                 onClick={onRegister}
               >
                 Xác nhận

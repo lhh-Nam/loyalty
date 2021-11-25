@@ -19,7 +19,6 @@ const Product: FC = () => {
   const getProducts = async () => {
     const res = await fetch('http://localhost:1337/auto-products')
     const products = await res.json()
-    console.log(products)
     if (products) setProducts(products)
   }
   useEffect(() => {
@@ -185,43 +184,5 @@ const Product: FC = () => {
     </>
   )
 }
-
-const lstProduct = [
-  {
-    imgUrl: '/assets/loyalty/car-loan/car-1.png',
-    title: 'BMW X1',
-    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
-  },
-  {
-    imgUrl: '/assets/loyalty/car-loan/car-2.png',
-    title: 'BMW X2',
-    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
-  },
-  {
-    imgUrl: '/assets/loyalty/car-loan/car-3.png',
-    title: 'BMW X1',
-    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
-  },
-  {
-    imgUrl: '/assets/loyalty/car-loan/car-4.png',
-    title: 'BMW X3',
-    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
-  },
-  {
-    imgUrl: '/assets/loyalty/car-loan/car-5.png',
-    title: 'BMW X4',
-    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
-  },
-  {
-    imgUrl: '/assets/loyalty/car-loan/car-6.png',
-    title: 'BMW X5',
-    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
-  },
-  {
-    imgUrl: '/assets/loyalty/car-loan/car-1.png',
-    title: 'BMW X6',
-    sub: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Platea nisl diam nisl pretium nec',
-  },
-]
 
 export default Product
