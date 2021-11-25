@@ -21,7 +21,7 @@ import { DesktopDatePicker, LocalizationProvider } from '@material-ui/lab'
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns'
 import { car } from '@stores/products/car'
 import { useRouter } from 'next/router'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 
@@ -38,7 +38,6 @@ const fetchDistricts = (provinceId: any) =>
 const BorrowerInfo: FC = () => {
   const router = useRouter()
   const carState = useRecoilState(car)
-  console.log('log => ~ carState', carState)
   const setCarState = useSetRecoilState(car)
 
   const [state, setState] = useState<any>({
@@ -89,6 +88,13 @@ const BorrowerInfo: FC = () => {
     { label: 'Trang chủ', link: '/', isActive: false },
     { label: 'Thông tin vay', isActive: true },
   ]
+
+  useEffect(() => {
+    const infoLocalStorage = localStorage.getItem('info')
+    const info = infoLocalStorage && JSON.parse(infoLocalStorage)
+    console.log('log => ~ useEffect ~ info', info)
+    // info && setState(info)
+  }, [])
 
   const handleRegister = () => {
     setCarState({

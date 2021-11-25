@@ -119,6 +119,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
   const router = useRouter()
   let lstBank = banks.map((bank: any) => ({ ...bank, value: bank.code }))
 
+  const [nam, setNam] = useState({})
   const [isDecreases, setIsDecreases] = useState(true)
   useEffect(() => {
     isDecreases ? handleDecreases() : handlePaidMonthly()
@@ -415,7 +416,6 @@ const Statistical: FC<IStatisticalProps> = (props) => {
         monthlyRepayment: interest + principal,
       }
     })
-    console.log('log => ~ newList ~ newList', newList)
 
     setCarState({
       ...carState,
@@ -446,6 +446,37 @@ const Statistical: FC<IStatisticalProps> = (props) => {
         loanRepaymentSchedule: newList,
       },
     })
+
+    let nam = {
+      merchantId: 'merchant 1', // Nhà phân phối {fake}
+      saleCode: 'sale code 1', // NV bán hàng
+      bankCode: select, // Ngân hàng
+      flagMarkBank: true, // True => Ngân hàng thẩm định, False => F5S thẩm định
+      productName: name, // Model xe/ Tên xe (SP được chọn khi vay)
+      productPrice: price.toString, // Giá trị xe
+      collateral: 'The Chap Nha', // {fake}
+
+      loan: {
+        requestAmount: necessaryValue.loanValueCalculated, // Giá trị khoảng vay
+        requestTenor: necessaryValue.loanTerm, // Thời hạn vay
+        interestRate: bankInfo.interestRate, // Lãi xuất
+        interestRateIncentive: 0.09, // Lãi xuất ưu đãi {fake}
+        interestRateAfterIncentive: 0.197, // Lãi xuất sau ưu đãi {fake}
+        tenorIncentive: 6, // Thời gian ưu đãi {fake}
+        loanPurpose: 'Vay Mua xe', // Nhu cầu vay {fake}
+      },
+
+      offer: {
+        emi: 10000000, // khoảng tiền trả hàng tháng {fake}
+        repaymentAmount: listNote[0].amount, // Cần trả trước
+        principalAmount: listNote[1].amount, // Số tiền vay
+        interestAmount: listNote[2].amount, // Số tiền lãi
+        calculationMethod: radio.interest, // phương thức tính lãi (dư nợ giảm dâ || trả đều hàng tháng)
+        loanRepaymentSchedule: newList,
+      },
+    }
+
+    localStorage.setItem('info', JSON.stringify(nam))
 
     router.push('/borrower-info')
   }
