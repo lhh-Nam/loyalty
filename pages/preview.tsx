@@ -97,14 +97,14 @@ const PrebiewInfo: FC = () => {
 
             <p className={style.matter}>2. Thông tin địa chỉ</p>
             <Box className={style['row-content']}>
-              <p className={style['text-label']}>Địa chỉ thường chú:</p>
+              <p className={style['text-label']}>Địa chỉ thường trú:</p>
               <p className={style['text-content']}>
                 {loanInfo?.customer?.permanentAddress}
               </p>
             </Box>
 
             <Box className={style['row-content']}>
-              <p className={style['text-label']}>Địa chỉ tạm chú:</p>
+              <p className={style['text-label']}>Địa chỉ tạm trú:</p>
               <p className={style['text-content']}>
                 {loanInfo?.customer?.currentAddress}
               </p>

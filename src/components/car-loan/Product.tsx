@@ -17,10 +17,11 @@ const Product: FC = () => {
   const [sort, setSort] = useState('Sắp xếp kết quả')
 
   const getProducts = async () => {
-    const res = await fetch('http://localhost:1337/auto-products')
+    const res = await fetch('http://45.119.80.100:8085/product-informations')
     const products = await res.json()
     if (products) setProducts(products)
   }
+
   useEffect(() => {
     getProducts()
   }, [])
@@ -60,7 +61,7 @@ const Product: FC = () => {
               <Grid container pb={1.5}>
                 <Span>
                   Lãi suất&nbsp;
-                  <Span color="#0098CE">{product?.banks[0]?.interestRate}</Span>%
+                  <Span color="#0098CE">{product?.auto_product?.interestRate}</Span>%
                 </Span>
 
                 <Span color="grey.500" px={1}>
@@ -86,7 +87,10 @@ const Product: FC = () => {
                 /> */}
 
                 <BazarImage
-                  src={product.imgUrl || '/assets/loyalty/car-loan/car-1.png'}
+                  src={
+                    product?.auto_product?.imgUrl ||
+                    '/assets/loyalty/car-loan/car-1.png'
+                  }
                   sx={{
                     width: '100%',
                     height: '200px',
@@ -95,7 +99,7 @@ const Product: FC = () => {
 
                 <div className={Style.text}>
                   <span>Vay ô tô</span>
-                  <span>{product?.banks[0]?.name}</span>
+                  <span>{product?.banks?.[0]?.name}</span>
                 </div>
               </div>
 
@@ -107,9 +111,9 @@ const Product: FC = () => {
               >
                 <Grid>
                   <H4 mb={0.5} mt={1.5}>
-                    {product.name}
+                    {product?.auto_product?.name}
                   </H4>
-                  <Span color="grey.600">{product.description}</Span>
+                  <Span color="grey.600">{product?.auto_product?.description}</Span>
                   <H4 mb={1.5} mt={1}>
                     {product.price} VNĐ
                   </H4>

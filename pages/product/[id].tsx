@@ -26,6 +26,10 @@ const ProductDetails = () => {
     loanTermMax: 24,
     loanRate: 0,
     interestRate: 0,
+    auto_product: {
+      name: '',
+      description: '',
+    },
     currentBank: '',
     fetchingVirtual: true,
   })
@@ -40,9 +44,10 @@ const ProductDetails = () => {
     setContentPage({
       ...contentPage,
       ...data,
+      loanTermMax: data?.auto_product?.maxTenor,
       price: parseInt(data?.price),
       currentBank: bank?.code,
-      interestRate: bank?.interestRate / 100,
+      interestRate: (data?.auto_product?.interestRate || 6) / 100,
       loanRate: bank?.loanRate / 100,
       fetchingVirtual: false,
     })

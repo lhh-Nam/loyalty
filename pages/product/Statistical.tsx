@@ -96,10 +96,10 @@ const useStyles = makeStyles({
 const getUnitCurrency = (labelValue: number) => {
   // Nine Zeroes for Billions
   return Math.abs(Number(labelValue)) >= 1.0e9
-    ? Math.abs(Number(labelValue)) / 1.0e9 + ' tỷ'
+    ? (Math.abs(Number(labelValue)) / 1.0e9).toFixed(3) + ' tỷ'
     : // Six Zeroes for Millions
     Math.abs(Number(labelValue)) >= 1.0e6
-    ? Math.abs(Number(labelValue)) / 1.0e6 + ' triệu'
+    ? (Math.abs(Number(labelValue)) / 1.0e6).toFixed(3) + ' triệu'
     : // Three Zeroes for Thousands
       formatCurrency(labelValue) + ' vnđ'
 }
@@ -113,12 +113,22 @@ interface IStatisticalProps extends Object {
   interestRate: number
   banks: string[]
   currentBank: string
-  name?: string
+
+  auto_product: {
+    name?: string
+  }
 }
 
 const Statistical: FC<IStatisticalProps> = (props) => {
-  const { banks, price, loanRate, loanTermMax, interestRate, currentBank, name } =
-    props
+  const {
+    banks,
+    price,
+    loanRate,
+    loanTermMax,
+    interestRate,
+    currentBank,
+    auto_product: { name },
+  } = props
 
   const router = useRouter()
   let lstBank = banks?.map((bank: any) => ({ ...bank, value: bank.code }))

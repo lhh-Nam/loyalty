@@ -1,3 +1,3 @@
 export const DOMAIN = {
-  URL: 'http://localhost:1337',
+  URL: 'http://45.119.80.100:8085',
 }

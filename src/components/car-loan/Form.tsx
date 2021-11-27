@@ -2,30 +2,53 @@ import BazarImage from '@component/BazarImage'
 import CustomSelect from '@component/common/CustomSelect'
 import { Button, Container, Divider, Grid } from '@material-ui/core'
 import Style from '@styles/pages/car-loan/Form.module.scss'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
+import { useQuery } from 'react-query'
 import { H2 } from '../Typography'
 
 const lstCarPrice = [
   { name: 'Từ 500 triệu - 1 tỷ', value: 'Từ 500 triệu - 1 tỷ' },
   { name: 'Từ 300 triệu - 1 tỷ', value: 'Từ 300 triệu - 1 tỷ' },
 ]
-const lstCarBrand = [
-  { name: 'BMW', value: 'BMW' },
-  { name: 'Honda', value: 'Honda' },
-]
-const lstDistributor = [
-  { name: 'Nam', value: 'Nam' },
-  { name: 'Huy', value: 'Huy' },
-]
+// const lstCarBrand = [
+//   { name: 'BMW', value: 'BMW' },
+//   { name: 'Honda', value: 'Honda' },
+// ]
+// const lstDistributor = [
+//   { name: 'Nam', value: 'Nam' },
+//   { name: 'Huy', value: 'Huy' },
+// ]
+const fetchBanks = () =>
+  fetch('http://45.119.80.100:8085/banks').then((res) => res.json())
+
+const fetchSuppliers = () =>
+  fetch('http://45.119.80.100:8085/auto-suppliers').then((res) => res.json())
 const Form: FC = () => {
   const [form, setForm] = useState({
     exigency: 'Vay ô tô',
-    carPrice: 'Từ 500 triệu - 1 tỷ',
+    carPrice: '',
     carBrand: 'BMW',
     bank: '',
     borrowingLimit: '',
     distributor: '',
   })
+
+  const [listBank, setListBank] = useState([])
+  const [listSupplier, setListSupplier] = useState([])
+
+  const { data: banks } = useQuery('banks', fetchBanks)
+  const { data: suppliers } = useQuery('suppliers', fetchSuppliers)
+
+  useEffect(() => {
+    if (banks) {
+      setListBank(banks?.map((item: any) => ({ name: item.name, value: item.name })))
+    }
+    if (suppliers) {
+      setListSupplier(
+        suppliers?.map((item: any) => ({ name: item.name, value: item.name }))
+      )
+    }
+  }, [banks, suppliers])
 
   const handleForm = (value: any, key: string) => setForm({ ...form, [key]: value })
 
@@ -35,7 +58,7 @@ const Form: FC = () => {
         <div className={Style.textFieldWrapper}>
           <CustomSelect
             label="Giá xe"
-            placeholder="chọn"
+            placeholder="Chọn giá xe"
             value={form.carPrice}
             options={lstCarPrice}
             onChange={(value) => {
@@ -52,12 +75,12 @@ const Form: FC = () => {
       <Grid item sm={6} xs={12} className={Style.formGroup}>
         <div className={Style.textFieldWrapper}>
           <CustomSelect
-            label="Thương hiệu xe"
-            placeholder="chọn"
-            value={form.carBrand}
-            options={lstCarBrand}
+            label="Ngân hàng"
+            placeholder="Chọn ngân hàng"
+            value={form.bank}
+            options={listBank}
             onChange={(value) => {
-              handleForm(value, 'carBrand')
+              handleForm(value, 'bank')
             }}
           />
         </div>
@@ -67,7 +90,7 @@ const Form: FC = () => {
             label="Nhà phân phối"
             placeholder="Chọn nhà phân phối"
             value={form.distributor}
-            options={lstDistributor}
+            options={listSupplier}
             onChange={(value) => {
               handleForm(value, 'distributor')
             }}
@@ -139,6 +162,12 @@ const Form: FC = () => {
                     maxWidth: '1rem',
                   }}
                 />
+              }
+              onClick={() =>
+                console.log({
+                  'banks.name': form.bank,
+                  'auto_suppliers.name': form.distributor,
+                })
               }
             >
               Hiển thị kết quả

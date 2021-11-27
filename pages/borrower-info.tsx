@@ -255,7 +255,7 @@ const BorrowerInfo: FC = () => {
               <Grid item md={12}>
                 <TextField
                   required
-                  label="Địa chỉ thường chú"
+                  label="Địa chỉ thường trú"
                   variant="outlined"
                   name="diaChiThC"
                   value={state.diaChiThC}
@@ -332,7 +332,7 @@ const BorrowerInfo: FC = () => {
             <Grid item container spacing={5} md={6}>
               <Grid item md={12}>
                 <TextField
-                  label="Địa chỉ tạm chú"
+                  label="Địa chỉ tạm trú"
                   variant="outlined"
                   name="diaChiTC"
                   value={state.diaChiTC}
