@@ -2,6 +2,7 @@ import BazarImage from '@component/BazarImage'
 import CustomSelect from '@component/common/CustomSelect'
 import { Button, Container, Divider, Grid } from '@material-ui/core'
 import Style from '@styles/pages/car-loan/Form.module.scss'
+import { DOMAIN } from '@utils/config/domain'
 import React, { FC, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { H2 } from '../Typography'
@@ -18,12 +19,15 @@ const lstCarPrice = [
 //   { name: 'Nam', value: 'Nam' },
 //   { name: 'Huy', value: 'Huy' },
 // ]
-const fetchBanks = () =>
-  fetch('http://45.119.80.100:8085/banks').then((res) => res.json())
+const fetchBanks = () => fetch(`${DOMAIN.URL}/banks`).then((res) => res.json())
 
 const fetchSuppliers = () =>
-  fetch('http://45.119.80.100:8085/auto-suppliers').then((res) => res.json())
-const Form: FC = () => {
+  fetch(`${DOMAIN.URL}/auto-suppliers`).then((res) => res.json())
+
+interface FormProps {
+  setFilter: any
+}
+const Form: FC<FormProps> = ({ setFilter }) => {
   const [form, setForm] = useState({
     exigency: 'Vay ô tô',
     carPrice: '',
@@ -164,7 +168,7 @@ const Form: FC = () => {
                 />
               }
               onClick={() =>
-                console.log({
+                setFilter({
                   'banks.name': form.bank,
                   'auto_suppliers.name': form.distributor,
                 })

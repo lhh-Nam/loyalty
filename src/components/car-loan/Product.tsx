@@ -7,24 +7,31 @@ import ChevronRight from '@material-ui/icons/ChevronRight'
 import { Pagination } from '@material-ui/lab'
 import Style from '@styles/pages/car-loan/Product.module.scss'
 import Link from 'next/link'
-import React, { FC, useEffect, useState } from 'react'
+import queryString from 'query-string'
+import React, { FC, useState } from 'react'
+import { useQuery } from 'react-query'
 import { H4, Span } from '../Typography'
 
-const Product: FC = () => {
-  const [products, setProducts] = useState<any>([])
+const getProducts = async (query: any) => {
+  const res = await fetch(`http://45.119.80.100:8085/product-informations?${query}`)
+  return await res.json()
+}
+interface ProductProps {
+  filter: any
+}
+const Product: FC<ProductProps> = (props) => {
+  const { filter } = props
+
+  const query = queryString.stringify(filter)
+
+  // const [products, setProducts] = useState<any>([])
   const [pageNumber, setPageNumber] = useState(1)
   const [pageSize] = useState(6)
   const [sort, setSort] = useState('Sắp xếp kết quả')
 
-  const getProducts = async () => {
-    const res = await fetch('http://45.119.80.100:8085/product-informations')
-    const products = await res.json()
-    if (products) setProducts(products)
-  }
-
-  useEffect(() => {
-    getProducts()
-  }, [])
+  const { data: products = [] } = useQuery(['products', query], () =>
+    getProducts(query)
+  )
 
   const handleChange = (event: any) => {
     setSort(event.target.value)
