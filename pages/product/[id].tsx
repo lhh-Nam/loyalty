@@ -27,8 +27,8 @@ const ProductDetails = () => {
     loanRate: 0,
     interestRate: 0,
     auto_product: {
-      name: '',
-      description: '',
+      name: 'BMW 1',
+      description: 'BMW 1',
     },
     currentBank: '',
     fetchingVirtual: true,

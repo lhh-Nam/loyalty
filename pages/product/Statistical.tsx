@@ -113,10 +113,7 @@ interface IStatisticalProps extends Object {
   interestRate: number
   banks: string[]
   currentBank: string
-
-  auto_product: {
-    name?: string
-  }
+  auto_product?: any
 }
 
 const Statistical: FC<IStatisticalProps> = (props) => {
@@ -127,7 +124,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
     loanTermMax,
     interestRate,
     currentBank,
-    auto_product: { name },
+    auto_product,
   } = props
 
   const router = useRouter()
@@ -508,7 +505,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
         saleCode: 'sale code 1', // NV bán hàng
         bankCode: select, // Ngân hàng
         flagMarkBank: true, // True => Ngân hàng thẩm định, False => F5S thẩm định
-        productName: name, // Model xe/ Tên xe (SP được chọn khi vay)
+        productName: auto_product?.name, // Model xe/ Tên xe (SP được chọn khi vay)
         productPrice: price.toString(), // Giá trị xe
         collateral: 'The Chap Nha', // {fake}
       },

@@ -15,17 +15,11 @@ import { FC } from 'react'
 
 interface IMainProductProps extends Object {
   price: number
-  auto_product: {
-    name?: string
-    description?: string
-  }
+  auto_product?: any
 }
 
 const MainProduct: FC<IMainProductProps> = (props) => {
-  const {
-    price,
-    auto_product: { name, description },
-  } = props
+  const { price, auto_product } = props
   return (
     <Container>
       <Grid container bgcolor="white" mt={7.5} mb={3} p={3} borderRadius={2}>
@@ -71,8 +65,8 @@ const MainProduct: FC<IMainProductProps> = (props) => {
               </Grid>
 
               <Grid className={Style.info}>
-                <H3 mb={1}>{name}</H3>
-                <Span color="grey.600">{description}</Span>
+                <H3 mb={1}>{auto_product?.name}</H3>
+                <Span color="grey.600">{auto_product?.description}</Span>
               </Grid>
 
               <H3 className={Style.price}>
