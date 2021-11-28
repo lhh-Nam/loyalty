@@ -1,14 +1,15 @@
 import { Span } from '@component/Typography'
 import { Box, Grid, Slider, TextField } from '@material-ui/core'
 import Style from '@styles/pages/product/Detail.module.scss'
+import { formatCurrency } from '@utils/utils'
 import React from 'react'
 
 interface ICustomSliderProps {
   label?: string
   unit?: string
   onChange: (value: number) => void
-  max?: number
-  min?: number
+  max: number
+  min: number
   value?: number
   step?: number
 }
@@ -72,7 +73,13 @@ const CustomTextField = React.forwardRef<HTMLInputElement, ICustomSliderProps>(
     const { label, unit, max, min, value, onChange, step } = props
 
     const handleOnChange = (e: any) => {
-      onChange(parseInt(e?.target?.value))
+      const value = e.target.value
+      const newValue = parseInt(value?.split('.')?.join(''))
+
+      if (newValue > max || newValue < min) {
+        return
+      }
+      onChange(newValue)
     }
 
     return (
@@ -87,7 +94,7 @@ const CustomTextField = React.forwardRef<HTMLInputElement, ICustomSliderProps>(
                 fullWidth
                 placeholder="RFC"
                 onChange={handleOnChange}
-                value={value || 0}
+                value={formatCurrency(value || 0) || 0}
                 InputProps={{
                   endAdornment: (
                     <div>

@@ -652,7 +652,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
 
             <Span className={Style.line}>|</Span>
 
-            <Span>{bankInfo.interestRate * 100}%/năm</Span>
+            <Span>{Math.round(bankInfo.interestRate * 100)}%/năm</Span>
           </Grid>
         </Grid>
 

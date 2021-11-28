@@ -2,14 +2,14 @@ import Bimmer from '@component/common/Bimmer'
 import BreadcrumbsCustom from '@component/common/Breadcum'
 import Contact from '@component/common/Contact'
 import AppLayout from '@component/layout/AppLayout'
+import MainProduct from '@component/product/MainProduct'
+import OtherProduct from '@component/product/OtherProduct'
+import Statistical from '@component/product/Statistical'
 import { Box } from '@material-ui/core'
 import { getCarDetail } from 'apis/product/car'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
-import MainProduct from './MainProduct'
-import OtherProduct from './OtherProduct'
-import Statistical from './Statistical'
 
 const ProductDetails = () => {
   const breadcrumbs = [

@@ -2,6 +2,7 @@ import LazyImage from '@component/LazyImage'
 import { H3, Span } from '@component/Typography'
 import { Container, Grid } from '@material-ui/core'
 import Style from '@styles/pages/product/Detail.module.scss'
+import { fromImageToURL } from '@utils/imageUrl'
 import { FC } from 'react'
 
 // interface IMainProductProps {
@@ -27,7 +28,7 @@ const MainProduct: FC<IMainProductProps> = (props) => {
           <Grid item xs={12} md={6}>
             <div className={Style.imgGroup}>
               <LazyImage
-                src={auto_product?.imgUrl || '/assets/loyalty/car-loan/car-1.png'}
+                src={fromImageToURL(auto_product?.avatar?.url)}
                 width={350}
                 height={150}
                 layout="responsive"

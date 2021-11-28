@@ -6,6 +6,8 @@ import { Container, FormControl, Grid, MenuItem, Select } from '@material-ui/cor
 import ChevronRight from '@material-ui/icons/ChevronRight'
 import { Pagination } from '@material-ui/lab'
 import Style from '@styles/pages/car-loan/Product.module.scss'
+import { fromImageToURL } from '@utils/imageUrl'
+import { formatCurrency } from '@utils/utils'
 import Link from 'next/link'
 import queryString from 'query-string'
 import React, { FC, useState } from 'react'
@@ -94,10 +96,7 @@ const Product: FC<ProductProps> = (props) => {
                 /> */}
 
                 <BazarImage
-                  src={
-                    product?.auto_product?.imgUrl ||
-                    '/assets/loyalty/car-loan/car-1.png'
-                  }
+                  src={fromImageToURL(product?.auto_product?.avatar?.url)}
                   sx={{
                     width: '100%',
                     height: '200px',
@@ -113,6 +112,7 @@ const Product: FC<ProductProps> = (props) => {
               <Grid
                 container
                 // flexDirection="column"
+                width="100%"
                 height="100%"
                 justifyContent="space-between"
               >
@@ -120,9 +120,11 @@ const Product: FC<ProductProps> = (props) => {
                   <H4 mb={0.5} mt={1.5}>
                     {product?.auto_product?.name}
                   </H4>
-                  <Span color="grey.600">{product?.auto_product?.description}</Span>
+                  <Span className={Style.des} color="grey.600">
+                    {product?.auto_product?.description}
+                  </Span>
                   <H4 mb={1.5} mt={1}>
-                    {product.price} VNĐ
+                    {formatCurrency(product.price)} VNĐ
                   </H4>
                 </Grid>
 
