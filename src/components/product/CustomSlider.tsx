@@ -72,14 +72,15 @@ const CustomTextField = React.forwardRef<HTMLInputElement, ICustomSliderProps>(
   (props, ref) => {
     const { label, unit, max, min, value, onChange, step } = props
 
-    const handleOnChange = (e: any) => {
-      const value = e.target.value
-      const newValue = parseInt(value?.split('.')?.join(''))
-
-      if (newValue > max || newValue < min) {
-        return
-      }
+    const handleSliderChange = (_: any, newValue: any) => {
       onChange(newValue)
+    }
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value
+      const newValue = Number(value?.split('.')?.join(''))
+      if (newValue > max || newValue < min) return
+      onChange(newValue || 0)
     }
 
     return (
@@ -93,7 +94,7 @@ const CustomTextField = React.forwardRef<HTMLInputElement, ICustomSliderProps>(
                 ref={ref}
                 fullWidth
                 placeholder="RFC"
-                onChange={handleOnChange}
+                onChange={handleInputChange}
                 value={formatCurrency(value || 0) || 0}
                 InputProps={{
                   endAdornment: (
@@ -104,6 +105,10 @@ const CustomTextField = React.forwardRef<HTMLInputElement, ICustomSliderProps>(
                     </div>
                   ),
                 }}
+                inputProps={{
+                  min: min,
+                  max: max,
+                }}
               />
             </Grid>
           </Grid>
@@ -113,7 +118,7 @@ const CustomTextField = React.forwardRef<HTMLInputElement, ICustomSliderProps>(
             step={step}
             valueLabelDisplay="auto"
             value={value}
-            onChange={(e) => handleOnChange(e)}
+            onChange={handleSliderChange}
             classes={{
               root: Style.root,
               track: Style.track,
