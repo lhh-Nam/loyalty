@@ -27,7 +27,7 @@ const MainProduct: FC<IMainProductProps> = (props) => {
           <Grid item xs={12} md={6}>
             <div className={Style.imgGroup}>
               <LazyImage
-                src="/assets/loyalty/car-loan/car-1.png"
+                src={auto_product?.imgUrl || '/assets/loyalty/car-loan/car-1.png'}
                 width={350}
                 height={150}
                 layout="responsive"
