@@ -17,10 +17,11 @@ import { FC } from 'react'
 interface IMainProductProps extends Object {
   price: number
   auto_product?: any
+  auto_suppliers?: any
 }
 
 const MainProduct: FC<IMainProductProps> = (props) => {
-  const { price, auto_product } = props
+  const { price, auto_product, auto_suppliers } = props
   return (
     <Container>
       <Grid container bgcolor="white" mt={7.5} mb={3} p={3} borderRadius={2}>
@@ -37,10 +38,10 @@ const MainProduct: FC<IMainProductProps> = (props) => {
                 // alt={title}
               />
 
-              <div className={Style.text}>
+              {/* <div className={Style.text}>
                 <span>Vay ô tô</span>
-                <span>F5Second</span>
-              </div>
+                <span>F5Seconds</span>
+              </div> */}
             </div>
           </Grid>
           <Grid item xs={12} md={6} fontSize="0.938rem">
@@ -63,10 +64,22 @@ const MainProduct: FC<IMainProductProps> = (props) => {
                   <Span color="#0098CE">&nbsp;12&nbsp;</Span>
                   tháng
                 </Span>
+
+                <Span className={Style.line}>|</Span>
               </Grid>
 
               <Grid className={Style.info}>
-                <H3 mb={1}>{auto_product?.name}</H3>
+                <H3 mb={1}>
+                  <Span>{auto_product?.name}</Span>
+                  {auto_suppliers?.length > 0 && <Span> - </Span>}
+                  <Span>
+                    {auto_suppliers?.map((item: any, index: any) => {
+                      if (index === auto_suppliers?.length - 1)
+                        return <Span>{item?.name}</Span>
+                      return <Span>{item?.name}, </Span>
+                    })}
+                  </Span>
+                </H3>
                 <Span color="grey.600">{auto_product?.description}</Span>
               </Grid>
 

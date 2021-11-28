@@ -102,6 +102,13 @@ const BorrowerInfo: FC = () => {
     info && setLoanInfo(info)
   }, [])
 
+  const convertAddress = (address: any, ward: any, district: any, province: any) => {
+    const newAddress = address ? address : ''
+    const newWard = ward ? ', ' + ward : ''
+    const newDistrict = district ? ', ' + district : ''
+    const newProvince = province ? ', ' + province : ''
+    return newAddress + newWard + newDistrict + newProvince
+  }
   const handleRegister = () => {
     // setCarState({
     //   ...carState,
@@ -123,8 +130,18 @@ const BorrowerInfo: FC = () => {
         dateOfBirth: state.dateOfBirth,
         icNumber: state.icNumber,
         phoneNumber: state.phoneNumber,
-        permanentAddress: `${state.diaChiThC}, ${state.phuongThc?.name}, ${state.quanThc?.name}, ${state.thanhPhoThc?.name}`,
-        currentAddress: `${state.diaChiTC}, ${state.phuongTc?.name}, ${state.quanTc?.name}, ${state.thanhPhoTc?.name}`,
+        permanentAddress: convertAddress(
+          state.diaChiThC,
+          state.phuongThc?.name,
+          state.quanThc?.name,
+          state.thanhPhoThc?.name
+        ),
+        currentAddress: convertAddress(
+          state.diaChiTC,
+          state.phuongTc?.name,
+          state.quanTc?.name,
+          state.thanhPhoTc?.name
+        ),
         declaredIncome: state.declaredIncome,
       },
     }

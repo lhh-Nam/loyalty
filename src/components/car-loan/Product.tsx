@@ -29,14 +29,14 @@ const Product: FC<ProductProps> = (props) => {
   // const [products, setProducts] = useState<any>([])
   const [pageNumber, setPageNumber] = useState(1)
   const [pageSize] = useState(6)
-  const [sort, setSort] = useState('Sắp xếp kết quả')
+  const [sort, setSort] = useState(0)
 
   const { data: products = [] } = useQuery(['products', query], () =>
     getProducts(query)
   )
 
   const handleChange = (event: any) => {
-    setSort(event.target.value)
+    setSort(Number(event.target.value))
   }
 
   const countPage = Math.ceil(products.length / pageSize)
@@ -47,7 +47,26 @@ const Product: FC<ProductProps> = (props) => {
     setPageNumber(newPage)
   }
 
+  const comparePriceIncrease = (a: any, b: any) => {
+    const priceA = Number(a?.price)
+    const priceB = Number(b?.price)
+    return priceA < priceB ? -1 : priceA > priceB ? 1 : 0
+  }
+  const comparePriceDecrease = (a: any, b: any) => {
+    const priceA = Number(a?.price)
+    const priceB = Number(b?.price)
+    return priceA < priceB ? 1 : priceA > priceB ? -1 : 0
+  }
   const getContent = () => {
+    if (sort === 1) {
+      return products
+        ?.sort((a: any, b: any) => comparePriceIncrease(a, b))
+        ?.slice((pageNumber - 1) * pageSize, (pageNumber - 1) * pageSize + pageSize)
+    } else if (sort === 2) {
+      return products
+        ?.sort((a: any, b: any) => comparePriceDecrease(a, b))
+        ?.slice((pageNumber - 1) * pageSize, (pageNumber - 1) * pageSize + pageSize)
+    }
     return products?.slice(
       (pageNumber - 1) * pageSize,
       (pageNumber - 1) * pageSize + pageSize
@@ -77,11 +96,11 @@ const Product: FC<ProductProps> = (props) => {
                   |
                 </Span>
 
-                {/* <Span>
+                <Span>
                   Ưu đãi
                   <Span color="#0098CE">&nbsp;12&nbsp;</Span>
                   tháng
-                </Span> */}
+                </Span>
               </Grid>
 
               <div className={Style.imgGroup}>
@@ -104,8 +123,20 @@ const Product: FC<ProductProps> = (props) => {
                 />
 
                 <div className={Style.text}>
-                  <span>Vay ô tô</span>
-                  <span>{product?.banks?.[0]?.name}</span>
+                  <span>
+                    {product?.auto_suppliers?.find(
+                      (item: any) => item?.name === filter['auto_suppliers.name']
+                    )?.name ||
+                      product?.auto_suppliers[0]?.name ||
+                      'Vay ô tô'}
+                  </span>
+                  <span>
+                    {product?.banks?.find(
+                      (item: any) => item?.name === filter['banks.name']
+                    )?.name ||
+                      product?.banks?.[0]?.name ||
+                      'F5Seconds'}
+                  </span>
                 </div>
               </div>
 
@@ -167,9 +198,9 @@ const Product: FC<ProductProps> = (props) => {
 
           <FormControl size="small" className={Style.select}>
             <Select value={sort} onChange={handleChange}>
-              <MenuItem value={'Sắp xếp kết quả'}>Sắp xếp kết quả</MenuItem>
-              <MenuItem value={'Sắp xếp kết quả'}>Sắp xếp kết quả</MenuItem>
-              <MenuItem value={'Sắp xếp kết quả'}>Sắp xếp kết quả</MenuItem>
+              <MenuItem value={0}>Sắp sếp kết quả</MenuItem>
+              <MenuItem value={1}>Giá tăng dần</MenuItem>
+              <MenuItem value={2}>Giá giảm dần</MenuItem>
             </Select>
           </FormControl>
         </Grid>

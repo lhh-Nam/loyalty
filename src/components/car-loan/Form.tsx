@@ -30,11 +30,11 @@ interface FormProps {
 const Form: FC<FormProps> = ({ setFilter }) => {
   const [form, setForm] = useState({
     exigency: 'Vay ô tô',
-    carPrice: '',
+    carPrice: undefined,
     carBrand: 'BMW',
-    bank: '',
-    borrowingLimit: '',
-    distributor: '',
+    bank: undefined,
+    borrowingLimit: undefined,
+    distributor: undefined,
   })
 
   const [listBank, setListBank] = useState([])
@@ -63,7 +63,7 @@ const Form: FC<FormProps> = ({ setFilter }) => {
           <CustomSelect
             label="Giá xe"
             placeholder="Chọn giá xe"
-            value={form.carPrice}
+            value={form?.carPrice || ''}
             options={lstCarPrice}
             onChange={(value) => {
               handleForm(value, 'carPrice')
@@ -81,7 +81,7 @@ const Form: FC<FormProps> = ({ setFilter }) => {
           <CustomSelect
             label="Ngân hàng"
             placeholder="Chọn ngân hàng"
-            value={form.bank}
+            value={form?.bank || ''}
             options={listBank}
             onChange={(value) => {
               handleForm(value, 'bank')
@@ -93,7 +93,7 @@ const Form: FC<FormProps> = ({ setFilter }) => {
           <CustomSelect
             label="Nhà phân phối"
             placeholder="Chọn nhà phân phối"
-            value={form.distributor}
+            value={form?.distributor || ''}
             options={listSupplier}
             onChange={(value) => {
               handleForm(value, 'distributor')
@@ -146,6 +146,16 @@ const Form: FC<FormProps> = ({ setFilter }) => {
                     maxWidth: '1rem',
                   }}
                 />
+              }
+              onClick={() =>
+                setForm({
+                  exigency: 'Vay ô tô',
+                  carPrice: undefined,
+                  carBrand: 'BMW',
+                  bank: undefined,
+                  borrowingLimit: undefined,
+                  distributor: undefined,
+                })
               }
             >
               Xoá bộ lọc
