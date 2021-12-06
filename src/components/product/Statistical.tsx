@@ -438,10 +438,10 @@ const Statistical: FC<IStatisticalProps> = (props) => {
   const handleSelect = (value: string) => {
     lstBank?.map((bank) => {
       if (bank.value === value) {
-        setBankInfo({
+        setBankInfo((prev: any) => ({
+          ...prev,
           loanRate: bank.loanRate / 100,
-          interestRate: bank.interestRate / 100,
-        })
+        }))
       }
     })
     setSelect(value)
