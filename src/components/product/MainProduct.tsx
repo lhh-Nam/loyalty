@@ -1,4 +1,4 @@
-import LazyImage from '@component/LazyImage'
+import BazarImage from '@component/BazarImage'
 import { H3, Span } from '@component/Typography'
 import { Container, Grid } from '@material-ui/core'
 import Style from '@styles/pages/product/Detail.module.scss'
@@ -28,13 +28,11 @@ const MainProduct: FC<IMainProductProps> = (props) => {
         <Grid container spacing={3} className={Style.mainProductWrap}>
           <Grid item xs={12} md={6}>
             <div className={Style.imgGroup}>
-              <LazyImage
+              <BazarImage
                 src={fromImageToURL(auto_product?.avatar?.url)}
-                width={350}
-                height={150}
-                layout="responsive"
-                objectFit="cover"
-                borderRadius="8px"
+                sx={{
+                  width: '100%',
+                }}
                 // alt={title}
               />
 
