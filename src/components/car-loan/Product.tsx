@@ -124,13 +124,7 @@ const Product: FC<ProductProps> = (props) => {
                 />
 
                 <div className={Style.text}>
-                  <span>
-                    {product?.auto_suppliers?.find(
-                      (item: any) => item?.name === filter['auto_suppliers.name']
-                    )?.name ||
-                      product?.auto_suppliers[0]?.name ||
-                      'Vay ô tô'}
-                  </span>
+                  <span>{product?.autoSupplier?.name || 'Vay ô tô'}</span>
                   <span>
                     {product?.banks?.find(
                       (item: any) => item?.name === filter['banks.name']

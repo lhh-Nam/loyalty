@@ -180,7 +180,7 @@ const Form: FC<FormProps> = ({ setFilter }) => {
               onClick={() =>
                 setFilter({
                   'banks.name': form.bank,
-                  'auto_suppliers.name': form.distributor,
+                  'autoSupplier.name': form.distributor,
                 })
               }
             >
