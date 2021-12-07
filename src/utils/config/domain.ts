@@ -1,3 +1,3 @@
 export const DOMAIN = {
-  URL: 'http://45.119.80.100:8085',
+  URL: process.env.NEXT_PUBLIC_API_URL || 'localhost:1337',
 }

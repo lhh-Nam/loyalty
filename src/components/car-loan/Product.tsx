@@ -6,6 +6,7 @@ import { Container, FormControl, Grid, MenuItem, Select } from '@material-ui/cor
 import ChevronRight from '@material-ui/icons/ChevronRight'
 import { Pagination } from '@material-ui/lab'
 import Style from '@styles/pages/car-loan/Product.module.scss'
+import { DOMAIN } from '@utils/config/domain'
 import { fromImageToURL } from '@utils/imageUrl'
 import { formatCurrency } from '@utils/utils'
 import Link from 'next/link'
@@ -15,7 +16,7 @@ import { useQuery } from 'react-query'
 import { H4, Span } from '../Typography'
 
 const getProducts = async (query: any) => {
-  const res = await fetch(`http://45.119.80.100:8085/product-informations?${query}`)
+  const res = await fetch(`${DOMAIN.URL}/product-informations?${query}`)
   return await res.json()
 }
 interface ProductProps {

@@ -132,7 +132,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
 
   const [isDecreases, setIsDecreases] = useState(true)
   useEffect(() => {
-    isDecreases ? handleDecreases() : handlePaidMonthly()
+    isDecreases ? handleDecreases(bankInfo) : handlePaidMonthly(bankInfo)
   }, [isDecreases])
 
   const [radio, setRadio] = useState({
@@ -175,7 +175,8 @@ const Statistical: FC<IStatisticalProps> = (props) => {
   // commons function
 
   // ============ Dư nợ giảm giần =================
-  const handleDecreases = () => {
+  const handleDecreases = (bankInfo: any) => {
+    console.log(bankInfo)
     const prepay = Math.round(price * (1 - bankInfo.loanRate)) // trả trước
     const initiallyPaid = price * bankInfo.loanRate // gốc cần trả
     const loanValueCalculated = price * bankInfo.loanRate // giá trị khoản vay
@@ -222,7 +223,8 @@ const Statistical: FC<IStatisticalProps> = (props) => {
   // ========x======== Dư nợ giảm giần ==========x=========
 
   // ============ Trả đều hàng tháng =================
-  const handlePaidMonthly = () => {
+  const handlePaidMonthly = (bankInfo: any) => {
+    console.log(bankInfo)
     const prepay = Math.round(price * (1 - bankInfo.loanRate)) // trả trước
     const initiallyPaid = price * bankInfo.loanRate // gốc cần trả
     const loanValueCalculated = price * bankInfo.loanRate // giá trị khoản vay
@@ -438,10 +440,15 @@ const Statistical: FC<IStatisticalProps> = (props) => {
   const handleSelect = (value: string) => {
     lstBank?.map((bank) => {
       if (bank.value === value) {
-        setBankInfo((prev: any) => ({
-          ...prev,
-          loanRate: bank.loanRate / 100,
-        }))
+        setBankInfo((prev: any) => {
+          const newBankInfo = {
+            ...prev,
+            loanRate: bank.loanRate / 100,
+          }
+          isDecreases ? handleDecreases(newBankInfo) : handlePaidMonthly(newBankInfo)
+
+          return newBankInfo
+        })
       }
     })
     setSelect(value)
