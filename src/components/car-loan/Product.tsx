@@ -14,7 +14,6 @@ import queryString from 'query-string'
 import React, { FC, useState } from 'react'
 import { useQuery } from 'react-query'
 import { H4, Span } from '../Typography'
-
 const getProducts = async (query: any) => {
   const res = await fetch(`${DOMAIN.URL}/product-informations?${query}`)
   return await res.json()
@@ -35,12 +34,21 @@ const Product: FC<ProductProps> = (props) => {
   const { data: products = [] } = useQuery(['products', query], () =>
     getProducts(query)
   )
-
+  const result = products?.reduce((prev: any, current: any) => {
+    return [
+      ...prev,
+      ...current?.banks
+        ?.filter((item: any) =>
+          filter['banks.name'] ? item.name === filter['banks.name'] : item
+        )
+        ?.map((item: any) => ({ ...current, bank: item })),
+    ]
+  }, [])
   const handleChange = (event: any) => {
     setSort(Number(event.target.value))
   }
 
-  const countPage = Math.ceil(products.length / pageSize)
+  const countPage = Math.ceil(result.length / pageSize)
   // const from = (pageNumber - 1) * pageSize + 1
   // const to = Math.min(from + pageSize - 1, lstProduct.length)
 
@@ -60,21 +68,29 @@ const Product: FC<ProductProps> = (props) => {
   }
   const getContent = () => {
     if (sort === 1) {
-      return products
+      return result
         ?.sort((a: any, b: any) => comparePriceIncrease(a, b))
         ?.slice((pageNumber - 1) * pageSize, (pageNumber - 1) * pageSize + pageSize)
     } else if (sort === 2) {
-      return products
+      return result
         ?.sort((a: any, b: any) => comparePriceDecrease(a, b))
         ?.slice((pageNumber - 1) * pageSize, (pageNumber - 1) * pageSize + pageSize)
     }
-    return products?.slice(
+
+    console.log(result)
+    return result?.slice(
       (pageNumber - 1) * pageSize,
       (pageNumber - 1) * pageSize + pageSize
     )
   }
 
   const renderProduct = (product: any, idx: number) => {
+    const query = queryString.stringify({
+      bank:
+        product?.banks?.find((item: any) => item?.name === filter['banks.name'])
+          ?.name || product?.banks?.[0]?.name,
+    })
+    console.log(query)
     return (
       <Grid item xs={12} sm={6} md={4} key={idx}>
         <BazarCard
@@ -125,13 +141,7 @@ const Product: FC<ProductProps> = (props) => {
 
                 <div className={Style.text}>
                   <span>{product?.autoSupplier?.name || 'Vay ô tô'}</span>
-                  <span>
-                    {product?.banks?.find(
-                      (item: any) => item?.name === filter['banks.name']
-                    )?.name ||
-                      product?.banks?.[0]?.name ||
-                      'F5Seconds'}
-                  </span>
+                  <span>{product?.bank?.name}</span>
                 </div>
               </div>
 
@@ -154,7 +164,7 @@ const Product: FC<ProductProps> = (props) => {
                   </H4>
                 </Grid>
 
-                <Link href={`/product/${product.id}`}>
+                <Link href={`/product/${product.id}${query ? '?' + query : ''}`}>
                   <Grid
                     container
                     pt={1.5}

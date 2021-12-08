@@ -46,7 +46,9 @@ const ProductDetails = () => {
       ...data,
       loanTermMax: data?.auto_product?.maxTenor,
       price: parseInt(data?.price),
-      currentBank: bank?.code,
+      currentBank:
+        data.banks?.find((item: any) => item?.name === router.query?.bank)?.code ||
+        bank?.code,
       interestRate: (data?.auto_product?.interestRate || 6) / 100,
       loanRate: bank?.loanRate / 100,
       fetchingVirtual: false,

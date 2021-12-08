@@ -38,7 +38,7 @@ const BorrowerInfo: FC = () => {
   // const carState = useRecoilState(car)
   // const setCarState = useSetRecoilState(car)
 
-  const [loanInfo, setLoanInfo] = useState({})
+  const [loanInfo, setLoanInfo] = useState({ product: {} })
 
   const [state, setState] = useState<any>({
     name: '',
@@ -125,6 +125,10 @@ const BorrowerInfo: FC = () => {
 
     let temp = {
       ...loanInfo,
+      product: {
+        ...loanInfo.product,
+        collateral: state.collateral,
+      },
       customer: {
         name: state.name,
         dateOfBirth: state.dateOfBirth,
@@ -246,10 +250,24 @@ const BorrowerInfo: FC = () => {
                 required
                 label="Thu nhập khách hàng"
                 name="declaredIncome"
+                type="number"
                 value={state.declaredIncome}
                 onChange={handleValueChange}
                 variant="outlined"
                 placeholder="120.000.000"
+                fullWidth
+              />
+            </Grid>
+
+            <Grid item md={6}>
+              <TextField
+                required
+                label="Tài sản đảm bảo"
+                name="collateral"
+                value={state.collateral}
+                onChange={handleValueChange}
+                variant="outlined"
+                placeholder=""
                 fullWidth
               />
             </Grid>

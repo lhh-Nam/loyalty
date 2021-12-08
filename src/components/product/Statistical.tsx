@@ -511,7 +511,7 @@ const Statistical: FC<IStatisticalProps> = (props) => {
         merchantId: 'merchant 1', // Nhà phân phối {fake}
         saleCode: 'sale code 1', // NV bán hàng
         bankCode: select, // Ngân hàng
-        flagMarkBank: true, // True => Ngân hàng thẩm định, False => F5S thẩm định
+        flagMarkBank: select !== 'F5Seconds', // True => Ngân hàng thẩm định, False => F5S thẩm định
         productName: auto_product?.name, // Model xe/ Tên xe (SP được chọn khi vay)
         productPrice: price.toString(), // Giá trị xe
         collateral: 'The Chap Nha', // {fake}
