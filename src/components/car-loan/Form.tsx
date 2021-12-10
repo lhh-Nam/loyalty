@@ -7,10 +7,17 @@ import React, { FC, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { H2 } from '../Typography'
 
-const lstCarPrice = [
-  { name: 'Từ 500 triệu - 1 tỷ', value: 'Từ 500 triệu - 1 tỷ' },
-  { name: 'Từ 300 triệu - 1 tỷ', value: 'Từ 300 triệu - 1 tỷ' },
-]
+const carPrice = {
+  'Dưới 1 tỷ': { price_lt: 1_000_000_000 },
+  'Từ 1 tỷ - 2.5 tỷ': { price_gte: 1_000_000_000, price_lte: 2_500_000_000 },
+  'Từ 2.5 tỷ - 5 tỷ': { price_gte: 2_500_000_000, price_lte: 5_000_000_000 },
+  'Trên 5 tỷ': { price_gt: 5_000_000_000 },
+}
+const lstCarPrice = Object.keys(carPrice).map((item) => ({
+  name: item,
+  value: item,
+}))
+
 // const lstCarBrand = [
 //   { name: 'BMW', value: 'BMW' },
 //   { name: 'Honda', value: 'Honda' },
@@ -181,6 +188,9 @@ const Form: FC<FormProps> = ({ setFilter }) => {
                 setFilter({
                   'banks.name': form.bank,
                   'autoSupplier.name': form.distributor,
+                  ...(form.carPrice !== undefined
+                    ? carPrice[form.carPrice || 'Dưới 1 tỷ']
+                    : {}),
                 })
               }
             >

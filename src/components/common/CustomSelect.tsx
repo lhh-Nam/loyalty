@@ -35,13 +35,9 @@ const CustomSelect: FC<ISelectProps> = (props) => {
   }
 
   const renderSelectItem = () => {
-    return options?.map((option) => {
+    return options?.map((option, index) => {
       return (
-        <MenuItem
-          value={option.value}
-          key={option.value}
-          className={Style.optionItem}
-        >
+        <MenuItem value={option.value} key={index} className={Style.optionItem}>
           <span>{option.name}</span>
         </MenuItem>
       )
